@@ -74,7 +74,7 @@ require('lazy').setup({
   'tpope/vim-rhubarb',
 
   -- Detect tabstop and shiftwidth automatically
-  'tpope/vim-sleuth',
+  -- 'tpope/vim-sleuth',
 
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
@@ -298,6 +298,10 @@ vim.wo.relativenumber = true
 
 -- enable scrolloff
 vim.wo.scrolloff = 20
+
+-- set tab to 2 spaces
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
