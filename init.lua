@@ -349,7 +349,8 @@ vim.keymap.set('n', '<leader>fm', function()
     local buf_line_count = vim.api.nvim_buf_line_count(0)
     vim.cmd(format_cmd)
     local buf_line_count_diff = vim.api.nvim_buf_line_count(0) - buf_line_count
-    cursor[1] = math.min(cursor[1] + buf_line_count_diff, vim.api.nvim_buf_line_count(0))
+    local min = math.min(cursor[1] + buf_line_count_diff, vim.api.nvim_buf_line_count(0))
+    cursor[1] = math.max(min, 1)
     vim.api.nvim_win_set_cursor(0, cursor)
   else
     vim.lsp.buf.format()
