@@ -299,6 +299,8 @@ vim.wo.relativenumber = true
 -- enable scrolloff
 vim.wo.scrolloff = 20
 
+vim.o.wrap = false
+
 -- set tab to 2 spaces
 vim.o.tabstop = 2
 vim.o.shiftwidth = 2
