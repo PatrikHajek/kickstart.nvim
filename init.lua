@@ -342,7 +342,19 @@ vim.o.termguicolors = true
 -- [[ Basic Keymaps ]]
 
 vim.keymap.set('n', '<leader>e', ':Explore<CR>')
-vim.keymap.set('n', '<leader>fm', vim.lsp.buf.format)
+vim.keymap.set('n', '<leader>fm', function()
+  if vim.bo.filetype == 'javascript' or vim.bo.filetype == 'typescript' or vim.bo.filetype == "vue" then
+    local format_cmd = ':silent %!npx prettier --stdin-filepath %'
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    local buf_line_count = vim.api.nvim_buf_line_count(0)
+    vim.cmd(format_cmd)
+    local buf_line_count_diff = vim.api.nvim_buf_line_count(0) - buf_line_count
+    cursor[1] = math.min(cursor[1] + buf_line_count_diff, vim.api.nvim_buf_line_count(0))
+    vim.api.nvim_win_set_cursor(0, cursor)
+  else
+    vim.lsp.buf.format()
+  end
+end)
 vim.keymap.set('n', '<leader>q', ':q<CR>', { desc = 'Quit' })
 
 -- Keymaps for better default experience
