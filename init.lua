@@ -275,6 +275,9 @@ require('lazy').setup({
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
 
+-- colorscheme
+vim.cmd("colorscheme onedark_vivid")
+
 -- Set highlight on search
 vim.o.hlsearch = false
 
