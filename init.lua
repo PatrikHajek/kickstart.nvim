@@ -347,6 +347,10 @@ vim.keymap.set('n', '<leader>fm', function()
 end)
 vim.keymap.set('n', '<leader>q', ':q<CR>', { desc = 'Quit' })
 
+-- keep cursor in the middle when searching
+vim.keymap.set('n', 'n', 'nzzzv', { silent = true })
+vim.keymap.set('n', 'N', 'Nzzzv', { silent = true })
+
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
