@@ -333,7 +333,7 @@ vim.o.termguicolors = true
 vim.keymap.set('n', '<leader>e', ':Explore<CR>')
 vim.keymap.set('n', '<leader>fm', function()
   if vim.bo.filetype == 'javascript' or vim.bo.filetype == 'typescript' or vim.bo.filetype == "vue" then
-    local format_cmd = ':silent %!npx prettier --stdin-filepath %'
+    local format_cmd = '%!npx prettier --stdin-filepath %'
     local cursor = vim.api.nvim_win_get_cursor(0)
     local buf_line_count = vim.api.nvim_buf_line_count(0)
     vim.cmd(format_cmd)
