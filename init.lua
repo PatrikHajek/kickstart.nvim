@@ -332,7 +332,9 @@ vim.o.termguicolors = true
 -- [[ Basic Keymaps ]]
 
 vim.keymap.set('n', '<leader>e', ':Explore<CR>')
-vim.keymap.set('n', '<leader>fm', function()
+vim.keymap.set('n', '<leader>q', ':q<CR>', { desc = 'Quit' })
+
+local function prettier_format()
   if vim.bo.filetype == 'javascript' or vim.bo.filetype == 'typescript' or vim.bo.filetype == "vue" then
     local format_cmd = '%!npx prettier --stdin-filepath %'
     local cursor = vim.api.nvim_win_get_cursor(0)
@@ -345,8 +347,9 @@ vim.keymap.set('n', '<leader>fm', function()
   else
     vim.lsp.buf.format()
   end
-end)
-vim.keymap.set('n', '<leader>q', ':q<CR>', { desc = 'Quit' })
+end
+vim.keymap.set('n', '<leader>fm', prettier_format)
+vim.api.nvim_create_user_command('Wf', prettier_format, { desc = 'Format current buffer and save' })
 
 -- keep cursor in the middle when searching
 vim.keymap.set('n', 'n', 'nzzzv', { silent = true })
