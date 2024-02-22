@@ -42,12 +42,13 @@
 return {
 	"olimorris/onedarkpro.nvim",
 	priority = 1000, -- Ensure it loads first
-	--[[ config = function()
-		require("onedarkpro").setup({
+	config = function()
+		vim.cmd("colorscheme onedark_vivid")
+		--[[ require("onedarkpro").setup({
 			options = {
 				-- consider enabling (underlines same words)
 				-- cursorline = true
 			}
-		})
-	end ]]
+		}) ]]
+	end
 }
