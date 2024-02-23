@@ -381,8 +381,11 @@ require('telescope').setup {
   pickers = {
     find_files = {
       hidden = true,
-    }
-  }
+    },
+    buffers = {
+      sort_lastused = true,
+    },
+  },
 }
 
 -- Enable telescope fzf native, if installed
