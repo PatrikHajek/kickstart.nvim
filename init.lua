@@ -334,23 +334,6 @@ vim.o.termguicolors = true
 vim.keymap.set('n', '<leader>e', ':Explore<CR>')
 vim.keymap.set('n', '<leader>q', ':q<CR>', { desc = 'Quit' })
 
-local function prettier_format()
-  if vim.bo.filetype == 'javascript' or vim.bo.filetype == 'typescript' or vim.bo.filetype == "vue" then
-    local format_cmd = '%!npx prettier --stdin-filepath %'
-    local cursor = vim.api.nvim_win_get_cursor(0)
-    local buf_line_count = vim.api.nvim_buf_line_count(0)
-    vim.cmd(format_cmd)
-    local buf_line_count_diff = vim.api.nvim_buf_line_count(0) - buf_line_count
-    local min = math.min(cursor[1] + buf_line_count_diff, vim.api.nvim_buf_line_count(0))
-    cursor[1] = math.max(min, 1)
-    vim.api.nvim_win_set_cursor(0, cursor)
-  else
-    vim.lsp.buf.format()
-  end
-end
-vim.keymap.set('n', '<leader>fm', prettier_format)
-vim.api.nvim_create_user_command('Wf', prettier_format, { desc = 'Format current buffer and save' })
-
 -- keep cursor in the middle when searching
 vim.keymap.set('n', 'n', 'nzzzv', { silent = true })
 vim.keymap.set('n', 'N', 'Nzzzv', { silent = true })
@@ -585,9 +568,9 @@ local on_attach = function(_, bufnr)
   end, '[W]orkspace [L]ist Folders')
 
   -- Create a command `:Format` local to the LSP buffer
-  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-    vim.lsp.buf.format()
-  end, { desc = 'Format current buffer with LSP' })
+  -- vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+  --   vim.lsp.buf.format()
+  -- end, { desc = 'Format current buffer with LSP' })
 end
 
 -- document existing key chains
