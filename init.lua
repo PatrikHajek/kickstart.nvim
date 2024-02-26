@@ -370,12 +370,23 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- Create `:UnsavedBuffers` command
 vim.api.nvim_create_user_command('UnsavedBuffers', function()
   local lines = vim.split(vim.api.nvim_exec('ls +', true), '\n', { plain = true })
+  for i, line in pairs(lines) do
+    local end_index = line.find(line, '"', line.find(line, '"') + 1)
+    if (end_index == nil) then
+      goto continue
+    end
+
+    lines[i] = line.sub(line, 0, end_index)
+    ::continue::
+  end
+
   vim.cmd('new')
   vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
   vim.api.nvim_buf_set_name(0, 'Unsaved Buffers')
   vim.api.nvim_buf_set_option(0, 'modifiable', false)
   vim.opt_local.modified = false
   -- don't know if autocmds are getting removed
+  -- probably not since buffers are being unlisted instead of removed
   vim.api.nvim_create_autocmd('BufLeave', {
     buffer = 0,
     callback = function()
