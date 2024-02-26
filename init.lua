@@ -382,9 +382,9 @@ require('telescope').setup {
     find_files = {
       hidden = true,
     },
-    buffers = {
-      sort_lastused = true,
-    },
+    -- buffers = {
+    --   sort_lastused = true,
+    -- },
   },
 }
 
