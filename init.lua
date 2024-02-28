@@ -370,7 +370,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- Create `:UnsavedBuffers` command
 vim.api.nvim_create_user_command('UnsavedBuffers', function()
   local lines = vim.split(vim.api.nvim_exec('ls +', true), '\n', { plain = true })
-  if #lines == 1 then
+  if #lines == 1 and lines[1] == '' then
     print 'No unsaved buffers'
     return
   end
