@@ -368,7 +368,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- [[ Imported commands ]]
-require('./lua/custom/commands/unsaved-buffers')
+require('custom.commands.unsaved-buffers')
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
