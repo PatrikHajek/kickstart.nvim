@@ -370,13 +370,18 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- Create `:UnsavedBuffers` command
 vim.api.nvim_create_user_command('UnsavedBuffers', function()
   local lines = vim.split(vim.api.nvim_exec('ls +', true), '\n', { plain = true })
+  if #lines == 1 then
+    print 'No unsaved buffers'
+    return
+  end
+
   for i, line in pairs(lines) do
     local end_index = line.find(line, '"', line.find(line, '"') + 1)
     if (end_index == nil) then
       goto continue
     end
 
-    lines[i] = line.sub(line, 0, end_index)
+    lines[i] = vim.fn.trim(line.sub(line, 0, end_index))
     ::continue::
   end
 
