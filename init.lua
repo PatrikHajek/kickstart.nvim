@@ -332,7 +332,16 @@ vim.o.termguicolors = true
 -- [[ Basic Keymaps ]]
 
 vim.keymap.set('n', '<leader>e', ':Explore<CR>')
-vim.keymap.set('n', '<leader>q', ':q<CR>', { desc = 'Quit' })
+vim.keymap.set('n', '<leader>q', function()
+  if #vim.api.nvim_list_wins() == 1 then
+    local confirm = vim.fn.confirm('Quit?')
+    if confirm ~= 1 then
+      return
+    end
+  end
+
+  vim.cmd(':q')
+end, { desc = 'Quit' })
 
 -- keep cursor in the middle when searching
 vim.keymap.set('n', 'n', 'nzzzv', { silent = true })
