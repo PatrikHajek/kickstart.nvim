@@ -579,10 +579,20 @@ local on_attach = function(_, bufnr)
   local function goto_next_reference()
     vim.lsp.buf.references({}, {
       on_list = function(r)
+        local filename = r.context.params.textDocument.uri
         local cursor = vim.api.nvim_win_get_cursor(0)
         local items = r.items
         local next_item = nil
+        local fallback_item = nil
         for _, item in pairs(items) do
+          if item.filename ~= string.sub(filename, 8) then
+            goto continue
+          end
+
+          if fallback_item == nil then
+            fallback_item = item
+          end
+
           -- lsp for some reason returns columns 1 bigger
           item.col = item.col - 1
 
@@ -593,10 +603,12 @@ local on_attach = function(_, bufnr)
             next_item = item
             break
           end
+
+          ::continue::
         end
 
         if next_item == nil then
-          next_item = items[1]
+          next_item = fallback_item
         end
 
         vim.api.nvim_win_set_cursor(0, { next_item.lnum, next_item.col })
@@ -606,10 +618,20 @@ local on_attach = function(_, bufnr)
   local function goto_prev_reference()
     vim.lsp.buf.references({}, {
       on_list = function(r)
+        local filename = r.context.params.textDocument.uri
         local cursor = vim.api.nvim_win_get_cursor(0)
         local items = vim.fn.reverse(r.items)
         local prev_item = nil
+        local fallback_item = nil
         for _, item in pairs(items) do
+          if item.filename ~= string.sub(filename, 8) then
+            goto continue
+          end
+
+          if fallback_item == nil then
+            fallback_item = item
+          end
+
           -- lsp for some reason returns columns 1 bigger
           item.col = item.col - 1
 
@@ -620,10 +642,12 @@ local on_attach = function(_, bufnr)
             prev_item = item
             break
           end
+
+          ::continue::
         end
 
         if prev_item == nil then
-          prev_item = items[1]
+          prev_item = fallback_item
         end
 
         vim.api.nvim_win_set_cursor(0, { prev_item.lnum, prev_item.col })
