@@ -343,6 +343,8 @@ vim.keymap.set('n', '<leader>q', function()
   vim.cmd(':q')
 end, { desc = 'Quit' })
 
+vim.keymap.set('n', '<leader>bb', '<C-^>', { desc = 'Switch [B]ack to Last [B]uffer' })
+
 -- keep cursor in the middle when searching
 vim.keymap.set('n', 'n', 'nzzzv', { silent = true })
 vim.keymap.set('n', 'N', 'Nzzzv', { silent = true })
