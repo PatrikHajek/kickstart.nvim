@@ -275,6 +275,9 @@ require('lazy').setup({
   { import = 'custom.plugins' },
 }, {})
 
+-- open netrw when opening neovim
+vim.api.nvim_create_autocmd('VimEnter', { command = ':Explore' })
+
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
