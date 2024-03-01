@@ -572,6 +572,65 @@ local on_attach = function(_, bufnr)
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
+  -- LSP goto next/previous reference
+  local function goto_next_reference()
+    vim.lsp.buf.references({}, {
+      on_list = function(r)
+        local cursor = vim.api.nvim_win_get_cursor(0)
+        local items = r.items
+        local next_item = nil
+        for _, item in pairs(items) do
+          -- lsp for some reason returns columns 1 bigger
+          item.col = item.col - 1
+
+          if item.lnum == cursor[1] and item.col > cursor[2] then
+            next_item = item
+            break
+          elseif item.lnum > cursor[1] and item.lnum then
+            next_item = item
+            break
+          end
+        end
+
+        if next_item == nil then
+          next_item = items[1]
+        end
+
+        vim.api.nvim_win_set_cursor(0, { next_item.lnum, next_item.col })
+      end
+    })
+  end
+  local function goto_prev_reference()
+    vim.lsp.buf.references({}, {
+      on_list = function(r)
+        local cursor = vim.api.nvim_win_get_cursor(0)
+        local items = vim.fn.reverse(r.items)
+        local prev_item = nil
+        for _, item in pairs(items) do
+          -- lsp for some reason returns columns 1 bigger
+          item.col = item.col - 1
+
+          if item.lnum == cursor[1] and item.col < cursor[2] then
+            prev_item = item
+            break
+          elseif item.lnum < cursor[1] then
+            prev_item = item
+            break
+          end
+        end
+
+        if prev_item == nil then
+          prev_item = items[1]
+        end
+
+        vim.api.nvim_win_set_cursor(0, { prev_item.lnum, prev_item.col })
+      end
+    })
+  end
+  nmap(']r', goto_next_reference, '')
+  nmap('[r', goto_prev_reference, '')
+  nmap('<leader>lr', vim.lsp.buf.references, '[L]ist [R]eferences')
+
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
   nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
