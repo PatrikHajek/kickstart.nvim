@@ -546,6 +546,25 @@ vim.defer_fn(function()
   }
 end, 0)
 
+-- navigate to component from nuxt.d.ts
+vim.api.nvim_create_autocmd('BufEnter', {
+  pattern = '*.d.ts',
+  callback = function()
+    vim.keymap.set('n', '<Enter>', function()
+      local line = vim.api.nvim_get_current_line()
+      local path = string.match(line, '"(.+)"')
+      if not path then
+        print('No path found')
+        return
+      end
+
+      local current_dir = vim.fn.expand '%:p:h'
+      vim.cmd(':bd')
+      vim.cmd('edit ' .. current_dir .. '/' .. path)
+    end)
+  end
+})
+
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(_, bufnr)
