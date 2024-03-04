@@ -276,7 +276,14 @@ require('lazy').setup({
 }, {})
 
 -- open netrw when opening neovim
-vim.api.nvim_create_autocmd('VimEnter', { command = ':Explore' })
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    -- % - current file, :t - tail of path (filename)
+    if vim.fn.empty(vim.fn.expand '%:t') == 1 then
+      vim.cmd(':Explore')
+    end
+  end
+})
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
