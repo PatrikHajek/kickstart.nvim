@@ -316,6 +316,9 @@ vim.keymap.set('x', 'p', '\"_dP')
 vim.keymap.set({ 'n', 'v' }, 'd', '\"_d')
 vim.keymap.set({ 'n', 'v' }, 'c', '\"_c')
 
+-- select line without the newline character
+vim.keymap.set('n', '<leader>vv', 'g_v_', { desc = 'Select line without newline character' })
+
 -- Enable break indent
 vim.o.breakindent = true
 
