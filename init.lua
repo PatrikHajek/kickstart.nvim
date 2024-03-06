@@ -393,6 +393,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- [[ Imported commands ]]
 require('custom.commands.unsaved-buffers')
+require('custom.commands.buffer-info')
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
