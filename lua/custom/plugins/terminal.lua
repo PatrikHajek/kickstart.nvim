@@ -7,7 +7,7 @@ return {
 
 		-- Keymaps
 		local mappings = require("terminal.mappings")
-		vim.keymap.set("t", "<leader><esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+		vim.keymap.set("t", "<leader><esc>", "<esc><bar><C-\\><C-n>", { desc = "Exit terminal mode" })
 		vim.keymap.set({ "n", "x" }, "<leader>ts", mappings.operator_send, { expr = true })
 		vim.keymap.set("n", "<leader>to", mappings.toggle, { desc = "[T]erminal [O]pen in Float" })
 		vim.keymap.set("n", "<leader>tO", mappings.toggle({ open_cmd = "enew" }),
