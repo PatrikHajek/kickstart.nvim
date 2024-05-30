@@ -563,11 +563,12 @@ vim.api.nvim_create_autocmd('BufEnter', {
   callback = function()
     vim.keymap.set('n', '<Enter>', function()
       local line = vim.api.nvim_get_current_line()
-      local path = string.match(line, '["\'](.+)["\']')
+      local path = string.match(line, '(?:(?:%(")|(?:\'))(.+)(?:(?:"%))|(?:\'))')
       if not path then
-        print('No path found')
+        print(path)
         return
       end
+      print(path)
 
       local split_path = vim.split(path, '/')
       if string.find(split_path[#split_path], '.', 1, true) == nil then
@@ -758,7 +759,8 @@ local servers = {
   -- pyright = {},
   -- rust_analyzer = {},
   tsserver = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+  html = { filetypes = { 'html', 'twig', 'hbs' } },
+  cssls = {},
   bashls = {
     filetypes = { 'sh' }
   },
