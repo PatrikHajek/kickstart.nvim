@@ -275,6 +275,8 @@ require('lazy').setup({
   { import = 'custom.plugins' },
 }, {})
 
+-- netrw
+vim.g.netrw_banner = 0
 -- open netrw when opening neovim
 vim.api.nvim_create_autocmd('VimEnter', {
   callback = function()
