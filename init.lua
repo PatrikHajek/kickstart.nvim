@@ -318,6 +318,9 @@ vim.keymap.set('x', 'p', '\"_dP')
 vim.keymap.set({ 'n', 'v' }, 'd', '\"_d')
 vim.keymap.set({ 'n', 'v' }, 'c', '\"_c')
 vim.keymap.set({ 'n', 'v' }, 's', '\"_s')
+vim.keymap.set({ 'n', 'v' }, 'D', '\"_D')
+vim.keymap.set({ 'n', 'v' }, 'C', '\"_C')
+vim.keymap.set({ 'n', 'v' }, 'S', '\"_S')
 
 -- select line without the newline character
 vim.keymap.set('n', '<leader>vv', 'g_v_', { desc = 'Select line without newline character' })
