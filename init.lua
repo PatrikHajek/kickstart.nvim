@@ -275,17 +275,17 @@ require('lazy').setup({
   { import = 'custom.plugins' },
 }, {})
 
--- netrw
-vim.g.netrw_banner = 0
--- open netrw when opening neovim
-vim.api.nvim_create_autocmd('VimEnter', {
-  callback = function()
-    -- % - current file, :t - tail of path (filename)
-    if vim.fn.empty(vim.fn.expand '%:t') == 1 then
-      vim.cmd(':Explore')
-    end
-  end
-})
+-- explorer
+vim.keymap.set('n', '<leader>e', ':Oil --float .<CR>', { desc = 'Open [E]xplorer' })
+-- open explorer when opening neovim
+-- vim.api.nvim_create_autocmd('VimEnter', {
+--   callback = function()
+--     -- % - current file, :t - tail of path (filename)
+--     if vim.fn.empty(vim.fn.expand '%:t') == 1 then
+--       vim.cmd(':Oil .<CR>')
+--     end
+--   end
+-- })
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -350,7 +350,6 @@ vim.o.termguicolors = true
 
 -- [[ Basic Keymaps ]]
 
-vim.keymap.set('n', '<leader>e', ':Explore<CR>')
 vim.keymap.set('n', '<leader>q', function()
   if #vim.api.nvim_list_wins() == 1 then
     local confirm = vim.fn.confirm('Quit?')
@@ -360,7 +359,7 @@ vim.keymap.set('n', '<leader>q', function()
   end
 
   vim.cmd(':q')
-end, { desc = 'Quit' })
+end, { desc = '[Q]uit' })
 
 vim.keymap.set('n', '<leader>bb', '<C-^>', { desc = 'Switch [B]ack to Last [B]uffer' })
 
