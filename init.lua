@@ -276,7 +276,7 @@ require('lazy').setup({
 }, {})
 
 -- explorer
-vim.keymap.set('n', '<leader>e', ':Oil --float .<CR>', { desc = 'Open [E]xplorer' })
+vim.keymap.set('n', '<leader>e', ':Oil --float <CR>', { desc = 'Open [E]xplorer' })
 -- open explorer when opening neovim
 -- vim.api.nvim_create_autocmd('VimEnter', {
 --   callback = function()
