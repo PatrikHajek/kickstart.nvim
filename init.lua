@@ -385,6 +385,10 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnos
 vim.keymap.set('n', '<leader>de', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
+-- quickfix keymaps
+vim.keymap.set('n', ']q', ':cnext<CR>', { desc = 'Go to next quickfix item' })
+vim.keymap.set('n', '[q', ':cprev<CR>', { desc = 'Go to prev quickfix item' })
+
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
