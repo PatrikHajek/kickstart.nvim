@@ -770,9 +770,21 @@ require('mason-lspconfig').setup()
 --
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
+local tsdk = require('mason-registry').get_package('typescript-language-server'):get_install_path() ..
+    '/node_modules/typescript/lib'
 local servers = {
   -- webdev
-  volar = {},
+  tsserver = {
+    filetypes = { 'none' },
+  },
+  volar = {
+    filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' },
+    init_options = {
+      typescript = {
+        tsdk,
+      }
+    }
+  },
   tailwindcss = {},
   -- prettierd = {},
   eslint = {},
@@ -785,7 +797,6 @@ local servers = {
   -- gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
-  tsserver = {},
   html = { filetypes = { 'html', 'twig', 'hbs' } },
   cssls = {},
   bashls = {
