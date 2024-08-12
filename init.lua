@@ -275,6 +275,8 @@ require('lazy').setup({
   { import = 'custom.plugins' },
 }, {})
 
+-- -- git
+vim.keymap.set('n', '<leader>G', ':tab Git<CR>', { desc = 'Open [G]it' })
 -- explorer
 vim.keymap.set('n', '<leader>e', ':Oil --float <CR>', { desc = 'Open [E]xplorer' })
 -- open explorer when opening neovim
