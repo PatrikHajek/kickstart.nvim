@@ -1,3 +1,24 @@
+-- return {
+-- 	"github/copilot.vim"
+-- }
+
 return {
-	"github/copilot.vim"
+	"zbirenbaum/copilot.lua",
+	opts = {
+		suggestion = {
+			enabled = true,
+			auto_trigger = false,
+			hide_during_completion = false,
+			debounce = 0,
+			filetypes = {
+				markdown = true,
+				help = true,
+			},
+			keymap = {
+				accept = "<TAB>",
+				next = "<C-j>",
+				prev = "<C-k>",
+			}
+		},
+	},
 }
