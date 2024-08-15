@@ -15,7 +15,7 @@ return {
 				help = true,
 			},
 			keymap = {
-				accept = "<TAB>",
+				accept = "<C-l>",
 				next = "<C-j>",
 				prev = "<C-k>",
 			}
