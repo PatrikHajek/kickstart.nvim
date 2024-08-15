@@ -363,6 +363,8 @@ vim.keymap.set('n', '<leader>q', function()
   vim.cmd(':q')
 end, { desc = '[Q]uit' })
 
+vim.keymap.set('n', '<leader>wf', ':w<CR>', { desc = '[W]rite Buffer to the Current [F]ile' })
+
 vim.keymap.set('n', '<leader>bb', '<C-^>', { desc = 'Switch [B]ack to Last [B]uffer' })
 
 -- keep cursor in the middle when searching
