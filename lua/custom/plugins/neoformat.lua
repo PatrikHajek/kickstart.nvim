@@ -1,5 +1,11 @@
 local neoformat_filetypes = {
-	'javscript', 'typescript', 'vue', 'json'
+	'javscript',
+	'typescript',
+	'vue',
+	'json',
+	'html',
+	'css',
+	'svg',
 }
 local function format()
 	if vim.tbl_contains(neoformat_filetypes, vim.bo.filetype) then
