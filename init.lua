@@ -305,6 +305,8 @@ vim.wo.scrolloff = 20
 
 vim.o.wrap = false
 
+vim.o.colorcolumn = '80'
+
 -- set tab to 2 spaces
 vim.o.tabstop = 2
 vim.o.shiftwidth = 2
