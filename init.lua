@@ -799,7 +799,7 @@ local servers = {
 
   marksman = {},
 
-  -- clangd = {},
+  clangd = {},
   -- gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
