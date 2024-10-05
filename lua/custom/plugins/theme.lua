@@ -47,6 +47,7 @@ return {
     require('onedarkpro').setup {
       highlights = {
         ['@markup.list.checked.markdown'] = { fg = colors.purple },
+        SpellBad = { fg = colors.green },
       },
     }
     vim.cmd 'colorscheme onedark_vivid'
