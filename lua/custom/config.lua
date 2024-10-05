@@ -1,5 +1,7 @@
 -- [[ Settings ]]
 
+vim.opt.spell = true
+vim.opt.spelllang = 'en_us'
 vim.o.hlsearch = false
 vim.o.wrap = false
 vim.o.colorcolumn = '80'
