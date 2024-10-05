@@ -3,22 +3,22 @@
 -- }
 
 return {
-	"zbirenbaum/copilot.lua",
-	opts = {
-		suggestion = {
-			enabled = true,
-			auto_trigger = false,
-			hide_during_completion = false,
-			debounce = 0,
-			filetypes = {
-				markdown = true,
-				help = true,
-			},
-			keymap = {
-				accept = "<C-l>",
-				next = "<C-j>",
-				prev = "<C-k>",
-			}
-		},
-	},
+  'zbirenbaum/copilot.lua',
+  opts = {
+    suggestion = {
+      enabled = true,
+      auto_trigger = false,
+      hide_during_completion = false,
+      debounce = 0,
+      filetypes = {
+        markdown = true,
+        help = true,
+      },
+      keymap = {
+        accept = '<C-l>',
+        next = '<C-j>',
+        prev = '<C-k>',
+      },
+    },
+  },
 }

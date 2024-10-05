@@ -40,15 +40,15 @@
 
 -- onedarkpro
 return {
-	"olimorris/onedarkpro.nvim",
-	priority = 1000, -- Ensure it loads first
-	config = function()
-		vim.cmd("colorscheme onedark_vivid")
-		--[[ require("onedarkpro").setup({
-			options = {
-				-- consider enabling (underlines same words)
-				-- cursorline = true
-			}
-		}) ]]
-	end
+  'olimorris/onedarkpro.nvim',
+  priority = 1000, -- Ensure it loads first
+  config = function()
+    local colors = require('onedarkpro.helpers').get_colors 'onedark_vivid'
+    require('onedarkpro').setup {
+      highlights = {
+        ['@markup.list.checked.markdown'] = { fg = colors.purple },
+      },
+    }
+    vim.cmd 'colorscheme onedark_vivid'
+  end,
 }
