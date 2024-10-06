@@ -4,7 +4,6 @@ vim.opt.spell = true
 vim.opt.spelllang = 'en_us'
 vim.opt.spelloptions = 'camel'
 
-vim.opt.hlsearch = false
 vim.opt.wrap = false
 vim.opt.colorcolumn = '80'
 vim.opt.tabstop = 2
@@ -36,6 +35,14 @@ vim.keymap.set('n', '<leader>q', function()
 
   vim.cmd ':q'
 end, { desc = '[Q]uit' })
+
+-- search
+vim.keymap.set('n', '<CR>', function()
+  local cursorPos = vim.api.nvim_win_get_cursor(0)
+  vim.api.nvim_command('/' .. vim.fn.expand '<cword>')
+  vim.api.nvim_win_set_cursor(0, cursorPos)
+end, { desc = 'Search word under the cursor' })
+vim.keymap.set('x', '<CR>', '"sy<BAR>/<C-r>s<CR>', { desc = 'Search selected text' })
 
 -- keep cursor in the middle when searching
 vim.keymap.set('n', 'n', 'nzzzv', { silent = true })
