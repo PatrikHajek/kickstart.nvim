@@ -604,42 +604,10 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-      local tsdk = require('mason-registry').get_package('typescript-language-server'):get_install_path() .. '/node_modules/typescript/lib'
       local servers = {
-        -- formatters
-        prettierd = {},
-        -- linters
-        eslint_d = {},
-        -- servers
-        ts_ls = {
-          filetypes = { 'none' },
-        },
-        volar = {
-          version = '1.8.27',
-          auto_update = false,
-          filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' },
-          init_options = {
-            typescript = {
-              tsdk,
-            },
-          },
-        },
-        tailwindcss = {},
-        prismals = {},
-        jsonls = {},
-        html = { filetypes = { 'html', 'twig', 'hbs' } },
-        cssls = {},
-        bashls = {
-          filetypes = { 'sh' },
-        },
-        marksman = {},
-        markdown_oxide = {},
-        markdownlint = {},
-        clangd = {},
-        java_language_server = {},
-        jdtls = {},
+        -- clangd = {},
         -- gopls = {},
-        pyright = {},
+        -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -665,6 +633,7 @@ require('lazy').setup({
           },
         },
       }
+      servers = vim.tbl_extend('force', servers, require('custom.config').get_servers())
 
       -- Ensure the servers and tools above are installed
       --  To check the current status of installed tools and/or manually install

@@ -73,6 +73,45 @@ vim.keymap.set('n', '[q', ':cprev<CR>', { desc = 'Go to prev quickfix item' })
 -- [[ LSP ]]
 vim.keymap.set('n', '<leader>rl', ':LspRestart<CR>', { desc = '[R]estart [L]SP' })
 
+local function get_servers()
+  local tsdk = require('mason-registry').get_package('typescript-language-server'):get_install_path() .. '/node_modules/typescript/lib'
+  return {
+    -- formatters
+    prettierd = {},
+    -- linters
+    eslint_d = {},
+    -- servers
+    ts_ls = {
+      filetypes = { 'none' },
+    },
+    volar = {
+      version = '1.8.27',
+      auto_update = false,
+      filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' },
+      init_options = {
+        typescript = {
+          tsdk,
+        },
+      },
+    },
+    tailwindcss = {},
+    prismals = {},
+    jsonls = {},
+    html = { filetypes = { 'html', 'twig', 'hbs' } },
+    cssls = {},
+    bashls = {
+      filetypes = { 'sh' },
+    },
+    marksman = {},
+    markdown_oxide = {},
+    markdownlint = {},
+    clangd = {},
+    java_language_server = {},
+    jdtls = {},
+    pyright = {},
+  }
+end
+
 -- references
 local function goto_next_reference()
   vim.lsp.buf.references({}, {
@@ -159,3 +198,7 @@ vim.keymap.set('n', '[r', goto_prev_reference, { desc = 'Go to previous referenc
 -- [[ Imported commands ]]
 require 'custom.commands.unsaved-buffers'
 require 'custom.commands.buffer-info'
+
+return {
+  get_servers = get_servers,
+}
