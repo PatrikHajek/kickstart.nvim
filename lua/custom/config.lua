@@ -70,6 +70,10 @@ vim.keymap.set('n', '<leader>ld', vim.diagnostic.setloclist, { desc = 'Open diag
 vim.keymap.set('n', ']q', ':cnext<CR>', { desc = 'Go to next quickfix item' })
 vim.keymap.set('n', '[q', ':cprev<CR>', { desc = 'Go to prev quickfix item' })
 
+-- [[ Git ]]
+vim.keymap.set('n', '<leader>gb', ':Telescope git_branches<CR>', { desc = '[G]it [B]ranches' })
+vim.keymap.set('n', '<leader>gc', ':Telescope git_commits<CR>', { desc = '[G]it [C]ommits' })
+
 -- [[ LSP ]]
 vim.keymap.set('n', '<leader>rl', ':LspRestart<CR>', { desc = '[R]estart [L]SP' })
 
