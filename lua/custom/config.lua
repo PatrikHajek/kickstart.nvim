@@ -136,7 +136,9 @@ local function get_servers()
         css = { lint = { unknownAtRules = 'ignore' } },
       },
     },
-    tailwindcss = {},
+    tailwindcss = {
+      filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'css', 'html' },
+    },
     prismals = {},
     jsonls = {},
     html = { filetypes = { 'html', 'twig', 'hbs' } },
