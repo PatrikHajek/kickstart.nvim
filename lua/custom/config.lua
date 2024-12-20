@@ -126,8 +126,16 @@ local function get_servers()
       },
       filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
     },
-    volar = {},
-    cssls = {},
+    volar = {
+      settings = {
+        css = { lint = { unknownAtRules = 'ignore' } },
+      },
+    },
+    cssls = {
+      settings = {
+        css = { lint = { unknownAtRules = 'ignore' } },
+      },
+    },
     tailwindcss = {},
     prismals = {},
     jsonls = {},
