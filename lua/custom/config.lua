@@ -107,7 +107,7 @@ end, { desc = '[S]earch [A]ll files' })
 vim.keymap.set('n', '<leader>rl', ':LspRestart<CR>', { desc = '[R]estart [L]SP' })
 
 local function get_servers()
-  local tsdk = require('mason-registry').get_package('typescript-language-server'):get_install_path() .. '/node_modules/typescript/lib'
+  local vue_language_server_path = require('mason-registry').get_package('vue-language-server'):get_install_path() .. '/node_modules/@vue/language-server'
   return {
     -- formatters
     prettierd = {},
@@ -115,18 +115,18 @@ local function get_servers()
     eslint_d = {},
     -- servers
     ts_ls = {
-      filetypes = { 'none' },
-    },
-    volar = {
-      version = '1.8.27',
-      auto_update = false,
-      filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' },
       init_options = {
-        typescript = {
-          tsdk,
+        plugins = {
+          {
+            name = '@vue/typescript-plugin',
+            location = vue_language_server_path,
+            languages = { 'vue' },
+          },
         },
       },
+      filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
     },
+    volar = {},
     tailwindcss = {},
     prismals = {},
     jsonls = {},
