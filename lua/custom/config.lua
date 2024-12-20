@@ -43,7 +43,7 @@ vim.keymap.set('n', '<leader>q', function()
   vim.cmd ':q'
 end, { desc = '[Q]uit' })
 
--- search
+-- [[ Vim Search ]]
 vim.keymap.set('n', '<CR>', function()
   local cursorPos = vim.api.nvim_win_get_cursor(0)
   vim.api.nvim_command('/' .. vim.fn.expand '<cword>')
