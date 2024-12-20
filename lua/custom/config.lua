@@ -50,6 +50,7 @@ vim.keymap.set('n', '<CR>', function()
   vim.api.nvim_win_set_cursor(0, cursorPos)
 end, { desc = 'Search word under the cursor' })
 vim.keymap.set('x', '<CR>', '"sy<BAR>/<C-r>s<CR>', { desc = 'Search selected text' })
+vim.keymap.set('n', '/', '/\\v', { desc = 'Enable very magic for searching', noremap = true })
 
 -- keep cursor in the middle when searching
 vim.keymap.set('n', 'n', 'nzzzv', { silent = true })
