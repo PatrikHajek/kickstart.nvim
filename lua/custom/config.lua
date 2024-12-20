@@ -149,7 +149,7 @@ local function get_servers()
     markdown_oxide = {},
     markdownlint = {},
     clangd = {},
-    java_language_server = {},
+    -- java_language_server = {},
     jdtls = {},
     pyright = {},
   }
