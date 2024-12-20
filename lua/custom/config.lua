@@ -145,7 +145,6 @@ local function get_servers()
     bashls = {
       filetypes = { 'sh' },
     },
-    marksman = {},
     markdown_oxide = {},
     markdownlint = {},
     clangd = {},
