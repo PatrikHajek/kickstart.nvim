@@ -77,6 +77,8 @@ vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { desc = 'Open float
 vim.keymap.set('n', '<leader>ld', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 -- quickfix keymaps
+vim.keymap.set('n', '<leader>sq', ':Telescope quickfix<CR>', { desc = '[S]earch [Q]uickfix list' })
+vim.keymap.set('n', '<leader>lq', ':cwindow<CR>', { desc = 'Show quickfix list' })
 vim.keymap.set('n', '<C-n>', ':cnext<CR>', { desc = 'Go to next quickfix item' })
 vim.keymap.set('n', '<C-p>', ':cprev<CR>', { desc = 'Go to prev quickfix item' })
 
