@@ -127,11 +127,11 @@ local function get_servers()
       filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
     },
     volar = {},
+    cssls = {},
     tailwindcss = {},
     prismals = {},
     jsonls = {},
     html = { filetypes = { 'html', 'twig', 'hbs' } },
-    cssls = {},
     bashls = {
       filetypes = { 'sh' },
     },
