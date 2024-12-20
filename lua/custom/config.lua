@@ -90,15 +90,17 @@ vim.keymap.set('n', '<leader>gc', ':Telescope git_commits<CR>', { desc = '[G]it 
 -- [[ Search ]]
 vim.keymap.set('n', '<leader>st', ':Telescope treesitter<CR>', { desc = '[S]earch [T]reesitter' })
 vim.keymap.set('n', '<leader>sa', function()
-  require('telescope.builtin').find_files { find_command = {
-    'rg',
-    '--files',
-    '--follow',
-    '--hidden',
-    '--no-ignore',
-    '--glob=!.git',
-    '--glob=!node_modules'
-  } }
+  require('telescope.builtin').find_files {
+    find_command = {
+      'rg',
+      '--files',
+      '--follow',
+      '--hidden',
+      '--no-ignore',
+      '--glob=!.git',
+      '--glob=!node_modules',
+    },
+  }
 end, { desc = '[S]earch [A]ll files' })
 
 -- [[ LSP ]]
