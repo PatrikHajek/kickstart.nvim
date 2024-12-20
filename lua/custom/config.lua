@@ -81,6 +81,7 @@ vim.keymap.set('n', '<leader>sq', ':Telescope quickfix<CR>', { desc = '[S]earch 
 vim.keymap.set('n', '<leader>lq', ':cwindow<CR>', { desc = 'Show quickfix list' })
 vim.keymap.set('n', '<C-n>', ':cnext<CR>', { desc = 'Go to next quickfix item' })
 vim.keymap.set('n', '<C-p>', ':cprev<CR>', { desc = 'Go to prev quickfix item' })
+vim.keymap.set('n', '<leader>vg', ':vimgrep //g ', { desc = '[V]im[G]rep using search register' })
 
 -- [[ Git ]]
 vim.keymap.set('n', '<leader>gb', ':Telescope git_branches<CR>', { desc = '[G]it [B]ranches' })
