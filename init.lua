@@ -408,6 +408,7 @@ require('lazy').setup({
             find_command = {
               'rg',
               '--files',
+              '--follow',
               '--hidden',
               '--glob=!.git',
               -- INFO: including `.env` file like this doesn't work
