@@ -1,3 +1,6 @@
+-- INFO: you can search for available values using Telescope's `vim.options`
+-- picker. You can also search registered autocommands using `autocommands`.
+
 -- [[ Settings ]]
 
 vim.opt.spell = true
