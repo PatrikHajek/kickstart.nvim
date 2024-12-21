@@ -46,7 +46,11 @@ end, { desc = '[Q]uit' })
 -- [[ Vim Search ]]
 vim.keymap.set('n', '<CR>', function()
   local cursorPos = vim.api.nvim_win_get_cursor(0)
-  vim.api.nvim_command('/' .. vim.fn.expand '<cword>')
+  local word = vim.fn.expand '<cword>'
+  if word == '' then
+    return
+  end
+  vim.api.nvim_command('/' .. word)
   vim.api.nvim_win_set_cursor(0, cursorPos)
 end, { desc = 'Search word under the cursor' })
 vim.keymap.set('x', '<CR>', '"sy<BAR>/<C-r>s<CR>', { desc = 'Search selected text' })
