@@ -415,6 +415,10 @@ require('lazy').setup({
               -- '--glob=.env',
             },
           },
+          lsp_dynamic_workspace_symbols = {
+            -- INFO: fixed by GitHub [comment](https://github.com/nvim-telescope/telescope.nvim/issues/2104#issuecomment-1223790155)
+            sorter = require('telescope').extensions.fzf.native_fzf_sorter(),
+          },
         },
         extensions = {
           ['ui-select'] = {
