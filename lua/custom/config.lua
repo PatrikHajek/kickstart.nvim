@@ -102,6 +102,12 @@ vim.keymap.set('n', '<leader>sa', function()
     },
   }
 end, { desc = '[S]earch [A]ll files' })
+vim.keymap.set('n', '<leader>sp', function()
+  require('telescope.builtin').find_files { cwd = vim.fn.expand '$HOME/notes/' }
+end, { desc = '[S]earch [P]KM' })
+vim.keymap.set('n', '<leader>so', function()
+  require('telescope.builtin').find_files { cwd = vim.fn.expand '$HOME/notes-tomake/' }
+end, { desc = '[S]earch [O]rganization Notes (Tomake)' })
 
 -- [[ LSP ]]
 vim.keymap.set('n', '<leader>rl', ':LspRestart<CR>', { desc = '[R]estart [L]SP' })
