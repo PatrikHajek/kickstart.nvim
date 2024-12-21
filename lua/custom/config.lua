@@ -83,6 +83,9 @@ vim.keymap.set('n', '<C-n>', ':cnext<CR>', { desc = 'Go to next quickfix item' }
 vim.keymap.set('n', '<C-p>', ':cprev<CR>', { desc = 'Go to prev quickfix item' })
 vim.keymap.set('n', '<leader>vg', ':vimgrep //g ', { desc = '[V]im[G]rep using search register' })
 
+-- [[ Todo Highlights ]]
+vim.keymap.set('n', '<leader>tt', ':TodoTelescope<CR>', { desc = 'Search [T]odos using [T]elescope' })
+
 -- [[ Git ]]
 vim.keymap.set('n', '<leader>gb', ':Telescope git_branches<CR>', { desc = '[G]it [B]ranches' })
 vim.keymap.set('n', '<leader>gc', ':Telescope git_commits<CR>', { desc = '[G]it [C]ommits' })
