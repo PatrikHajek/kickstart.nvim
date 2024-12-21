@@ -5,6 +5,11 @@ return {
       'size',
       'icon',
     },
+    keymaps = {
+      ['_'] = false,
+      ['gh'] = { 'actions.toggle_hidden', mode = 'n' },
+      ['gr'] = { 'actions.open_cwd', mode = 'n' },
+    },
   },
   config = function(_, opts)
     local oil = require 'oil'
