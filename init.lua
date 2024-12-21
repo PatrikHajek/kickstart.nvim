@@ -389,6 +389,10 @@ require('lazy').setup({
         -- },
         -- pickers = {}
         defaults = {
+          mappings = {
+            i = { ['<C-q>'] = require('telescope.actions').smart_send_to_qflist },
+            n = { ['<C-q>'] = require('telescope.actions').smart_send_to_qflist },
+          },
           vimgrep_arguments = {
             'rg',
             '--follow', -- Follow symbolic links

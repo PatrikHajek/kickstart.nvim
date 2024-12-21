@@ -74,11 +74,11 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-vim.keymap.set('n', '<leader>ld', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+vim.keymap.set('n', '<leader>ld', ':Trouble diagnostics<CR>', { desc = 'Open diagnostics list' })
 
 -- quickfix keymaps
 vim.keymap.set('n', '<leader>sq', ':Telescope quickfix<CR>', { desc = '[S]earch [Q]uickfix list' })
-vim.keymap.set('n', '<leader>lq', ':cwindow<CR>', { desc = 'Show quickfix list' })
+vim.keymap.set('n', '<leader>lq', ':Trouble quickfix<CR>', { desc = 'Show quickfix list' })
 vim.keymap.set('n', '<C-n>', ':cnext<CR>', { desc = 'Go to next quickfix item' })
 vim.keymap.set('n', '<C-p>', ':cprev<CR>', { desc = 'Go to prev quickfix item' })
 vim.keymap.set('n', '<leader>vg', ':vimgrep //g ', { desc = '[V]im[G]rep using search register' })
@@ -242,7 +242,7 @@ local function goto_prev_reference()
     end,
   })
 end
-vim.keymap.set('n', '<leader>lr', vim.lsp.buf.references, { desc = '[L]ist [R]eferences' })
+vim.keymap.set('n', '<leader>lr', ':Trouble lsp_references<CR>', { desc = '[L]ist [R]eferences' })
 vim.keymap.set('n', ']r', goto_next_reference, { desc = 'Go to next reference' })
 vim.keymap.set('n', '[r', goto_prev_reference, { desc = 'Go to previous reference' })
 
