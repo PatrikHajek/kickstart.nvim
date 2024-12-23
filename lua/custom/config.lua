@@ -86,6 +86,7 @@ vim.keymap.set('n', '<leader>lq', ':Trouble quickfix<CR>', { desc = 'Show quickf
 vim.keymap.set('n', '<C-n>', ':cnext<CR>', { desc = 'Go to next quickfix item' })
 vim.keymap.set('n', '<C-p>', ':cprev<CR>', { desc = 'Go to prev quickfix item' })
 vim.keymap.set('n', '<leader>vg', ':vimgrep //gj ', { desc = '[V]im[G]rep using search register' })
+vim.keymap.set('n', '<leader>vr', ':cdo s//', { desc = '[V]im [R]eplace' })
 
 -- [[ Todo Highlights ]]
 vim.keymap.set('n', '<leader>tt', ':TodoTelescope<CR>', { desc = 'Search [T]odos using [T]elescope' })
