@@ -9,11 +9,11 @@ return {
       ['='] = 'jump', -- to open/close folder
     },
     -- win = {},
-    preview = {
-      type = 'split',
-      relative = 'win',
-      position = 'right',
-      size = 0.45,
-    },
+    -- preview = {
+    --   type = 'split',
+    --   relative = 'win',
+    --   position = 'right',
+    --   size = 0.45,
+    -- },
   },
 }
