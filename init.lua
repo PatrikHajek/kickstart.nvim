@@ -406,6 +406,17 @@ require('lazy').setup({
             '--column', -- Show column numbers
             '--smart-case', -- Smart case search
           },
+          -- INFO: sets default theme (vertical) for all pickers
+          results_title = false,
+          sorting_strategy = 'ascending',
+          layout_strategy = 'vertical',
+          layout_config = {
+            prompt_position = 'top',
+            preview_cutoff = 1, -- Preview should always show (unless previewer = false)
+            preview_height = function(_, _, max_lines)
+              return math.min(max_lines / 3, 6)
+            end,
+          },
         },
         pickers = {
           find_files = {
@@ -451,10 +462,7 @@ require('lazy').setup({
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
-        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-          winblend = 10,
-          previewer = false,
-        })
+        builtin.current_buffer_fuzzy_find()
       end, { desc = '[/] Fuzzily search in current buffer' })
 
       -- It's also possible to pass additional configuration options.
