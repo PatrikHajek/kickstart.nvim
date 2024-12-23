@@ -5,9 +5,10 @@ return {
   config = function()
     local colors = require('onedarkpro.helpers').get_colors 'onedark_vivid'
     require('onedarkpro').setup {
+      -- NOTE: for a list of possible values, run `h attr-list`
       highlights = {
         ['@markup.list.checked.markdown'] = { fg = colors.purple },
-        SpellBad = { fg = colors.green },
+        SpellBad = { underdashed = true },
       },
     }
     vim.cmd 'colorscheme onedark_vivid'
