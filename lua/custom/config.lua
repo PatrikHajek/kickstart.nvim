@@ -99,6 +99,7 @@ vim.keymap.set('n', '<leader>vr', ':cdo s//', { desc = '[V]im [R]eplace' })
 
 -- [[ Todo Highlights ]]
 vim.keymap.set('n', '<leader>tt', ':TodoTelescope<CR>', { desc = 'Search [T]odos using [T]elescope' })
+vim.keymap.set('n', '<leader>lt', ':Trouble todo<CR>', { desc = 'Search [T]odos using [T]elescope' })
 
 -- [[ Git ]]
 vim.keymap.set('n', '<leader>gb', ':Telescope git_branches<CR>', { desc = '[G]it [B]ranches' })
