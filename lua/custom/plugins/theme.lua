@@ -8,7 +8,8 @@ return {
       -- NOTE: for a list of possible values, run `h attr-list`
       highlights = {
         ['@markup.list.checked.markdown'] = { fg = colors.purple },
-        SpellBad = { underdashed = true },
+        SpellBad = { fg = colors.green },
+        -- SpellBad = { underdashed = true },
       },
     }
     vim.cmd 'colorscheme onedark_vivid'
