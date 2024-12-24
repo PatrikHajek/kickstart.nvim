@@ -6,7 +6,7 @@ return {
     keys = {
       ['<esc>'] = false,
       ['<cr>'] = 'jump_close',
-      ['='] = 'jump', -- to open/close folder
+      ['='] = 'fold_toggle',
     },
     -- win = {},
     -- preview = {
