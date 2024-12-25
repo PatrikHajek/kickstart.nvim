@@ -58,7 +58,9 @@ vim.keymap.set('n', '<CR>', function()
   vim.api.nvim_command('/' .. word)
   vim.api.nvim_win_set_cursor(0, cursorPos)
 end, { desc = 'Search word under the cursor' })
--- NOTE: the `\z` is a lua multi-string special character - [StackOverflow](https://stackoverflow.com/a/21205005)
+-- NOTE: The `\z` is a lua multi-string special character - [StackOverflow](https://stackoverflow.com/a/21205005).
+--       This keymap can be replaced by `*` or `#` in visual mode if you don't
+--       use the multiline search.
 vim.keymap.set(
   'x',
   '<CR>',
