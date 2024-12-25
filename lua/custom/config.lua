@@ -58,7 +58,16 @@ vim.keymap.set('n', '<CR>', function()
   vim.api.nvim_command('/' .. word)
   vim.api.nvim_win_set_cursor(0, cursorPos)
 end, { desc = 'Search word under the cursor' })
-vim.keymap.set('x', '<CR>', '"sy<BAR>/<C-r>s<CR>', { desc = 'Search selected text' })
+-- NOTE: the `\z` is a lua multi-string special character - [StackOverflow](https://stackoverflow.com/a/21205005)
+vim.keymap.set(
+  'x',
+  '<CR>',
+  "m0\"sy\z
+  <BAR>:execute setreg('/', escape(getreg('s'), '.'))\z
+  <BAR>/<CR>\z
+  <BAR>`0N",
+  { desc = 'Search selected text' }
+)
 vim.keymap.set('n', '/', '/\\v', { desc = 'Enable very magic for searching', noremap = true })
 vim.keymap.set('n', '<leader>br', ':%s//', { desc = '[B]uffer [R]eplace' })
 vim.keymap.set('v', '<leader>br', ':s//', { desc = '[B]uffer [R]eplace in selected lines' })
