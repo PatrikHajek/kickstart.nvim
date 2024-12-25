@@ -63,7 +63,7 @@ vim.keymap.set(
   'x',
   '<CR>',
   "m0\"sy\z
-  <BAR>:execute setreg('/', escape(getreg('s'), '.\\'))\z
+  <BAR>:execute setreg('/', escape(getreg('s'), '.\\~'))\z
   <BAR>/<CR>\z
   <BAR>`0N",
   { desc = 'Search selected text' }
