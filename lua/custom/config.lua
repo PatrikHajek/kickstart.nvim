@@ -265,6 +265,7 @@ vim.keymap.set('n', '<leader>lr', function()
   vim.lsp.buf.references(nil, {
     on_list = function(options)
       vim.fn.setqflist({}, 'r', options)
+      vim.api.nvim_command ':Trouble quickfix'
     end,
   })
 end, { desc = 'Populate quickfix list with references' })
