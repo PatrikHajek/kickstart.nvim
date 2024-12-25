@@ -65,7 +65,7 @@ vim.keymap.set(
   "m0\"sy\z
   <BAR>:execute setreg('/', escape(getreg('s'), '.\\~'))\z
   <BAR>/<CR>\z
-  <BAR>`0N",
+  <BAR>N`0",
   { desc = 'Search selected text' }
 )
 vim.keymap.set('n', '/', '/\\v', { desc = 'Enable very magic for searching', noremap = true })
