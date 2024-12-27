@@ -49,6 +49,9 @@ return {
         -- tracked.
         vim.keymap.set('n', '<leader>hS', ':Git add %<CR>', { desc = 'git [S]tart tracking file' })
         map('n', '<leader>hu', gitsigns.undo_stage_hunk, { desc = 'git [u]ndo stage hunk' })
+        vim.keymap.set('n', '<leader>hU', function()
+          vim.api.nvim_command ':Git restore --staged %'
+        end, { desc = 'git [U]ndo stage buffer' })
         map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
         map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
         map('n', '<leader>hb', gitsigns.blame_line, { desc = 'git [b]lame line' })
