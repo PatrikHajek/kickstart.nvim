@@ -1,6 +1,7 @@
 --[[
   For printing (debugging) tables, use
   `vim.api.nvim_echo({ { vim.inspect(your_value) } }, false, {})`
+  You can then view the whole console using `:messages`.
 
   INFO: you can search for available values using Telescope's `vim.options`
   picker. You can also search registered autocommands using `autocommands`.
