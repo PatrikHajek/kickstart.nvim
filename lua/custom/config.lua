@@ -273,15 +273,7 @@ local function goto_prev_reference()
 end
 vim.keymap.set('n', ']r', goto_next_reference, { desc = 'Go to next reference' })
 vim.keymap.set('n', '[r', goto_prev_reference, { desc = 'Go to previous reference' })
-vim.keymap.set('n', '<leader>lr', function()
-  -- NOTE: from `:help vim.lsp.listOpts`
-  vim.lsp.buf.references(nil, {
-    on_list = function(options)
-      vim.fn.setqflist({}, 'r', options)
-      vim.api.nvim_command ':Trouble quickfix'
-    end,
-  })
-end, { desc = 'Populate quickfix list with references' })
+vim.keymap.set('n', '<leader>lr', ':Trouble lsp_references<CR>', { desc = '[L]ist [R]eferences in Trouble window' })
 
 -- [[ Imported commands ]]
 require 'custom.commands.unsaved-buffers'
