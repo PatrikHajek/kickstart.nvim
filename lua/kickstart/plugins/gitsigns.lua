@@ -16,6 +16,12 @@ return {
           vim.keymap.set(mode, l, r, opts)
         end
 
+        local last_diff_args = {}
+        local function refresh_diff()
+          vim.api.nvim_command ':wincmd p | q'
+          gitsigns.diffthis(last_diff_args[1], last_diff_args[2])
+        end
+
         -- Navigation
         map('n', ']c', function()
           if vim.wo.diff then
@@ -33,21 +39,29 @@ return {
           end
         end, { desc = 'Jump to previous git [c]hange' })
 
-        map('n', ']C', function()
-          if vim.wo.diff then
-            vim.cmd.normal { ']c', bang = true }
-          else
-            gitsigns.nav_hunk('next', { target = 'staged' })
+        map('n', '<C-j>', function()
+          if not vim.wo.diff then
+            gitsigns.nav_hunk('next', { target = 'all', wrap = false })
+            return
           end
-        end, { desc = 'Jump to next git staged [C]hange' })
+          if vim.tbl_count(last_diff_args) == 0 then
+            gitsigns.nav_hunk('next', { target = 'unstaged', wrap = false })
+          else
+            gitsigns.nav_hunk('next', { target = 'staged', wrap = false })
+          end
+        end, { desc = 'Jump to next hunk' })
 
-        map('n', '[C', function()
-          if vim.wo.diff then
-            vim.cmd.normal { '[c', bang = true }
-          else
-            gitsigns.nav_hunk('prev', { target = 'staged' })
+        map('n', '<C-k>', function()
+          if not vim.wo.diff then
+            gitsigns.nav_hunk('prev', { target = 'all', wrap = false })
+            return
           end
-        end, { desc = 'Jump to previous git staged [C]hange' })
+          if vim.tbl_count(last_diff_args) == 0 then
+            gitsigns.nav_hunk('prev', { target = 'unstaged', wrap = false })
+          else
+            gitsigns.nav_hunk('prev', { target = 'staged', wrap = false })
+          end
+        end, { desc = 'Jump to previous hunk' })
 
         -- Actions
         -- visual mode
@@ -68,9 +82,15 @@ return {
         map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
         map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
         map('n', '<leader>hb', gitsigns.blame_line, { desc = 'git [b]lame line' })
-        map('n', '<leader>hd', gitsigns.diffthis, { desc = 'git [d]iff against index' })
+        -- diff
+        map('n', '<leader>dr', refresh_diff, { desc = '[D]iff [R]efresh' })
+        map('n', '<leader>hd', function()
+          last_diff_args = {}
+          gitsigns.diffthis()
+        end, { desc = 'git [d]iff against index' })
         map('n', '<leader>hD', function()
-          gitsigns.diffthis '@'
+          last_diff_args = { '@' }
+          gitsigns.diffthis(last_diff_args[1])
         end, { desc = 'git [D]iff against last commit' })
         -- Toggles
         map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line' })
