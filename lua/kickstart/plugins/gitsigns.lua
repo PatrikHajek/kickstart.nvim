@@ -44,6 +44,10 @@ return {
         map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk' })
         map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'git [r]eset hunk' })
         map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
+        -- INFO: the other keymaps are set with more context (bufnr), so this
+        -- keymap will only get set if the others don't - fallback if it's not
+        -- tracked.
+        vim.keymap.set('n', '<leader>hS', ':Git add %<CR>', { desc = 'git [S]tart tracking file' })
         map('n', '<leader>hu', gitsigns.undo_stage_hunk, { desc = 'git [u]ndo stage hunk' })
         map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
         map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
