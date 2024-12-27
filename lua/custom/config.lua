@@ -40,6 +40,11 @@ vim.keymap.set('n', '<leader>vv', 'g_v_', { desc = 'Select line without newline 
 vim.keymap.set('n', '<leader>wb', ':w<CR>', { desc = '[W]rite [B]uffer' })
 vim.keymap.set('n', '<leader>bb', '<C-^>', { desc = 'Switch [B]ack to Last [B]uffer' })
 vim.keymap.set('n', '<leader>q', function()
+  if vim.wo.diff then
+    vim.api.nvim_command ':wincmd p | q'
+    return
+  end
+
   if #vim.api.nvim_list_wins() == 1 then
     local confirm = vim.fn.confirm 'Quit?'
     if confirm ~= 1 then
