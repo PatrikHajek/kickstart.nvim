@@ -61,6 +61,11 @@ return {
         map('n', '<leader>tD', gitsigns.toggle_deleted, { desc = '[T]oggle git show [D]eleted' })
         map('n', '<leader>tw', gitsigns.toggle_word_diff, { desc = '[T]oggle git [w]ord diff' })
         map('n', '<leader>lh', gitsigns.setqflist, { desc = 'Populate quickfix list with hunks' })
+        map('n', '<leader>gm', function()
+          gitsigns.toggle_linehl()
+          gitsigns.toggle_deleted()
+          gitsigns.toggle_word_diff()
+        end, { desc = '[T]oggle Buffer [G]it Diff [M]ode' })
       end,
     },
   },
