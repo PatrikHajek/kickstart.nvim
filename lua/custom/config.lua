@@ -109,7 +109,7 @@ vim.keymap.set('n', '<leader>lbd', function()
 end, { desc = "Populate quickfix list with current buffer's diagnostics and open it" })
 
 -- quickfix keymaps
-vim.keymap.set('n', '<leader>sq', ':Telescope quickfixhistory<CR>', { desc = '[S]earch [Q]uickfix list' })
+vim.keymap.set('n', '<leader>sq', ':Telescope quickfixhistory<CR>', { desc = '[S]earch [Q]uickfix history' })
 vim.keymap.set('n', '<leader>lq', ':Trouble quickfix<CR>', { desc = 'Show quickfix list' })
 vim.keymap.set('n', '<C-n>', ':cnext<CR>', { desc = 'Go to next quickfix item' })
 vim.keymap.set('n', '<C-p>', ':cprev<CR>', { desc = 'Go to prev quickfix item' })
