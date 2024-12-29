@@ -466,7 +466,7 @@ require('lazy').setup({
           search_dirs = { '%' },
         }
         -- builtin.current_buffer_fuzzy_find()
-      end, { desc = '[/] Fuzzily search in current buffer' })
+      end, { desc = '[/] Search in current buffer' })
 
       -- It's also possible to pass additional configuration options.
       --  See `:help telescope.builtin.live_grep()` for information about particular keys
