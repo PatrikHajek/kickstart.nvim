@@ -97,6 +97,7 @@ return {
         map('n', '<leader>tD', gitsigns.toggle_deleted, { desc = '[T]oggle git show [D]eleted' })
         map('n', '<leader>tw', gitsigns.toggle_word_diff, { desc = '[T]oggle git [w]ord diff' })
         -- Other
+        -- WARN: possibly deprecated by `<C-j>` and `<C-k>` mappings
         map('n', '<leader>lh', gitsigns.setqflist, { desc = 'Populate quickfix list with hunks' })
         map('n', '<leader>gm', function()
           gitsigns.toggle_linehl()
