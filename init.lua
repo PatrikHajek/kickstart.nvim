@@ -390,8 +390,14 @@ require('lazy').setup({
         -- pickers = {}
         defaults = {
           mappings = {
-            i = { ['<C-q>'] = require('telescope.actions').smart_send_to_qflist },
-            n = { ['<C-q>'] = require('telescope.actions').smart_send_to_qflist },
+            i = {
+              ['<C-q>'] = require('telescope.actions').smart_send_to_qflist,
+              ['<C-d>'] = require('telescope.actions').delete_buffer,
+            },
+            n = {
+              ['<C-q>'] = require('telescope.actions').smart_send_to_qflist,
+              ['<C-d>'] = require('telescope.actions').delete_buffer,
+            },
           },
           vimgrep_arguments = {
             'rg',
