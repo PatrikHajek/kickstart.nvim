@@ -348,3 +348,6 @@ bassy
 untracked
 walkable
 unstaging
+autocompletes
+ripgrep
+rg
