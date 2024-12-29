@@ -4,7 +4,8 @@
   You can then view the whole console using `:messages`.
 
   INFO: you can search for available values using Telescope's `vim.options`
-  picker. You can also search registered autocommands using `autocommands`.
+  picker. You can also search registered autocommands using `autocommands` or
+  highlights using `highlights`.
 --]]
 
 -- [[ Settings ]]
