@@ -9,6 +9,7 @@ return {
       highlights = {
         ['@markup.list.checked.markdown'] = { fg = colors.purple },
         SpellBad = { fg = colors.green },
+        SpellLocal = { fg = colors.green },
         -- SpellBad = { underdashed = true },
       },
     }
