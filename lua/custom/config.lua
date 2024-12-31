@@ -31,6 +31,7 @@ vim.opt.termguicolors = true
 
 -- better default experience
 vim.keymap.set('x', 'p', '"_dP')
+vim.keymap.set('x', '"+p', '"_d"+P')
 vim.keymap.set({ 'n', 'v' }, 'd', '"_d')
 vim.keymap.set({ 'n', 'v' }, 'c', '"_c')
 vim.keymap.set({ 'n', 'v' }, 's', '"_s')
