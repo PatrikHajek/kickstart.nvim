@@ -88,9 +88,16 @@ vim.keymap.set('v', '<leader>br', ':s//', { desc = '[B]uffer [R]eplace in select
 vim.keymap.set('n', 'n', 'nzzzv', { silent = true })
 vim.keymap.set('n', 'N', 'Nzzzv', { silent = true })
 
+-- [[ Lines ]]
+-- NOTE: `'<` and `'>` specify line number of the first/last line or character
+-- of the selection respectively. See help for more info.
+--
 -- moving lines up/down
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { silent = true })
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { silent = true })
+-- copying lines up/down
+vim.keymap.set('v', '<C-J>', ":co '<-1<CR>gv=gv", { silent = true })
+vim.keymap.set('v', '<C-K>', ":co '><CR>gv=gv", { silent = true })
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
