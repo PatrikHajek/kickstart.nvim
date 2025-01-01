@@ -75,7 +75,7 @@ vim.keymap.set(
   'x',
   '<CR>',
   "m0\"sy\z
-  <BAR>:execute setreg('/', substitute(escape(getreg('s'), '.\\~'), '\\n', '\\\\n', 'g'))\z
+  <BAR>:execute setreg('/', substitute(escape(getreg('s'), '.\\~[]'), '\\n', '\\\\n', 'g'))\z
   <BAR>/<CR>\z
   <BAR>`0",
   { desc = 'Search selected text' }
