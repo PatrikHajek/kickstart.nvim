@@ -364,3 +364,12 @@ namespace
 subcommands
 Nvidia
 ux
+GMMK
+macropad
+LLC
+keycode
+keycodes
+xev
+bootloader
+gmmk
+#iscordo
