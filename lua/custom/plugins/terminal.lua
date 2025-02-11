@@ -29,7 +29,7 @@ return {
   version = '*',
   config = function()
     require('toggleterm').setup {
-      open_mapping = '<leader>to',
+      open_mapping = '<C-t>',
       direction = 'float',
       insert_mappings = false,
       shade_terminals = true,
@@ -39,6 +39,6 @@ return {
     -- mappings
     -- vim.keymap.set("n", "<leader>to", ":ToggleTerm direction=float<CR>", { desc = "Toggle Terminal in Floating Window" })
     -- vim.keymap.set("n", "<leader>tO", ":ToggleTerm direction=tab<CR>", { desc = "Toggle Terminal in Normal Mode" })
-    vim.keymap.set('t', '<leader><esc>', '<esc><bar><C-\\><C-n>', { desc = 'Exit terminal mode' })
+    vim.keymap.set('t', '<C-x>', '<esc><bar><C-\\><C-n>', { desc = 'Exit terminal mode' })
   end,
 }
