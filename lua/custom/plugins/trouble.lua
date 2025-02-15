@@ -28,6 +28,16 @@ return {
         desc = 'Send items to quickfix list and close the window',
       },
     },
+    modes = {
+      diagnostics = {
+        filter = {
+          severity = {
+            vim.diagnostic.severity.ERROR,
+            vim.diagnostic.severity.WARN,
+          },
+        },
+      },
+    },
     -- win = {},
     -- preview = {
     --   type = 'split',
