@@ -3,6 +3,9 @@
   `vim.api.nvim_echo({ { vim.inspect(your_value) } }, false, {})`
   You can then view the whole console using `:messages`.
 
+  INFO: To define a type for a variable you must use `---` instead of `--` for
+  the comment.
+
   INFO: you can search for available values using Telescope's `vim.options`
   picker. You can also search registered autocommands using `autocommands` or
   highlights using `highlights`.
