@@ -569,18 +569,35 @@ require('lazy').setup({
           map('gd', function()
             vim.lsp.buf.definition {
               on_list = function(opts)
+                ---@alias item {filename: string, text: string}[]
+
+                ---@type item
                 local items = opts.items
 
+                ---@type item
                 local filtered = {}
                 for k in pairs(items) do
-                  if not string.find(items[k].filename, '.nuxt', 1, true) then
+                  local item = items[k]
+                  if item.filename:find '%.nuxt/components%.d%.ts' or not item.filename:find '%.nuxt' then
                     filtered[#filtered + 1] = items[k]
                   end
                 end
 
                 vim.fn.setloclist(0, filtered)
                 if #filtered == 1 then
-                  vim.api.nvim_command ':lfirst'
+                  local item = filtered[1]
+                  if item.filename:find '%.nuxt/components%.d%.ts' then
+                    local filename = item.filename:match '(.+)components%.d%.ts'
+                    local path = item.text:match 'import%("(.+)"%)'
+
+                    if not path or not filename then
+                      vim.notify "File path couldn't be extracted"
+                    else
+                      vim.api.nvim_command(':e ' .. filename .. path)
+                    end
+                  else
+                    vim.api.nvim_command ':lfirst'
+                  end
                 else
                   require('telescope.builtin').loclist()
                 end
