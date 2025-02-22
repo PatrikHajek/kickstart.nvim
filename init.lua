@@ -583,6 +583,18 @@ require('lazy').setup({
                   end
                 end
 
+                if #filtered == 0 then
+                  vim.fn.setloclist(0, items)
+                  if #items == 1 then
+                    vim.api.nvim_command ':lfirst'
+                  elseif #items > 1 then
+                    require('telescope.builtin').loclist()
+                  else
+                    vim.notify 'No definitions found'
+                  end
+                  return
+                end
+
                 vim.fn.setloclist(0, filtered)
                 if #filtered == 1 then
                   local item = filtered[1]
