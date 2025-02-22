@@ -566,7 +566,27 @@ require('lazy').setup({
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
-          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+          map('gd', function()
+            vim.lsp.buf.definition {
+              on_list = function(opts)
+                local items = opts.items
+
+                local filtered = {}
+                for k in pairs(items) do
+                  if not string.find(items[k].filename, '.nuxt', 1, true) then
+                    filtered[#filtered + 1] = items[k]
+                  end
+                end
+
+                vim.fn.setloclist(0, filtered)
+                if #filtered == 1 then
+                  vim.api.nvim_command ':lfirst'
+                else
+                  require('telescope.builtin').loclist()
+                end
+              end,
+            }
+          end, '[G]oto [D]efinition')
 
           -- Find references for the word under your cursor.
           map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
