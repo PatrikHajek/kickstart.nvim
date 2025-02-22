@@ -596,22 +596,23 @@ require('lazy').setup({
                 end
 
                 vim.fn.setloclist(0, filtered)
-                if #filtered == 1 then
-                  local item = filtered[1]
-                  if item.filename:find '%.nuxt/components%.d%.ts' then
-                    local filename = item.filename:match '(.+)components%.d%.ts'
-                    local path = item.text:match 'import%("(.+)"%)'
+                if #filtered > 1 then
+                  require('telescope.builtin').loclist()
+                  return
+                end
 
-                    if not path or not filename then
-                      vim.notify "File path couldn't be extracted"
-                    else
-                      vim.api.nvim_command(':e ' .. filename .. path)
-                    end
+                local item = filtered[1]
+                if item.filename:find '%.nuxt/components%.d%.ts' then
+                  local filename = item.filename:match '(.+)components%.d%.ts'
+                  local path = item.text:match 'import%("(.+)"%)'
+
+                  if not path or not filename then
+                    vim.notify "File path couldn't be extracted"
                   else
-                    vim.api.nvim_command ':lfirst'
+                    vim.api.nvim_command(':e ' .. filename .. path)
                   end
                 else
-                  require('telescope.builtin').loclist()
+                  vim.api.nvim_command ':lfirst'
                 end
               end,
             }
