@@ -4,7 +4,7 @@ vim.keymap.set('n', '<leader>bi', function()
     table.insert(lines, line)
   end
 
-  local path = vim.fn.expand '%'
+  local path = vim.fn.expand '%:r' .. '.' .. vim.fn.expand '%:e'
   local file = vim.fn.expand '%:t'
   local file_dir = ''
   local split_path = vim.fn.split(path, '/')
