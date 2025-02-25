@@ -402,3 +402,5 @@ subcomponents
 typechecking
 libs
 unstyled
+raycast
+postgresql
