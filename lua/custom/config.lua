@@ -62,6 +62,7 @@ end, { desc = '[Q]uit' })
 
 -- [[ Buffers ]]
 vim.keymap.set('n', '<leader>bb', '<C-^>', { desc = 'Switch [B]ack to Last [B]uffer' })
+vim.keymap.set('n', '<leader>bd', ':bd<CR>', { desc = '[B]uffer [D]elete' })
 
 -- [[ Vim Search ]]
 vim.keymap.set('n', '<CR>', function()
