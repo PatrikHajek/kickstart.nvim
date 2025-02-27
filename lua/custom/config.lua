@@ -44,7 +44,6 @@ vim.keymap.set('n', 'S', '"_S')
 
 vim.keymap.set('n', '<leader>vv', 'g_v_', { desc = 'Select line without newline character' })
 vim.keymap.set('n', '<leader>wb', ':w<CR>', { desc = '[W]rite [B]uffer' })
-vim.keymap.set('n', '<leader>bb', '<C-^>', { desc = 'Switch [B]ack to Last [B]uffer' })
 vim.keymap.set('n', '<leader>q', function()
   if vim.wo.diff then
     vim.api.nvim_command ':wincmd p | q'
@@ -60,6 +59,9 @@ vim.keymap.set('n', '<leader>q', function()
 
   vim.cmd ':q'
 end, { desc = '[Q]uit' })
+
+-- [[ Buffers ]]
+vim.keymap.set('n', '<leader>bb', '<C-^>', { desc = 'Switch [B]ack to Last [B]uffer' })
 
 -- [[ Vim Search ]]
 vim.keymap.set('n', '<CR>', function()
