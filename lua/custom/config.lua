@@ -142,7 +142,7 @@ vim.keymap.set('n', '<leader>bc', ':Telescope git_bcommits<CR>', { desc = 'Show 
 
 -- [[ Search ]]
 vim.keymap.set('n', '<leader>st', ':Telescope treesitter<CR>', { desc = '[S]earch [T]reesitter' })
-vim.keymap.set('n', '<leader>sa', function()
+vim.keymap.set('n', '<leader>saf', function()
   require('telescope.builtin').find_files {
     find_command = {
       'rg',
@@ -154,7 +154,13 @@ vim.keymap.set('n', '<leader>sa', function()
       '--glob=!node_modules',
     },
   }
-end, { desc = '[S]earch [A]ll files' })
+end, { desc = '[S]earch [A]ll [F]iles' })
+vim.keymap.set('n', '<leader>sag', function()
+  require('telescope.builtin').live_grep {
+    additional_args = { '--no-ignore' },
+    glob_pattern = { '!node_modules' },
+  }
+end, { desc = '[S]earch [A]ll files using [G]rep' })
 vim.keymap.set('n', '<leader>sp', function()
   require('telescope.builtin').find_files { cwd = vim.fn.expand '$HOME/notes/' }
 end, { desc = '[S]earch [P]KM' })
