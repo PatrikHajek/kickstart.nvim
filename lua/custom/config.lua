@@ -258,11 +258,13 @@ local function go_to_definition()
       if item.filename:find '%.nuxt/components%.d%.ts' then
         local filename = item.filename:match '(.+)components%.d%.ts'
         local path = item.text:match 'import%("(.+)"%)'
+        local ext = path:match '.+%.(%w+)$'
+        local extension = ext == 'vue' and '' or '.d.ts'
 
         if not path or not filename then
           vim.notify "File path couldn't be extracted"
         else
-          vim.api.nvim_command(':e ' .. filename .. path)
+          vim.api.nvim_command(':e ' .. filename .. path .. extension)
         end
       else
         vim.api.nvim_command ':lfirst'
