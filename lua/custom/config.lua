@@ -216,6 +216,7 @@ local function get_servers()
     -- java_language_server = {},
     jdtls = {},
     pyright = {},
+    rust_analyzer = {},
   }
 end
 
