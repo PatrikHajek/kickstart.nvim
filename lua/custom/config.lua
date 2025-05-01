@@ -43,7 +43,7 @@ vim.keymap.set({ 'n', 'v' }, 'C', '"_C')
 vim.keymap.set('n', 'S', '"_S')
 
 vim.keymap.set('n', '<leader>vv', 'g_v_', { desc = 'Select line without newline character' })
-vim.keymap.set('n', '<leader>wb', ':w<CR>', { desc = '[W]rite [B]uffer' })
+-- vim.keymap.set('n', '<leader>wb', ':w<CR>', { desc = '[W]rite [B]uffer' })
 vim.keymap.set('n', '<leader>q', function()
   if vim.wo.diff then
     vim.api.nvim_command ':wincmd p | q'
