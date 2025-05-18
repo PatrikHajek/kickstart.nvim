@@ -276,7 +276,7 @@ end
 
 -- references
 local function goto_next_reference()
-  vim.lsp.buf.references({}, {
+  vim.lsp.buf.references(nil, {
     on_list = function(r)
       local filename = r.context.params.textDocument.uri
       local cursor = vim.api.nvim_win_get_cursor(0)
@@ -315,7 +315,7 @@ local function goto_next_reference()
   })
 end
 local function goto_prev_reference()
-  vim.lsp.buf.references({}, {
+  vim.lsp.buf.references(nil, {
     on_list = function(r)
       local filename = r.context.params.textDocument.uri
       local cursor = vim.api.nvim_win_get_cursor(0)
