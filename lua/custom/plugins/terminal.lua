@@ -40,5 +40,42 @@ return {
     -- vim.keymap.set("n", "<leader>to", ":ToggleTerm direction=float<CR>", { desc = "Toggle Terminal in Floating Window" })
     -- vim.keymap.set("n", "<leader>tO", ":ToggleTerm direction=tab<CR>", { desc = "Toggle Terminal in Normal Mode" })
     vim.keymap.set('t', '<C-x>', '<esc><bar><C-\\><C-n>', { desc = 'Exit terminal mode' })
+
+    -- [[ Working gf/gF in term ]]
+    -- for keeping the original gf/gF functionality without having to make it myself
+    vim.keymap.set('n', 'gabcf', 'gf')
+    vim.keymap.set('n', 'gabcF', 'gF')
+
+    ---@param with_lnum boolean | nil
+    local function jumpToFile(with_lnum)
+      if vim.bo.buftype == 'terminal' then
+        local line = vim.api.nvim_get_current_line()
+        local path = vim.fn.expand '<cfile>'
+        vim.api.nvim_command ':q'
+        vim.api.nvim_command(':e ' .. path)
+        if with_lnum then
+          local _, last = line:find(path, 0, true)
+          if last then
+            local tail = line:sub(last + 1, line:len())
+            local lnum = tonumber(tail:match '%d+')
+            vim.api.nvim_win_set_cursor(0, { lnum, 0 })
+          end
+        end
+        return
+      end
+
+      if with_lnum then
+        vim.api.nvim_command 'normal gabcF'
+      else
+        vim.api.nvim_command 'normal gabcf'
+      end
+    end
+    -- TODO: make just gf mapping that combines both functionalities?
+    vim.keymap.set('n', 'gf', function()
+      jumpToFile()
+    end, { noremap = true })
+    vim.keymap.set('n', 'gF', function()
+      jumpToFile(true)
+    end, { noremap = true })
   end,
 }
