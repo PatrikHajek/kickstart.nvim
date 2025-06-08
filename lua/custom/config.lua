@@ -27,6 +27,7 @@ vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
 -- turns off 4 spaces a tab in markdown files
 vim.g.markdown_recommended_style = 0
+vim.opt.cursorline = false
 
 vim.opt.termguicolors = true
 

@@ -30,10 +30,13 @@ return {
   config = function()
     require('toggleterm').setup {
       open_mapping = '<C-t>',
-      direction = 'float',
-      insert_mappings = false,
-      shade_terminals = true,
-      hide_numbers = false,
+      direction = 'tab',
+      auto_scroll = false,
+      -- insert_mappings = false,
+      -- shade_terminals = true,
+      -- hide_numbers = false,
+
+      -- autochdir = true,
     }
 
     -- mappings
