@@ -49,31 +49,35 @@ return {
     vim.keymap.set('n', 'gabcf', 'gf')
     vim.keymap.set('n', 'gabcF', 'gF')
 
-    ---@param with_lnum boolean | nil
-    local function jumpToFile(with_lnum)
+    ---@param with_num boolean | nil
+    local function jumpToFile(with_num)
       if vim.bo.buftype == 'terminal' then
         local line = vim.api.nvim_get_current_line()
         local path = vim.fn.expand '<cfile>'
         vim.api.nvim_command ':q'
         vim.api.nvim_command(':e ' .. path)
-        if with_lnum then
+        if with_num then
           local _, last = line:find(path, 0, true)
           if last then
             local tail = line:sub(last + 1, line:len())
             local lnum = tonumber(tail:match '%d+')
-            vim.api.nvim_win_set_cursor(0, { lnum, 0 })
+            if lnum == nil then
+              return
+            end
+            local col = tonumber(tail:match '%d+%:(%d+)') or 0
+            col = col > 0 and col - 1 or 0
+            vim.api.nvim_win_set_cursor(0, { lnum, col })
           end
         end
         return
       end
 
-      if with_lnum then
+      if with_num then
         vim.api.nvim_command 'normal gabcF'
       else
         vim.api.nvim_command 'normal gabcf'
       end
     end
-    -- TODO: read columns too
     vim.keymap.set('n', 'gf', function()
       jumpToFile(true)
     end, { noremap = true })
