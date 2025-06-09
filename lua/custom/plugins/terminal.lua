@@ -73,6 +73,7 @@ return {
         vim.api.nvim_command 'normal gabcf'
       end
     end
+    -- TODO: read columns too
     vim.keymap.set('n', 'gf', function()
       jumpToFile(true)
     end, { noremap = true })
