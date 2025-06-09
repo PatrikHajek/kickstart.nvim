@@ -73,12 +73,11 @@ return {
         vim.api.nvim_command 'normal gabcf'
       end
     end
-    -- TODO: make just gf mapping that combines both functionalities?
     vim.keymap.set('n', 'gf', function()
-      jumpToFile()
+      jumpToFile(true)
     end, { noremap = true })
     vim.keymap.set('n', 'gF', function()
-      jumpToFile(true)
+      jumpToFile()
     end, { noremap = true })
   end,
 }
