@@ -49,14 +49,32 @@ return {
     vim.keymap.set('n', 'gabcf', 'gf')
     vim.keymap.set('n', 'gabcF', 'gF')
 
+    -- TODO: make the params a union.
+
     ---@param with_num boolean | nil
-    local function jumpToFile(with_num)
+    ---@param use_selection boolean | nil
+    local function goto_file(with_num, use_selection)
       if vim.bo.buftype == 'terminal' then
-        local line = vim.api.nvim_get_current_line()
-        local path = vim.fn.expand '<cfile>'
+        local line
+        local path
+        if use_selection then
+          -- FIX: this does not work for visual-block
+          vim.api.nvim_command ':normal v'
+          line = require('custom.utils').get_selection()
+          line = vim.trim(line:gsub('\n', ''))
+          path = line
+        else
+          line = vim.api.nvim_get_current_line()
+          path = vim.fn.expand '<cfile>'
+        end
+        assert(type(line) == 'string', 'line not set')
+        assert(type(path) == 'string', 'path not set')
+
         vim.api.nvim_command ':q'
         vim.api.nvim_command(':e ' .. path)
         if with_num then
+          -- TODO: better message
+          assert(use_selection == false, 'cannot set cursor position using selection')
           local _, last = line:find(path, 0, true)
           if last then
             local tail = line:sub(last + 1, line:len())
@@ -79,10 +97,13 @@ return {
       end
     end
     vim.keymap.set('n', 'gf', function()
-      jumpToFile(true)
-    end, { noremap = true })
+      goto_file(true)
+    end, { noremap = true, desc = 'Jump to file under cursor' })
     vim.keymap.set('n', 'gF', function()
-      jumpToFile()
-    end, { noremap = true })
+      goto_file()
+    end, { noremap = true, desc = 'Jump to file under cursor without cursor position' })
+    vim.keymap.set('x', 'gf', function()
+      goto_file(false, true)
+    end, { noremap = true, desc = 'Jump to file using current selection' })
   end,
 }
