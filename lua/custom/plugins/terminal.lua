@@ -49,6 +49,7 @@ return {
     vim.keymap.set('n', 'gabcf', 'gf')
     vim.keymap.set('n', 'gabcF', 'gF')
 
+    -- FIX: scrolloff keeps disabling, interesting [thread](https://www.reddit.com/r/neovim/comments/wicvqu/how_to_debug_my_config/)
     -- TODO: make the params a union.
 
     ---@param with_num boolean | nil
