@@ -74,7 +74,7 @@ return {
         vim.api.nvim_command(':e ' .. path)
         if with_num then
           -- TODO: better message
-          assert(use_selection == false, 'cannot set cursor position using selection')
+          assert(use_selection ~= true, 'cannot set cursor position using selection')
           local _, last = line:find(path, 0, true)
           if last then
             local tail = line:sub(last + 1, line:len())
