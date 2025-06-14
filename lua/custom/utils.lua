@@ -6,7 +6,7 @@ local function log(...)
   for i, v in ipairs(args) do
     chunks[i] = { vim.inspect(v) }
   end
-  vim.api.nvim_echo(chunks, false, {})
+  vim.api.nvim_echo(chunks, true, {})
 end
 M.log = log
 
