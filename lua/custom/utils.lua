@@ -33,6 +33,11 @@ M.get_selection = function()
     start = mark_start[1] < mark_end[1] and mark_start or mark_end
     end_ = mark_start[1] < mark_end[1] and mark_end or mark_start
   end
+  -- if you pass a bigger index to string.sub, it will return an empty string
+  local string_sub_max = 2147483647 - 1
+  start[2] = start[2] > string_sub_max and string_sub_max or start[2]
+  end_[2] = end_[2] > string_sub_max and string_sub_max or end_[2]
+
   local lines = vim.api.nvim_buf_get_lines(0, start[1] - 1, end_[1], false)
   assert(lines[0] == nil)
   assert(lines[#lines] ~= nil)

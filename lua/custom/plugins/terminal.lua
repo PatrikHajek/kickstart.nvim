@@ -59,8 +59,8 @@ return {
         local line
         local path
         if use_selection then
-          -- FIX: this does not work for visual-block
-          vim.api.nvim_command ':normal v'
+          local keys = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
+          vim.api.nvim_feedkeys(keys, 'x', false)
           line = require('custom.utils').get_selection()
           line = vim.trim(line:gsub('\n', ''))
           path = line
