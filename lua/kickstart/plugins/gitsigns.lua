@@ -76,9 +76,7 @@ return {
         map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'git [r]eset hunk' })
         map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
         map('n', '<leader>hu', gitsigns.undo_stage_hunk, { desc = 'git [u]ndo stage hunk' })
-        vim.keymap.set('n', '<leader>hU', function()
-          vim.api.nvim_command ':Git restore --staged %'
-        end, { desc = 'git [U]ndo stage buffer' })
+        map('n', '<leader>hU', gitsigns.reset_buffer_index, { desc = 'git [U]nstage buffer' })
         map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
         map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
         map('n', '<leader>hb', gitsigns.blame_line, { desc = 'git [b]lame line' })
