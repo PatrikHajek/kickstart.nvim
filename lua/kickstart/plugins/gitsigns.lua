@@ -40,26 +40,18 @@ return {
         end, { desc = 'Jump to previous git [c]hange' })
 
         map('n', '<C-j>', function()
-          if not vim.wo.diff then
-            gitsigns.nav_hunk('next', { target = 'all', wrap = false })
-            return
-          end
-          if vim.tbl_count(last_diff_args) == 0 then
-            gitsigns.nav_hunk('next', { target = 'unstaged', wrap = false })
+          if vim.wo.diff then
+            vim.cmd.normal { ']c', bang = true }
           else
-            gitsigns.nav_hunk('next', { target = 'staged', wrap = false })
+            gitsigns.nav_hunk('next', { target = 'all', wrap = false })
           end
         end, { desc = 'Jump to next hunk' })
 
         map('n', '<C-k>', function()
-          if not vim.wo.diff then
-            gitsigns.nav_hunk('prev', { target = 'all', wrap = false })
-            return
-          end
-          if vim.tbl_count(last_diff_args) == 0 then
-            gitsigns.nav_hunk('prev', { target = 'unstaged', wrap = false })
+          if vim.wo.diff then
+            vim.cmd.normal { '[c', bang = true }
           else
-            gitsigns.nav_hunk('prev', { target = 'staged', wrap = false })
+            gitsigns.nav_hunk('prev', { target = 'all', wrap = false })
           end
         end, { desc = 'Jump to previous hunk' })
 
