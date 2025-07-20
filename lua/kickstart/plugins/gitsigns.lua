@@ -76,6 +76,11 @@ return {
         -- diff
         map('n', '<leader>dr', refresh_diff, { desc = '[D]iff [R]efresh' })
         map('n', '<leader>hd', function()
+          local unstaged_hunks = gitsigns.get_hunks(vim.api.nvim_get_current_buf())
+          if #unstaged_hunks == 0 then
+            vim.api.nvim_echo({ { 'No hunks' } }, false, {})
+            return
+          end
           last_diff_args = {}
           gitsigns.diffthis()
         end, { desc = 'git [d]iff against index' })
