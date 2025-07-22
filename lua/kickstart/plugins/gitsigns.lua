@@ -71,8 +71,11 @@ return {
         map('n', '<leader>hU', gitsigns.reset_buffer_index, { desc = 'git [U]nstage buffer' })
         map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
         map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
-        map('n', '<leader>hb', gitsigns.blame_line, { desc = 'git [b]lame line' })
-        map('n', '<leader>hv', gitsigns.select_hunk, { desc = 'git select hunk' })
+        map('n', '<leader>hi', gitsigns.preview_hunk_inline, { desc = 'git preview hunk [i]nline' })
+        map('n', '<leader>hb', function()
+          gitsigns.blame_line { full = true }
+        end)
+        map({ 'o', 'x' }, 'ih', gitsigns.select_hunk, { desc = 'git select hunk' })
         -- diff
         map('n', '<leader>dr', refresh_diff, { desc = '[D]iff [R]efresh' })
         map('n', '<leader>hd', function()
@@ -88,13 +91,14 @@ return {
           last_diff_args = { '@' }
           gitsigns.diffthis(last_diff_args[1])
         end, { desc = 'git [D]iff against last commit' })
+        map('n', '<leader>hq', function()
+          gitsigns.setqflist 'all'
+        end, { desc = 'git push [h]unks to [q]flist' })
         -- Toggles
         map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line' })
         map('n', '<leader>tD', gitsigns.toggle_deleted, { desc = '[T]oggle git show [D]eleted' })
         map('n', '<leader>tw', gitsigns.toggle_word_diff, { desc = '[T]oggle git [w]ord diff' })
         -- Other
-        -- WARN: possibly deprecated by `<C-j>` and `<C-k>` mappings
-        map('n', '<leader>lh', gitsigns.setqflist, { desc = 'Populate quickfix list with hunks' })
         map('n', '<leader>gm', function()
           gitsigns.toggle_linehl()
           gitsigns.toggle_deleted()
