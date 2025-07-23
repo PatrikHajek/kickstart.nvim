@@ -55,7 +55,9 @@ return {
     ---@param with_num boolean | nil
     ---@param use_selection boolean | nil
     local function goto_file(with_num, use_selection)
-      if vim.bo.buftype == 'terminal' then
+      local buf_name = vim.api.nvim_buf_get_name(0)
+      local is_fugitive = require('custom.utils').string_starts_with(buf_name, 'fugitive://')
+      if vim.bo.buftype == 'terminal' or is_fugitive then
         local line
         local path
         if use_selection then
