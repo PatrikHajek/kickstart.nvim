@@ -56,7 +56,7 @@ end, { desc = 'Select line without newline, comment or diff character' })
 -- vim.keymap.set('n', '<leader>wb', ':w<CR>', { desc = '[W]rite [B]uffer' })
 vim.keymap.set('n', '<leader>q', function()
   if vim.wo.diff then
-    vim.api.nvim_command ':wincmd p | q'
+    vim.api.nvim_command ':wincmd h | q'
     return
   end
 
