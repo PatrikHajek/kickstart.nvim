@@ -17,12 +17,6 @@ return {
           vim.keymap.set(mode, l, r, opts)
         end
 
-        local last_diff_args = {}
-        local function refresh_diff()
-          vim.api.nvim_command ':wincmd p | q'
-          gitsigns.diffthis(last_diff_args[1], last_diff_args[2])
-        end
-
         -- Navigation
         map('n', ']c', function()
           if vim.wo.diff then
@@ -78,19 +72,16 @@ return {
         end)
         map({ 'o', 'x' }, 'ih', gitsigns.select_hunk, { desc = 'git select hunk' })
         -- diff
-        map('n', '<leader>dr', refresh_diff, { desc = '[D]iff [R]efresh' })
         map('n', '<leader>hd', function()
           local unstaged_hunks = gitsigns.get_hunks(vim.api.nvim_get_current_buf())
           if #unstaged_hunks == 0 then
             vim.api.nvim_echo({ { 'No hunks' } }, false, {})
             return
           end
-          last_diff_args = {}
           gitsigns.diffthis()
         end, { desc = 'git [d]iff against index' })
         map('n', '<leader>hD', function()
-          last_diff_args = { '@' }
-          gitsigns.diffthis(last_diff_args[1])
+          gitsigns.diffthis '@'
         end, { desc = 'git [D]iff against last commit' })
         map('n', '<leader>hq', function()
           gitsigns.setqflist 'all'
