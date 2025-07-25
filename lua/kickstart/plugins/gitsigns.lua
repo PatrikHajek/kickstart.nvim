@@ -116,9 +116,12 @@ return {
           end
           gitsigns.diffthis()
         end, { desc = 'git [d]iff against index' })
-        map('n', '<leader>hD', function()
+        map('n', '<leader>hDc', function()
           gitsigns.diffthis '@'
-        end, { desc = 'git [D]iff against last commit' })
+        end, { desc = 'git [D]iff against last [c]ommit' })
+        map('n', '<leader>hDh', function()
+          gitsigns.diffthis '~'
+        end, { desc = 'git [D]iff against [h]ead' })
 
         map('n', '<leader>hq', function()
           gitsigns.setqflist 'all'
