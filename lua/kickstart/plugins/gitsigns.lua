@@ -53,18 +53,50 @@ return {
         -- Actions
         -- visual mode
         map('v', '<leader>hs', function()
-          gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
+          if vim.wo.diff then
+            vim.api.nvim_echo({ { "use `:'<,'>diffput` instead" } }, false, {})
+          else
+            gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
+          end
         end, { desc = 'stage git hunk' })
         map('v', '<leader>hr', function()
-          gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+          if vim.wo.diff then
+            vim.api.nvim_echo({ { "use `'<,'>diffget` instead" } }, false, {})
+          else
+            gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+          end
         end, { desc = 'reset git hunk' })
         -- normal mode
-        map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk' })
-        map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'git [r]eset hunk' })
+        map('n', '<leader>hs', function()
+          if vim.wo.diff then
+            vim.api.nvim_echo({ { 'use `dp` instead' } }, false, {})
+          else
+            gitsigns.stage_hunk()
+          end
+        end, { desc = 'git [s]tage hunk' })
+        map('n', '<leader>hr', function()
+          if vim.wo.diff then
+            vim.api.nvim_echo({ { 'use `do` instead' } }, false, {})
+          else
+            gitsigns.reset_hunk()
+          end
+        end, { desc = 'git [r]eset hunk' })
         -- map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
         -- map('n', '<leader>hu', gitsigns.undo_stage_hunk, { desc = 'git [u]ndo stage hunk' })
-        map('n', '<leader>hU', gitsigns.reset_buffer_index, { desc = 'git [U]nstage buffer' })
-        map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
+        map('n', '<leader>hU', function()
+          if vim.wo.diff then
+            vim.api.nvim_echo({ { 'use `:%diffput <buffer-number>` instead' } }, false, {})
+          else
+            gitsigns.reset_buffer_index()
+          end
+        end, { desc = 'git [U]nstage buffer' })
+        map('n', '<leader>hR', function()
+          if vim.wo.diff then
+            vim.api.nvim_echo({ { 'use `:%diffget <buffer-number>` instead' } }, false, {})
+          else
+            gitsigns.reset_buffer()
+          end
+        end, { desc = 'git [R]eset buffer' })
         map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
         map('n', '<leader>hi', gitsigns.preview_hunk_inline, { desc = 'git preview hunk [i]nline' })
         map('n', '<leader>hb', function()
