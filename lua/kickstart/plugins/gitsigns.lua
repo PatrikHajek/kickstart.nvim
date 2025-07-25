@@ -97,13 +97,17 @@ return {
             gitsigns.reset_buffer()
           end
         end, { desc = 'git [R]eset buffer' })
+
+        -- Preview
         map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
         map('n', '<leader>hi', gitsigns.preview_hunk_inline, { desc = 'git preview hunk [i]nline' })
         map('n', '<leader>hb', function()
           gitsigns.blame_line { full = true }
         end)
+
         map({ 'o', 'x' }, 'ih', gitsigns.select_hunk, { desc = 'git select hunk' })
-        -- diff
+
+        -- Diff
         map('n', '<leader>hd', function()
           local unstaged_hunks = gitsigns.get_hunks(vim.api.nvim_get_current_buf())
           if #unstaged_hunks == 0 then
@@ -115,14 +119,15 @@ return {
         map('n', '<leader>hD', function()
           gitsigns.diffthis '@'
         end, { desc = 'git [D]iff against last commit' })
+
         map('n', '<leader>hq', function()
           gitsigns.setqflist 'all'
         end, { desc = 'git push [h]unks to [q]flist' })
+
         -- Toggles
         map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line' })
         map('n', '<leader>tD', gitsigns.toggle_deleted, { desc = '[T]oggle git show [D]eleted' })
         map('n', '<leader>tw', gitsigns.toggle_word_diff, { desc = '[T]oggle git [w]ord diff' })
-        -- Other
         map('n', '<leader>gm', function()
           gitsigns.toggle_linehl()
           gitsigns.toggle_deleted()
