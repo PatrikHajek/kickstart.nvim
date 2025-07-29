@@ -150,6 +150,16 @@ vim.keymap.set('n', '<leader>gb', ':Telescope git_branches<CR>', { desc = '[G]it
 vim.keymap.set('n', '<leader>gc', ':Telescope git_commits<CR>', { desc = '[G]it [C]ommits' })
 vim.keymap.set('n', '<leader>bc', ':Telescope git_bcommits<CR>', { desc = 'Show [B]uffer [C]ommits' })
 
+-- [[ Diff ]]
+vim.keymap.set('n', 'dS', function()
+  if vim.wo.diff then
+    vim.api.nvim_command ':wa'
+    print 'All buffers were saved'
+  else
+    print 'Not in diff'
+  end
+end, { desc = '[d]iff [S]ave all buffers' })
+
 -- [[ Search ]]
 vim.keymap.set('n', '<leader>st', ':Telescope treesitter<CR>', { desc = '[S]earch [T]reesitter' })
 vim.keymap.set('n', '<leader>saf', function()
