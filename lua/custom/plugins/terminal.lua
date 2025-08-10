@@ -32,6 +32,9 @@ return {
       open_mapping = '<C-t>',
       direction = 'tab',
       auto_scroll = false,
+      on_open = function()
+        vim.opt.scrolloff = 1000
+      end,
       -- insert_mappings = false,
       -- shade_terminals = true,
       -- hide_numbers = false,
@@ -49,7 +52,6 @@ return {
     vim.keymap.set('n', 'gabcf', 'gf')
     vim.keymap.set('n', 'gabcF', 'gF')
 
-    -- FIX: scrolloff keeps disabling, interesting [thread](https://www.reddit.com/r/neovim/comments/wicvqu/how_to_debug_my_config/)
     -- TODO: make the params a union.
 
     ---@param with_num boolean | nil
