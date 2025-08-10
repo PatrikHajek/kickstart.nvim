@@ -741,6 +741,7 @@ require('lazy').setup({
         typescript = { 'prettierd' },
         vue = { 'prettierd' },
         markdown = { 'prettierd' },
+        python = { 'black' },
       },
     },
   },

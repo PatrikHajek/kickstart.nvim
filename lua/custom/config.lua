@@ -196,6 +196,7 @@ local function get_servers()
   return {
     -- formatters
     prettierd = {},
+    black = {},
     -- linters
     eslint_d = {},
     -- servers
