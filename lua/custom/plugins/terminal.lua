@@ -52,6 +52,7 @@ return {
     vim.keymap.set('n', 'gabcf', 'gf')
     vim.keymap.set('n', 'gabcF', 'gF')
 
+    -- TODO: move out, probably to config.
     -- TODO: make the params a union.
 
     ---@param with_num boolean | nil
@@ -74,6 +75,12 @@ return {
         end
         assert(type(line) == 'string', 'line not set')
         assert(type(path) == 'string', 'path not set')
+
+        if is_fugitive then
+          local git_root = require('custom.utils').get_git_root()
+          line = git_root .. line
+          path = git_root .. path
+        end
 
         vim.api.nvim_command ':q'
         vim.api.nvim_command(':e ' .. path)

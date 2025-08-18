@@ -72,4 +72,20 @@ M.string_ends_with = function(str, search)
   return str:sub(str:len() + 1 - search:len()) == search
 end
 
+--- Gets the git root for the cwd.
+---
+--- Returned path always ends with a `/`.
+---
+--- @return string
+M.get_git_root = function()
+  local out = vim.system({ 'git', 'rev-parse', '--show-toplevel' }):wait()
+  local path = out.stdout
+  assert(type(path) == 'string', 'Failed to parse git root command output.')
+  path = vim.trim(path)
+  if not M.string_ends_with(path, '/') then
+    path = path .. '/'
+  end
+  return path
+end
+
 return M
