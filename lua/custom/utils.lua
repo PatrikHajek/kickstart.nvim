@@ -65,4 +65,11 @@ M.string_starts_with = function(str, search)
   return str:sub(1, search:len()) == search
 end
 
+--- @param str string
+--- @param search string
+--- @return boolean
+M.string_ends_with = function(str, search)
+  return str:sub(str:len() + 1 - search:len()) == search
+end
+
 return M
