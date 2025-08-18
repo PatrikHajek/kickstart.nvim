@@ -58,6 +58,8 @@ M.get_selection = function()
   return content
 end
 
+--- TODO: Remove, use `vim.startswith` instead.
+---
 --- @param str string
 --- @param search string
 --- @return boolean
@@ -65,6 +67,8 @@ M.string_starts_with = function(str, search)
   return str:sub(1, search:len()) == search
 end
 
+--- TODO: Remove, use `vim.endswith` instead.
+---
 --- @param str string
 --- @param search string
 --- @return boolean
