@@ -532,3 +532,7 @@ rethrow
 tooltip
 popups
 nouveau
+selectable
+unselectable
+emojis
+resized
