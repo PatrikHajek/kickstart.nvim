@@ -8,7 +8,7 @@ return {
       vim.api.nvim_create_autocmd({ 'BufEnter' }, {
         pattern = { 'fugitive://*' },
         callback = function(ev)
-          vim.keymap.set('n', '_', function()
+          vim.keymap.set({ 'n', 'x' }, '_', function()
             local line = vim.api.nvim_get_current_line()
             if line:find '^[AMRD+-] ' then
               vim.api.nvim_command ':normal 0w'
