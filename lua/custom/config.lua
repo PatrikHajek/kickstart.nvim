@@ -46,9 +46,12 @@ vim.keymap.set('n', 'S', '"_S')
 
 vim.keymap.set('n', '<leader>vv', function()
   local line = vim.api.nvim_get_current_line()
-  local is_comment = line:find '^%s*[#/-][#/-]'
-  if is_comment then
-    vim.api.nvim_command 'normal g_v_w'
+  --- @type string|nil
+  local line_trimmed = line:match '^%s*[#/-]+%s*(.+)'
+  if line_trimmed then
+    --- @type string
+    local char = line_trimmed:sub(1, 1)
+    vim.api.nvim_command('normal g_v0f' .. char)
   else
     vim.api.nvim_command 'normal g_v_'
   end
