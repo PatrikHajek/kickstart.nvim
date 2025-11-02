@@ -94,7 +94,7 @@ local function goto_file(with_num, use_selection)
     else
       line = vim.api.nvim_get_current_line()
       local cursor_col = vim.api.nvim_win_get_cursor(0)[2]
-      local search_start = line:sub(1, cursor_col + 1):find ' ' + 1 or 1
+      local search_start = line:sub(1, cursor_col + 1):find ' [^ ]+$' + 1 or 1
       path = line:sub(search_start):match '^(.*%.%w+)'
     end
     assert(type(line) == 'string', 'line not set')
