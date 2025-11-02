@@ -75,6 +75,71 @@ vim.keymap.set('n', '<leader>q', function()
   vim.cmd ':q'
 end, { desc = '[Q]uit' })
 
+-- TODO: make the params a union.
+--
+---@param with_num boolean | nil
+---@param use_selection boolean | nil
+local function goto_file(with_num, use_selection)
+  local buf_name = vim.api.nvim_buf_get_name(0)
+  local is_fugitive = require('custom.utils').string_starts_with(buf_name, 'fugitive://')
+  if vim.bo.buftype == 'terminal' or is_fugitive then
+    local line
+    local path
+    if use_selection then
+      local keys = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
+      vim.api.nvim_feedkeys(keys, 'x', false)
+      line = require('custom.utils').get_selection()
+      line = vim.trim(line:gsub('\n', ''))
+      path = line
+    else
+      line = vim.api.nvim_get_current_line()
+      path = vim.fn.expand '<cfile>'
+    end
+    assert(type(line) == 'string', 'line not set')
+    assert(type(path) == 'string', 'path not set')
+
+    if is_fugitive then
+      local git_root = require('custom.utils').get_git_root()
+      line = git_root .. line
+      path = git_root .. path
+    end
+
+    vim.api.nvim_command ':q'
+    vim.api.nvim_command(':e ' .. path)
+    if with_num then
+      -- TODO: better message
+      assert(use_selection ~= true, 'cannot set cursor position using selection')
+      local _, last = line:find(path, 0, true)
+      if last then
+        local tail = line:sub(last + 1, line:len())
+        local lnum = tonumber(tail:match '%d+')
+        if lnum == nil then
+          return
+        end
+        local col = tonumber(tail:match '%d+%:(%d+)') or 0
+        col = col > 0 and col - 1 or 0
+        vim.api.nvim_win_set_cursor(0, { lnum, col })
+      end
+    end
+    return
+  end
+
+  if with_num then
+    vim.api.nvim_command 'normal gabcF'
+  else
+    vim.api.nvim_command 'normal gabcf'
+  end
+end
+vim.keymap.set('n', 'gf', function()
+  goto_file(true)
+end, { noremap = true, desc = 'Jump to file under cursor' })
+vim.keymap.set('n', 'gF', function()
+  goto_file()
+end, { noremap = true, desc = 'Jump to file under cursor without cursor position' })
+vim.keymap.set('x', 'gf', function()
+  goto_file(false, true)
+end, { noremap = true, desc = 'Jump to file using current selection' })
+
 -- [[ Buffers ]]
 vim.keymap.set('n', '<leader>bb', '<C-^>', { desc = 'Switch [B]ack to Last [B]uffer' })
 vim.keymap.set('n', '<leader>bd', ':bd<CR>', { desc = '[B]uffer [D]elete' })
