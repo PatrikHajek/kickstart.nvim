@@ -536,3 +536,5 @@ selectable
 unselectable
 emojis
 resized
+htmx
+ORM
