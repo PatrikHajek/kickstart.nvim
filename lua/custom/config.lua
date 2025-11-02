@@ -47,8 +47,7 @@ vim.keymap.set('n', 'S', '"_S')
 vim.keymap.set('n', '<leader>vv', function()
   local line = vim.api.nvim_get_current_line()
   local is_comment = line:find '^%s*[#/-][#/-]'
-  local is_fugitive_diff = line:find '^[-+]'
-  if is_comment or is_fugitive_diff then
+  if is_comment then
     vim.api.nvim_command 'normal g_v_w'
   else
     vim.api.nvim_command 'normal g_v_'
