@@ -45,10 +45,12 @@ vim.keymap.set({ 'n', 'v' }, 'C', '"_C')
 vim.keymap.set('n', 'S', '"_S')
 
 vim.keymap.set('n', '<leader>vv', function()
+  local buf_name = vim.api.nvim_buf_get_name(0)
+  local is_fugitive = require('custom.utils').string_starts_with(buf_name, 'fugitive://')
   local line = vim.api.nvim_get_current_line()
   --- @type string|nil
   local line_trimmed = line:match '^%s*[#/-]+%s*(.+)'
-  if line_trimmed then
+  if line_trimmed and not is_fugitive then
     --- @type string
     local char = line_trimmed:sub(1, 1)
     vim.api.nvim_command('normal g_v0f' .. char)
