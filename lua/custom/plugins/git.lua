@@ -10,10 +10,12 @@ return {
         callback = function(ev)
           vim.keymap.set({ 'n', 'x' }, '_', function()
             local line = vim.api.nvim_get_current_line()
-            if line:find '^[AMRD+-] ' then
-              vim.api.nvim_command ':normal 0w'
-            elseif line:find '^[AMRD+-]' then
-              vim.api.nvim_command ':normal 0l'
+            --- @type string|nil
+            local line_trimmed = line:match '^[AMRD+-] *(.+)'
+            if line_trimmed then
+              --- @type string
+              local char = line_trimmed:sub(1, 1)
+              vim.api.nvim_command(':normal 0f' .. char)
             else
               vim.api.nvim_command ':normal gfug_'
             end
