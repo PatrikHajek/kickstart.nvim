@@ -10,7 +10,7 @@ return {
         callback = function(ev)
           vim.keymap.set({ 'n', 'x' }, '_', function()
             local line = vim.api.nvim_get_current_line()
-            --- @type string|nil
+            --- @type string | nil
             local line_trimmed = line:match '^[AMRD+-] *(.+)'
             if line_trimmed then
               --- @type string
