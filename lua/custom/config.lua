@@ -80,26 +80,26 @@ end, { desc = '[Q]uit' })
 ---@param with_num boolean | nil
 ---@param use_selection boolean | nil
 local function goto_file(with_num, use_selection)
+  local line
+  local path
+  if use_selection then
+    local keys = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
+    vim.api.nvim_feedkeys(keys, 'x', false)
+    line = require('custom.utils').get_selection()
+    line = vim.trim(line:gsub('\n', ''))
+    path = line
+  else
+    line = vim.api.nvim_get_current_line()
+    local cursor_col = vim.api.nvim_win_get_cursor(0)[2]
+    local search_start = line:sub(1, cursor_col + 1):find ' [^ ]+$' + 1 or 1
+    path = line:sub(search_start):match '^(.*%.%w+)'
+  end
+  assert(type(line) == 'string', 'line not set')
+  assert(type(path) == 'string', 'path not set')
+
   local buf_name = vim.api.nvim_buf_get_name(0)
   local is_fugitive = require('custom.utils').string_starts_with(buf_name, 'fugitive://')
   if vim.bo.buftype == 'terminal' or is_fugitive then
-    local line
-    local path
-    if use_selection then
-      local keys = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
-      vim.api.nvim_feedkeys(keys, 'x', false)
-      line = require('custom.utils').get_selection()
-      line = vim.trim(line:gsub('\n', ''))
-      path = line
-    else
-      line = vim.api.nvim_get_current_line()
-      local cursor_col = vim.api.nvim_win_get_cursor(0)[2]
-      local search_start = line:sub(1, cursor_col + 1):find ' [^ ]+$' + 1 or 1
-      path = line:sub(search_start):match '^(.*%.%w+)'
-    end
-    assert(type(line) == 'string', 'line not set')
-    assert(type(path) == 'string', 'path not set')
-
     if is_fugitive then
       local git_root = require('custom.utils').get_git_root()
       line = git_root .. line
@@ -107,29 +107,24 @@ local function goto_file(with_num, use_selection)
     end
 
     vim.api.nvim_command ':q'
-    vim.api.nvim_command(':e ' .. path)
-    if with_num then
-      -- TODO: better message
-      assert(use_selection ~= true, 'cannot set cursor position using selection')
-      local _, last = line:find(path, 0, true)
-      if last then
-        local tail = line:sub(last + 1, line:len())
-        local lnum = tonumber(tail:match '%d+')
-        if lnum == nil then
-          return
-        end
-        local col = tonumber(tail:match '%d+%:(%d+)') or 0
-        col = col > 0 and col - 1 or 0
-        vim.api.nvim_win_set_cursor(0, { lnum, col })
-      end
-    end
-    return
   end
 
+  vim.api.nvim_command(':e ' .. path)
+
   if with_num then
-    vim.api.nvim_command 'normal gabcF'
-  else
-    vim.api.nvim_command 'normal gabcf'
+    -- TODO: better message
+    assert(use_selection ~= true, 'cannot set cursor position using selection')
+    local _, last = line:find(path, 0, true)
+    if last then
+      local tail = line:sub(last + 1, line:len())
+      local lnum = tonumber(tail:match '%d+')
+      if lnum == nil then
+        return
+      end
+      local col = tonumber(tail:match '%d+%:(%d+)') or 0
+      col = col > 0 and col - 1 or 0
+      vim.api.nvim_win_set_cursor(0, { lnum, col })
+    end
   end
 end
 vim.keymap.set('n', 'gf', function()

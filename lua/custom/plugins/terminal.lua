@@ -46,10 +46,5 @@ return {
     -- vim.keymap.set("n", "<leader>to", ":ToggleTerm direction=float<CR>", { desc = "Toggle Terminal in Floating Window" })
     -- vim.keymap.set("n", "<leader>tO", ":ToggleTerm direction=tab<CR>", { desc = "Toggle Terminal in Normal Mode" })
     vim.keymap.set('t', '<C-x>', '<esc><bar><C-\\><C-n>', { desc = 'Exit terminal mode' })
-
-    -- [[ Working gf/gF in term ]]
-    -- for keeping the original gf/gF functionality without having to make it myself
-    vim.keymap.set('n', 'gabcf', 'gf')
-    vim.keymap.set('n', 'gabcF', 'gF')
   end,
 }
