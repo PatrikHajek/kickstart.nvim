@@ -75,14 +75,11 @@ vim.keymap.set('n', '<leader>q', function()
   vim.cmd ':q'
 end, { desc = '[Q]uit' })
 
--- TODO: make the params a union.
---
----@param with_num boolean | nil
----@param use_selection boolean | nil
-local function goto_file(with_num, use_selection)
+---@param preset "num" | "selection" | nil
+local function goto_file(preset)
   local line
   local path
-  if use_selection then
+  if preset == 'selection' then
     local keys = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
     vim.api.nvim_feedkeys(keys, 'x', false)
     line = require('custom.utils').get_selection()
@@ -111,9 +108,7 @@ local function goto_file(with_num, use_selection)
 
   vim.api.nvim_command(':e ' .. path)
 
-  if with_num then
-    -- TODO: better message
-    assert(use_selection ~= true, 'cannot set cursor position using selection')
+  if preset == 'num' then
     local _, last = line:find(path, 0, true)
     if last then
       local tail = line:sub(last + 1, line:len())
@@ -128,13 +123,13 @@ local function goto_file(with_num, use_selection)
   end
 end
 vim.keymap.set('n', 'gf', function()
-  goto_file(true)
+  goto_file 'num'
 end, { noremap = true, desc = 'Jump to file under cursor' })
 vim.keymap.set('n', 'gF', function()
   goto_file()
 end, { noremap = true, desc = 'Jump to file under cursor without cursor position' })
 vim.keymap.set('x', 'gf', function()
-  goto_file(false, true)
+  goto_file 'selection'
 end, { noremap = true, desc = 'Jump to file using current selection' })
 
 -- [[ Buffers ]]
