@@ -89,7 +89,11 @@ local function goto_file(preset)
     line = vim.api.nvim_get_current_line()
     local cursor_col = vim.api.nvim_win_get_cursor(0)[2]
     local search_start = (line:sub(1, cursor_col + 1):find ' [^ ]+$' or 0) + 1
-    path = line:sub(search_start):match '^(.*%.%w+)'
+    local line_trimmed = line:sub(search_start)
+    if line_trimmed:find '^%(.*%.%w+.*%)' then
+      line_trimmed = line_trimmed:sub(2)
+    end
+    path = line_trimmed:match '^(.*%.%w+)'
   end
   assert(type(line) == 'string', 'line not set')
   assert(type(path) == 'string', 'path not set')
