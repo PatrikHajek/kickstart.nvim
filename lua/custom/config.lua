@@ -265,6 +265,7 @@ local function get_servers()
     black = {},
     -- linters
     eslint_d = {},
+    shellcheck = {},
     -- servers
     ts_ls = {
       init_options = {
