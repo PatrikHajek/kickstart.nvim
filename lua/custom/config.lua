@@ -261,6 +261,7 @@ local function map_search(prefix, path, name)
 end
 map_search('p', '$HOME/notes/', '[P]KM')
 map_search('o', '$HOME/notes-tomake/', '[O]rganization')
+map_search('n', vim.fn.stdpath 'config', '[N]eovim')
 
 -- [[ LSP ]]
 vim.keymap.set('n', '<leader>rl', ':LspRestart<CR>', { desc = '[R]estart [L]SP' })
