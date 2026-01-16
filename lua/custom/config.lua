@@ -263,6 +263,20 @@ map_search('p', '$HOME/notes/', '[P]KM')
 map_search('o', '$HOME/notes-tomake/', '[O]rganization')
 map_search('n', vim.fn.stdpath 'config', '[N]eovim')
 
+-- Changing directories
+vim.keymap.set('n', '<leader>cf', function()
+  vim.api.nvim_command ':cd %:h'
+end, { desc = "[C]hange directory to the current [F]ile's directory" })
+vim.keymap.set('n', '<leader>cg', function()
+  vim.api.nvim_command ':cd %:h'
+  local git_root = require('custom.utils').get_git_root()
+  vim.api.nvim_command ':cd -'
+  vim.api.nvim_command(':cd ' .. git_root)
+end, { desc = '[C]hange directory to the closest [G]it root' })
+vim.keymap.set('n', '<leader>cl', function()
+  vim.api.nvim_command ':cd -'
+end, { desc = '[C]hange directory to the [L]ast directory' })
+
 -- [[ LSP ]]
 vim.keymap.set('n', '<leader>rl', ':LspRestart<CR>', { desc = '[R]estart [L]SP' })
 
