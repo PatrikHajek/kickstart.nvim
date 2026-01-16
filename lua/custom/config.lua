@@ -247,12 +247,20 @@ vim.keymap.set('n', '<leader>sag', function()
     glob_pattern = { '!node_modules' },
   }
 end, { desc = '[S]earch [A]ll files using [G]rep' })
-vim.keymap.set('n', '<leader>sp', function()
-  require('telescope.builtin').find_files { cwd = vim.fn.expand '$HOME/notes/' }
-end, { desc = '[S]earch [P]KM' })
-vim.keymap.set('n', '<leader>so', function()
-  require('telescope.builtin').find_files { cwd = vim.fn.expand '$HOME/notes-tomake/' }
-end, { desc = '[S]earch [O]rganization Notes (Tomake)' })
+
+---@param prefix string
+---@param path string
+---@param name string
+local function map_search(prefix, path, name)
+  vim.keymap.set('n', '<leader>s' .. prefix .. 'f', function()
+    require('telescope.builtin').find_files { cwd = vim.fn.expand(path) }
+  end, { desc = '[S]earch ' .. name .. ' [F]iles' })
+  vim.keymap.set('n', '<leader>s' .. prefix .. 'g', function()
+    require('telescope.builtin').live_grep { cwd = vim.fn.expand(path) }
+  end, { desc = '[S]earch ' .. name .. ' by [G]rep' })
+end
+map_search('p', '$HOME/notes/', '[P]KM')
+map_search('o', '$HOME/notes-tomake/', '[O]rganization')
 
 -- [[ LSP ]]
 vim.keymap.set('n', '<leader>rl', ':LspRestart<CR>', { desc = '[R]estart [L]SP' })
