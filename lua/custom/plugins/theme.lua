@@ -1,3 +1,5 @@
+-- To inspect highlight groups and used colors, you can use `:Inspect`.
+
 -- onedarkpro
 return {
   'olimorris/onedarkpro.nvim',
