@@ -11,6 +11,11 @@ return {
         SpellBad = { fg = colors.green },
         SpellLocal = { fg = colors.green },
         -- SpellBad = { underdashed = true },
+
+        -- Scala
+        ['@lsp.type.parameter.scala'] = { link = '@variable.parameter' },
+        ['@lsp.typemod.variable.readonly.scala'] = {},
+        ['@lsp.type.namespace.scala'] = { link = '@constant' },
       },
     }
     vim.cmd 'colorscheme onedark_vivid'
