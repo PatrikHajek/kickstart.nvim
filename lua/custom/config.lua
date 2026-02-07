@@ -150,6 +150,7 @@ vim.keymap.set('n', '<CR>', function()
   vim.api.nvim_command('/' .. word)
   vim.api.nvim_win_set_cursor(0, cursorPos)
 end, { desc = 'Search word under the cursor' })
+
 vim.keymap.set('x', '<CR>', function()
   vim.api.nvim_command ':normal! m0'
   vim.api.nvim_command ':normal! "sy'
@@ -160,6 +161,7 @@ vim.keymap.set('x', '<CR>', function()
   vim.api.nvim_command ':normal! n'
   vim.api.nvim_command ':normal! `0'
 end, { desc = 'Search selected text' })
+
 vim.keymap.set('n', '/', '/\\v', { desc = 'Enable very magic for searching', noremap = true })
 vim.keymap.set('n', '<leader>br', ':%s//', { desc = '[B]uffer [R]eplace' })
 vim.keymap.set('v', '<leader>br', ':s//', { desc = '[B]uffer [R]eplace in selected lines' })
