@@ -152,6 +152,35 @@ vim.keymap.set('n', '<CR>', function()
 end, { desc = 'Search word under the cursor' })
 
 vim.keymap.set('x', '<CR>', function()
+  local is_visual_block = vim.fn.mode() == '\22'
+  if is_visual_block then
+    vim.api.nvim_command ':normal! m0'
+
+    vim.api.nvim_command ':normal vv'
+    local marks = require('custom.utils').get_selection_marks()
+    local lines = vim.api.nvim_buf_get_lines(0, marks.start[1] - 1, marks.end_[1], false)
+    for i in ipairs(lines) do
+      -- for selecting up to the end of line (i.e. pressing $ in visual-block)
+      if i == #lines - 1 then
+        lines[i] = lines[i]:sub(marks.start[2] + 1)
+      else
+        lines[i] = lines[i]:sub(marks.start[2] + 1, marks.end_[2] + 1)
+      end
+    end
+
+    for i in ipairs(lines) do
+      lines[i] = vim.fn.escape(lines[i], [[.~*=@\|[]()<>]])
+    end
+    local selection = vim.fn.join(lines, ('.*\\n.{%i}'):format(marks.start[2]))
+    selection = ('\\v^.{%i}%s.*'):format(marks.start[2], selection)
+
+    vim.fn.setreg('/', selection)
+    vim.api.nvim_command ':normal! n'
+    vim.api.nvim_command ':normal! `0'
+
+    return
+  end
+
   vim.api.nvim_command ':normal! m0'
   vim.api.nvim_command ':normal! "sy'
   local selection = vim.fn.getreg 's'
