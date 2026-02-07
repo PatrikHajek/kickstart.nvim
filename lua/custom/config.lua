@@ -153,15 +153,16 @@ end, { desc = 'Search word under the cursor' })
 -- NOTE: The `\z` is a lua multi-string special character - [StackOverflow](https://stackoverflow.com/a/21205005).
 --       This keymap can be replaced by `*` or `#` in visual mode if you don't
 --       use the multiline search.
-vim.keymap.set(
-  'x',
-  '<CR>',
-  "m0\"sy\z
-  <BAR>:execute setreg('/', substitute(escape(getreg('s'), '.\\~[]*'), '\\n', '\\\\n', 'g'))\z
-  <BAR>/<CR>\z
-  <BAR>`0",
-  { desc = 'Search selected text' }
-)
+vim.keymap.set('x', '<CR>', function()
+  vim.api.nvim_command ':normal! m0'
+  vim.api.nvim_command ':normal! "sy'
+  local selection = vim.fn.getreg 's'
+  selection = vim.fn.escape(selection, [[.\~[]*]])
+  selection = vim.fn.substitute(selection, '\n', [[\\n]], 'g')
+  vim.fn.setreg('/', selection)
+  vim.api.nvim_command ':normal! n'
+  vim.api.nvim_command ':normal! `0'
+end, { desc = 'Search selected text' })
 vim.keymap.set('n', '/', '/\\v', { desc = 'Enable very magic for searching', noremap = true })
 vim.keymap.set('n', '<leader>br', ':%s//', { desc = '[B]uffer [R]eplace' })
 vim.keymap.set('v', '<leader>br', ':s//', { desc = '[B]uffer [R]eplace in selected lines' })
