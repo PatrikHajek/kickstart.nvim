@@ -20,24 +20,9 @@ M.log = log
 --
 --- @return string contents include newline characters (`\n`) if the selection spanned multiple lines.
 M.get_selection = function()
-  local mark_start = vim.api.nvim_buf_get_mark(0, '<')
-  local mark_end = vim.api.nvim_buf_get_mark(0, '>')
-  assert(mark_start[1] ~= 0 and mark_end[1] ~= 0, 'no last selection')
-  local start = mark_start
-  local end_ = mark_end
-  -- orders by column if on the same line
-  if mark_start[1] == mark_end[1] then
-    start = mark_start[2] < mark_end[2] and mark_start or mark_end
-    end_ = mark_start[2] < mark_end[2] and mark_end or mark_start
-  else
-    start = mark_start[1] < mark_end[1] and mark_start or mark_end
-    end_ = mark_start[1] < mark_end[1] and mark_end or mark_start
-  end
-  -- if you pass a bigger index to string.sub, it will return an empty string
-  local string_sub_max = 2147483647 - 1
-  start[2] = start[2] > string_sub_max and string_sub_max or start[2]
-  end_[2] = end_[2] > string_sub_max and string_sub_max or end_[2]
-
+  local marks = M.get_selection_marks()
+  local start = marks.start
+  local end_ = marks.end_
   local lines = vim.api.nvim_buf_get_lines(0, start[1] - 1, end_[1], false)
   assert(lines[0] == nil)
   assert(lines[#lines] ~= nil)
@@ -56,6 +41,34 @@ M.get_selection = function()
   end
   content = content .. line_last
   return content
+end
+
+-- Gets the start and end marks of the last selection.
+--
+-- If you run this function while still in visual mode, this will return the contents
+-- of the last selection. You must first exit visual mode to get the contents. You
+-- can do so like this, for example: `vim.api.nvim_command(':normal v')`.
+--
+--- @return { start: integer[], end_: integer[] }
+M.get_selection_marks = function()
+  local mark_start = vim.api.nvim_buf_get_mark(0, '<')
+  local mark_end = vim.api.nvim_buf_get_mark(0, '>')
+  assert(mark_start[1] ~= 0 and mark_end[1] ~= 0, 'no last selection')
+  local start = mark_start
+  local end_ = mark_end
+  -- orders by column if on the same line
+  if mark_start[1] == mark_end[1] then
+    start = mark_start[2] < mark_end[2] and mark_start or mark_end
+    end_ = mark_start[2] < mark_end[2] and mark_end or mark_start
+  else
+    start = mark_start[1] < mark_end[1] and mark_start or mark_end
+    end_ = mark_start[1] < mark_end[1] and mark_end or mark_start
+  end
+  -- if you pass a bigger index to string.sub, it will return an empty string
+  local string_sub_max = 2147483647 - 1
+  start[2] = start[2] > string_sub_max and string_sub_max or start[2]
+  end_[2] = end_[2] > string_sub_max and string_sub_max or end_[2]
+  return { start = start, end_ = end_ }
 end
 
 --- TODO: Remove, use `vim.startswith` instead.
