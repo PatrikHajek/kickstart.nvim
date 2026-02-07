@@ -80,9 +80,8 @@ local function goto_file(preset)
   local line
   local path
   if preset == 'selection' then
-    local keys = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
-    vim.api.nvim_feedkeys(keys, 'x', false)
-    line = require('custom.utils').get_selection()
+    vim.api.nvim_command ':normal! "sy'
+    line = vim.fn.getreg 's'
     line = vim.trim(line:gsub('\n', ''))
     path = line
   else
