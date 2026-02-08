@@ -172,6 +172,41 @@ vim.keymap.set('x', '<CR>', function()
   vim.api.nvim_command ':normal! `0'
 end, { desc = 'Search selected text' })
 
+vim.keymap.set('x', '<leader><CR>', function()
+  local is_visual_block = vim.fn.mode() == '\22'
+
+  vim.api.nvim_command ':normal! m0'
+  vim.api.nvim_command ':normal! "sy'
+  local selection = vim.fn.getreg 's'
+  selection = vim.fn.escape(selection, [[.~*=@\|{}[]()<>]])
+
+  if is_visual_block then
+    selection = vim.fn.substitute(selection, '\n', [[.*\\n.*]], 'g')
+    selection = '.*' .. vim.fn.trim(selection, '', 1)
+    if selection:find '\\n%.%*$' then
+      selection = selection:sub(1, -3)
+    end
+  else
+    selection = vim.fn.substitute(selection, ' *\n *', [[ *\\n *]], 'g')
+    selection = ' *' .. vim.fn.trim(selection, '', 1)
+
+    local buf_name = vim.api.nvim_buf_get_name(0)
+    if vim.startswith(buf_name, 'fugitive://') then
+      selection = vim.fn.substitute(selection, '\\\\n \\*[+-]', [[\\n *[+-]? *]], 'g')
+      selection = vim.fn.substitute(selection, '^ \\*[+-]', '[+-]? *', 'g')
+    end
+
+    if selection:find '\\n %*$' then
+      selection = selection:sub(1, -3)
+    end
+  end
+
+  selection = [[\v]] .. selection
+  vim.fn.setreg('/', selection)
+  vim.api.nvim_command ':normal! n'
+  vim.api.nvim_command ':normal! `0'
+end, { desc = 'Search selected text ignoring indentation' })
+
 vim.keymap.set('n', '/', '/\\v', { desc = 'Enable very magic for searching', noremap = true })
 vim.keymap.set('n', '<leader>br', ':%s//', { desc = '[B]uffer [R]eplace' })
 vim.keymap.set('v', '<leader>br', ':s//', { desc = '[B]uffer [R]eplace in selected lines' })
