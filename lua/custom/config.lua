@@ -160,10 +160,10 @@ vim.keymap.set('x', '<CR>', function()
 
   if is_visual_block then
     local marks = require('custom.utils').get_selection_marks()
-    selection = vim.fn.substitute(selection, '\n', ([[.*\\n.{%i}]]):format(marks.start[2]), 'g')
+    selection = vim.fn.substitute(selection, '\\v\n', ([[.*\\n.{%i}]]):format(marks.start[2]), 'g')
     selection = ('^.{%i}%s.*'):format(marks.start[2], selection)
   else
-    selection = vim.fn.substitute(selection, '\n', [[\\n]], 'g')
+    selection = vim.fn.substitute(selection, '\\v\n', [[\\n]], 'g')
   end
 
   selection = '\\v' .. selection
@@ -181,7 +181,7 @@ local function select_search_no_indent()
   selection = vim.fn.escape(selection, require('custom.utils').CHARS_ESCAPE_MAGIC)
 
   if is_visual_block then
-    selection = vim.fn.substitute(selection, '\n', [[.*\\n\\1]], 'g')
+    selection = vim.fn.substitute(selection, '\\v\n', [[.*\\n\\1]], 'g')
     selection = [[^(.*)]] .. vim.fn.trim(selection, '', 1)
     if selection:find '\\n%.%*$' then
       selection = selection:sub(1, -3)
@@ -189,14 +189,14 @@ local function select_search_no_indent()
   else
     local buf_name = vim.api.nvim_buf_get_name(0)
     if vim.startswith(buf_name, 'fugitive://') then
-      selection = vim.fn.substitute(selection, ' *\n\\(\\\\+\\|-\\)\\? *', [[ *\\n[+-]? *]], 'g')
-      selection = vim.fn.substitute(selection, [[^\(\\+\|-\)]], '', 'g')
+      selection = vim.fn.substitute(selection, '\\v *\n(\\\\\\+|-)? *', [[ *\\n[+-]? *]], 'g')
+      selection = vim.fn.substitute(selection, [[\v^(\\\+|-)]], '', 'g')
       selection = '^[+-]? *' .. vim.fn.trim(selection, '', 1)
       if selection:find '\\n%[%+%-%]%? %*$' then
         selection = selection:sub(1, -8)
       end
     else
-      selection = vim.fn.substitute(selection, ' *\n *', [[ *\\n *]], 'g')
+      selection = vim.fn.substitute(selection, '\\v *\n *', [[ *\\n *]], 'g')
       selection = ' *' .. vim.fn.trim(selection, '', 1)
       if selection:find '\\n %*$' then
         selection = selection:sub(1, -3)
