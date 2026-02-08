@@ -207,6 +207,10 @@ local function select_search_no_indent()
   vim.api.nvim_command ':normal! `0'
 end
 vim.keymap.set('x', '<leader><CR>', select_search_no_indent, { desc = 'Search selected text ignoring indentation' })
+vim.keymap.set('n', '<leader><CR>', function()
+  vim.api.nvim_command ':normal V'
+  select_search_no_indent()
+end, { desc = 'Search line under the cursor ignoring indentation' })
 
 vim.keymap.set('n', '/', '/\\v', { desc = 'Enable very magic for searching', noremap = true })
 vim.keymap.set('n', '<leader>br', ':%s//', { desc = '[B]uffer [R]eplace' })
