@@ -159,11 +159,11 @@ vim.keymap.set('x', '<CR>', function()
 
   if is_visual_block then
     local marks = require('custom.utils').get_selection_marks()
-    selection = vim.fn.escape(selection, [[.~*=@\|[]()<>]])
+    selection = vim.fn.escape(selection, require('custom.utils').CHARS_ESCAPE_MAGIC)
     selection = vim.fn.substitute(selection, '\n', ([[.*\\n.{%i}]]):format(marks.start[2]), 'g')
     selection = ('\\v^.{%i}%s.*'):format(marks.start[2], selection)
   else
-    selection = vim.fn.escape(selection, [[.\~[]*]])
+    selection = vim.fn.escape(selection, require('custom.utils').CHARS_ESCAPE)
     selection = vim.fn.substitute(selection, '\n', [[\\n]], 'g')
   end
 
@@ -178,7 +178,7 @@ vim.keymap.set('x', '<leader><CR>', function()
   vim.api.nvim_command ':normal! m0'
   vim.api.nvim_command ':normal! "sy'
   local selection = vim.fn.getreg 's'
-  selection = vim.fn.escape(selection, [[.~*=@\|{}[]()<>]])
+  selection = vim.fn.escape(selection, require('custom.utils').CHARS_ESCAPE_MAGIC)
 
   if is_visual_block then
     selection = vim.fn.substitute(selection, '\n', [[.*\\n.*]], 'g')
