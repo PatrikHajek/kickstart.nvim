@@ -58,6 +58,9 @@ vim.keymap.set('n', '<leader>vv', function()
     vim.api.nvim_command 'normal g_v_'
   end
 end, { desc = 'Select line without newline, comment or diff character' })
+vim.keymap.set('n', '<leader>vh', 'm0_v`0', { desc = 'Select from the start of line up to current position' })
+vim.keymap.set('n', '<leader>vl', 'm0g_v`0', { desc = 'Select from current position up to the end of line' })
+
 -- vim.keymap.set('n', '<leader>wb', ':w<CR>', { desc = '[W]rite [B]uffer' })
 vim.keymap.set('n', '<leader>q', function()
   if vim.wo.diff then
