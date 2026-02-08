@@ -191,7 +191,7 @@ local function select_search_no_indent()
     if vim.startswith(buf_name, 'fugitive://') then
       selection = vim.fn.substitute(selection, ' *\n\\(\\\\+\\|-\\)\\? *', [[ *\\n[+-]? *]], 'g')
       selection = vim.fn.substitute(selection, [[^\(\\+\|-\)]], '', 'g')
-      selection = [[^[+-]? *]] .. vim.fn.trim(selection, '', 1)
+      selection = '^[+-]? *' .. vim.fn.trim(selection, '', 1)
       if selection:find '\\n%[%+%-%]%? %*$' then
         selection = selection:sub(1, -8)
       end
