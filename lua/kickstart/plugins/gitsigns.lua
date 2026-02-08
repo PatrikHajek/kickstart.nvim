@@ -56,14 +56,18 @@ return {
           if vim.wo.diff then
             vim.api.nvim_echo({ { "use `:'<,'>diffput` instead" } }, false, {})
           else
+            vim.api.nvim_command ':normal! m0'
             gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
+            vim.api.nvim_command ':normal! `0'
           end
         end, { desc = 'stage git hunk' })
         map('v', '<leader>hr', function()
           if vim.wo.diff then
             vim.api.nvim_echo({ { "use `'<,'>diffget` instead" } }, false, {})
           else
+            vim.api.nvim_command ':normal! m0'
             gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+            vim.api.nvim_command ':normal! `0'
           end
         end, { desc = 'reset git hunk' })
         -- normal mode
