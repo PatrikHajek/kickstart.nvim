@@ -172,7 +172,7 @@ vim.keymap.set('x', '<CR>', function()
   vim.api.nvim_command ':normal! `0'
 end, { desc = 'Search selected text' })
 
-vim.keymap.set('x', '<leader><CR>', function()
+local function select_search_no_indent()
   local is_visual_block = vim.fn.mode() == '\22'
 
   vim.api.nvim_command ':normal! m0'
@@ -205,7 +205,8 @@ vim.keymap.set('x', '<leader><CR>', function()
   vim.fn.setreg('/', selection)
   vim.api.nvim_command ':normal! n'
   vim.api.nvim_command ':normal! `0'
-end, { desc = 'Search selected text ignoring indentation' })
+end
+vim.keymap.set('x', '<leader><CR>', select_search_no_indent, { desc = 'Search selected text ignoring indentation' })
 
 vim.keymap.set('n', '/', '/\\v', { desc = 'Enable very magic for searching', noremap = true })
 vim.keymap.set('n', '<leader>br', ':%s//', { desc = '[B]uffer [R]eplace' })
