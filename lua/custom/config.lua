@@ -445,13 +445,13 @@ end
 local function goto_next_reference()
   vim.lsp.buf.references(nil, {
     on_list = function(r)
-      local filename = r.context.params.textDocument.uri
+      local filename = vim.api.nvim_buf_get_name(0)
       local cursor = vim.api.nvim_win_get_cursor(0)
       local items = r.items
       local next_item = nil
       local fallback_item = nil
       for _, item in pairs(items) do
-        if item.filename ~= string.sub(filename, 8) then
+        if item.filename ~= filename then
           goto continue
         end
 
@@ -484,13 +484,13 @@ end
 local function goto_prev_reference()
   vim.lsp.buf.references(nil, {
     on_list = function(r)
-      local filename = r.context.params.textDocument.uri
+      local filename = vim.api.nvim_buf_get_name(0)
       local cursor = vim.api.nvim_win_get_cursor(0)
       local items = vim.fn.reverse(r.items)
       local prev_item = nil
       local fallback_item = nil
       for _, item in pairs(items) do
-        if item.filename ~= string.sub(filename, 8) then
+        if item.filename ~= filename then
           goto continue
         end
 
