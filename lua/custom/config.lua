@@ -46,7 +46,7 @@ vim.keymap.set('n', 'S', '"_S')
 
 vim.keymap.set('n', '<leader>vv', function()
   local buf_name = vim.api.nvim_buf_get_name(0)
-  local is_fugitive = require('custom.utils').string_starts_with(buf_name, 'fugitive://')
+  local is_fugitive = vim.startswith(buf_name, 'fugitive://')
   local line = vim.api.nvim_get_current_line()
   --- @type string | nil
   local line_trimmed = line:match '^%s*[#/-]+%s*(.+)'
@@ -101,7 +101,7 @@ local function goto_file(preset)
   assert(type(path) == 'string', 'path not set')
 
   local buf_name = vim.api.nvim_buf_get_name(0)
-  local is_fugitive = require('custom.utils').string_starts_with(buf_name, 'fugitive://')
+  local is_fugitive = vim.startswith(buf_name, 'fugitive://')
   if vim.bo.buftype == 'terminal' or is_fugitive then
     if is_fugitive then
       local git_root = require('custom.utils').get_git_root()

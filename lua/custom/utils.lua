@@ -40,24 +40,6 @@ M.get_selection_marks = function()
   return { start = start, end_ = end_ }
 end
 
---- TODO: Remove, use `vim.startswith` instead.
----
---- @param str string
---- @param search string
---- @return boolean
-M.string_starts_with = function(str, search)
-  return str:sub(1, search:len()) == search
-end
-
---- TODO: Remove, use `vim.endswith` instead.
----
---- @param str string
---- @param search string
---- @return boolean
-M.string_ends_with = function(str, search)
-  return str:sub(str:len() + 1 - search:len()) == search
-end
-
 --- Gets the git root for the cwd.
 ---
 --- Returned path always ends with a `/`.
@@ -68,7 +50,7 @@ M.get_git_root = function()
   local path = out.stdout
   assert(type(path) == 'string', 'Failed to parse git root command output.')
   path = vim.trim(path)
-  if not M.string_ends_with(path, '/') then
+  if not vim.endswith(path, '/') then
     path = path .. '/'
   end
   return path
