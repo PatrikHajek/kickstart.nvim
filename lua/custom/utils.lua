@@ -56,4 +56,12 @@ M.get_git_root = function()
   return path
 end
 
+--- Checks if current buffer is a fugitive buffer.
+---
+--- @return boolean
+M.is_fugitive = function()
+  local buf_name = vim.api.nvim_buf_get_name(0)
+  return vim.startswith(buf_name, 'fugitive://')
+end
+
 return M

@@ -45,8 +45,7 @@ vim.keymap.set({ 'n', 'v' }, 'C', '"_C')
 vim.keymap.set('n', 'S', '"_S')
 
 vim.keymap.set('n', '<leader>vv', function()
-  local buf_name = vim.api.nvim_buf_get_name(0)
-  local is_fugitive = vim.startswith(buf_name, 'fugitive://')
+  local is_fugitive = require('custom.utils').is_fugitive()
   local line = vim.api.nvim_get_current_line()
   --- @type string | nil
   local line_trimmed = line:match '^%s*[#/-]+%s*(.+)'
@@ -100,8 +99,7 @@ local function goto_file(preset)
   assert(type(line) == 'string', 'line not set')
   assert(type(path) == 'string', 'path not set')
 
-  local buf_name = vim.api.nvim_buf_get_name(0)
-  local is_fugitive = vim.startswith(buf_name, 'fugitive://')
+  local is_fugitive = require('custom.utils').is_fugitive()
   if vim.bo.buftype == 'terminal' or is_fugitive then
     if is_fugitive then
       local git_root = require('custom.utils').get_git_root()
@@ -190,8 +188,8 @@ local function select_search_no_indent()
       selection = selection:sub(1, -3)
     end
   else
-    local buf_name = vim.api.nvim_buf_get_name(0)
-    if vim.startswith(buf_name, 'fugitive://') then
+    local is_fugitive = require('custom.utils').is_fugitive()
+    if is_fugitive then
       selection = vim.fn.substitute(selection, '\\v\\s*\n(\\\\\\+|-)?\\s*', [[\\s*\\n[+-]?\\s*]], 'g')
       selection = vim.fn.substitute(selection, [[\v^(\\\+|-)]], '', 'g')
       selection = '[+-]?\\s*' .. vim.fn.trim(selection, '', 1)
