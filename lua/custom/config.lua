@@ -44,6 +44,7 @@ vim.keymap.set({ 'n', 'v' }, 'D', '"_D')
 vim.keymap.set({ 'n', 'v' }, 'C', '"_C')
 vim.keymap.set('n', 'S', '"_S')
 
+-- TODO: Move somewhere else.
 vim.keymap.set('n', '<leader>vv', function()
   local is_fugitive = require('custom.utils').is_fugitive()
   local line = vim.api.nvim_get_current_line()
