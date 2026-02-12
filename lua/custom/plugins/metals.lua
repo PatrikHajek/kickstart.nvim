@@ -13,6 +13,7 @@ return {
       excludedPackages = { 'akka.actor.typed.javadsl', 'com.github.swagger.akka.javadsl' },
       -- Enables documentation in lsp hover.
       enableSemanticHighlighting = true,
+      -- TODO: Ask for AI to give me a list of all values.
     }
 
     -- *READ THIS*
