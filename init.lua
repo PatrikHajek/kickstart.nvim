@@ -419,9 +419,11 @@ require('lazy').setup({
           layout_config = {
             prompt_position = 'top',
             preview_cutoff = 1, -- Preview should always show (unless previewer = false)
-            preview_height = function(_, _, max_lines)
-              return math.min(max_lines / 3, 6)
-            end,
+            vertical = {
+              preview_height = function(_, _, max_lines)
+                return math.min(max_lines / 3, 6)
+              end,
+            },
           },
         },
         pickers = {
