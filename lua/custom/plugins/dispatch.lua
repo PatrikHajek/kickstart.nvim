@@ -25,6 +25,10 @@ return {
         table.insert(options, { name = v, compilers = { v } })
       end
 
+      table.sort(options, function(a, b)
+        return a.name:lower() < b.name:lower()
+      end)
+
       pickers
         .new({}, {
           prompt_title = 'Select Compiler',
