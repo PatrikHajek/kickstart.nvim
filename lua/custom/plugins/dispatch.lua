@@ -6,6 +6,12 @@ return {
     -- Optional: Auto-open quickfix when a build finishes
     vim.g.dispatch_quickfix_height = 10
 
+    --- @type { name: string, compilers: string[] }[]
+    local pipelines = {
+      { name = 'nuxi + eslint', compilers = { 'nuxi', 'eslint' } },
+      { name = 'vue-tsc + eslint', compilers = { 'vue', 'eslint' } },
+    }
+
     local function pick_compiler()
       local pickers = require 'telescope.pickers'
       local finders = require 'telescope.finders'
@@ -13,25 +19,46 @@ return {
       local actions = require 'telescope.actions'
       local action_state = require 'telescope.actions.state'
 
-      -- Get all installed compilers
+      local options = pipelines
       local compilers = vim.fn.getcompletion('', 'compiler')
+      for _, v in ipairs(compilers) do
+        table.insert(options, { name = v, compilers = { v } })
+      end
 
       pickers
         .new({}, {
           prompt_title = 'Select Compiler',
-          finder = finders.new_table { results = compilers },
-          sorter = conf.generic_sorter {},
+          finder = finders.new_table {
+            results = options,
+            entry_maker = function(entry)
+              return { display = entry.name, value = entry, ordinal = entry.name }
+            end,
+          },
           attach_mappings = function(prompt_bufnr)
             actions.select_default:replace(function()
               actions.close(prompt_bufnr)
-              local selection = action_state.get_selected_entry()
+              local selection = action_state.get_selected_entry().value
 
-              -- 1. Set the compiler
-              vim.cmd('compiler ' .. selection[1])
-              -- 2. Run Make (via vim-dispatch)
+              local combined_prg = {}
+              local combined_efm = {}
+
+              for _, c in ipairs(selection.compilers) do
+                -- After calling `:compiler <name>`, errorformat and makeprg are set.
+                vim.cmd('compiler ' .. c)
+                local efm = vim.opt_local.errorformat:get()
+                local prg = vim.opt_local.makeprg:get()
+
+                table.insert(combined_prg, prg)
+                for _, f in ipairs(efm) do
+                  table.insert(combined_efm, f)
+                end
+              end
+
+              -- `;` in bash joins commands together even if the preceding failed.
+              vim.opt_local.makeprg = table.concat(combined_prg, ' ; ')
+              vim.opt_local.errorformat = combined_efm
+
               vim.cmd 'Make'
-
-              print('Switched to ' .. selection[1] .. ' and started :Make')
             end)
             return true
           end,
