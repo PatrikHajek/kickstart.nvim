@@ -6,6 +6,7 @@ return {
     -- Optional: Auto-open quickfix when a build finishes
     vim.g.dispatch_quickfix_height = 10
 
+    --- List of compiler pipelines. Each pipeline runs it's compiler in the order of definition.
     --- @type { name: string, compilers: string[] }[]
     local pipelines = {
       { name = 'nuxi + eslint', compilers = { 'nuxi', 'eslint' } },
