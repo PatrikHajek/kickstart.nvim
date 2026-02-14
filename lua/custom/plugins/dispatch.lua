@@ -10,7 +10,7 @@ return {
     --- @type { name: string, compilers: string[] }[]
     local pipelines = {
       { name = 'nuxi + eslint', compilers = { 'nuxi', 'eslint' } },
-      { name = 'vue-tsc + eslint', compilers = { 'vue', 'eslint' } },
+      { name = 'vue + eslint', compilers = { 'vue', 'eslint' } },
     }
 
     local function pick_compiler()
