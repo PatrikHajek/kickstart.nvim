@@ -61,6 +61,7 @@ return {
               vim.opt_local.errorformat = combined_efm
 
               vim.cmd 'Make'
+              print('Compiling using ' .. selection.name)
             end)
             return true
           end,
