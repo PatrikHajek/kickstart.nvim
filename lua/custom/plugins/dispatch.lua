@@ -19,7 +19,8 @@ return {
       local actions = require 'telescope.actions'
       local action_state = require 'telescope.actions.state'
 
-      local options = pipelines
+      local options = {}
+      vim.list_extend(options, pipelines)
       local compilers = vim.fn.getcompletion('', 'compiler')
       for _, v in ipairs(compilers) do
         table.insert(options, { name = v, compilers = { v } })
