@@ -34,6 +34,7 @@ return {
               return { display = entry.name, value = entry, ordinal = entry.name }
             end,
           },
+          sorter = conf.generic_sorter {},
           attach_mappings = function(prompt_bufnr)
             actions.select_default:replace(function()
               actions.close(prompt_bufnr)
