@@ -52,13 +52,10 @@ return {
               for _, c in ipairs(selection.compilers) do
                 -- After calling `:compiler <name>`, errorformat and makeprg are set.
                 vim.cmd('compiler ' .. c)
-                local efm = vim.opt_local.errorformat:get()
                 local prg = vim.opt_local.makeprg:get()
-
                 table.insert(combined_prg, prg)
-                for _, f in ipairs(efm) do
-                  table.insert(combined_efm, f)
-                end
+                local efm = vim.opt_local.errorformat:get()
+                vim.list_extend(combined_efm, efm)
               end
 
               -- `;` in bash joins commands together even if the preceding failed.
