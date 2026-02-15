@@ -290,6 +290,16 @@ vim.keymap.set('n', '<leader>cf', ':cfirst<CR>', { desc = 'Go to the first item 
 vim.keymap.set('n', '<leader>cl', ':clast<CR>', { desc = 'Go to the last item in quickfix list' })
 vim.keymap.set('n', '<C-l>', ':cnext<CR>', { desc = 'Go to next quickfix item' })
 vim.keymap.set('n', '<C-h>', ':cprev<CR>', { desc = 'Go to prev quickfix item' })
+vim.keymap.set('n', '<leader>cr', function()
+  vim.lsp.buf.references(nil, {
+    on_list = function(o)
+      --- This is done per documentation: `:help vim.lsp.listOpts`.
+      --- @diagnostic disable-next-line: param-type-mismatch
+      vim.fn.setqflist({}, 'r', o)
+    end,
+  })
+end, { desc = 'Fill quickfix list with references' })
+
 vim.keymap.set('n', '<leader>vg', ':vimgrep //gj ', { desc = '[V]im[G]rep using search register' })
 vim.keymap.set('n', '<leader>vr', ':cdo s//', { desc = '[V]im [R]eplace' })
 
