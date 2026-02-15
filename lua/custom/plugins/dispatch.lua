@@ -5,7 +5,7 @@ return {
   init = function()
     vim.g.dispatch_no_maps = 1
 
-    --- List of compiler pipelines. Each pipeline runs it's compiler in the order of definition.
+    --- List of compiler pipelines. Each pipeline runs it's compilers in the order of definition.
     --- @type { name: string, compilers: string[] }[]
     local pipelines = {
       { name = 'nuxi + eslint', compilers = { 'nuxi', 'eslint' } },
