@@ -7,7 +7,7 @@ return {
       ['<esc>'] = false,
       ['<cr>'] = 'jump_close',
       ['='] = 'fold_toggle',
-      ['q'] = {
+      ['c'] = {
         action = function(view)
           if view.opts.mode == 'diagnostics' then
             local items = require('trouble').get_items()
