@@ -11,25 +11,33 @@
   highlights using `highlights`.
 --]]
 
--- [[ Settings ]]
+-- [[ Spellcheck ]]
 
 vim.opt.spell = true
 vim.opt.spelllang = 'en_us'
 vim.opt.spelloptions = 'camel'
 vim.opt.spellcapcheck = ''
 
+-- [[ Visibility ]]
+
 vim.opt.sidescrolloff = 15
 vim.opt.wrap = false
 vim.opt.colorcolumn = '80'
+vim.opt.cursorline = true
+vim.opt.cursorlineopt = 'number'
+
+-- [[ Tab ]]
+
 vim.opt.expandtab = true
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
 -- turns off 4 spaces a tab in markdown files
 vim.g.markdown_recommended_style = 0
-vim.opt.cursorline = false
-vim.opt.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:block-blinkon0-blinkoff0-TermCursor'
 
+-- [[ Terminal ]]
+
+vim.opt.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:block-blinkon0-blinkoff0-TermCursor'
 vim.opt.termguicolors = true
 
 -- [[ Keymaps ]]
