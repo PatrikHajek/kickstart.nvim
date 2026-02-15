@@ -4,8 +4,6 @@ return {
   cmd = { 'Dispatch', 'Make', 'Focus', 'Start' }, -- Or lazy-load on these commands
   init = function()
     vim.g.dispatch_no_maps = 1
-    -- Optional: Auto-open quickfix when a build finishes
-    vim.g.dispatch_quickfix_height = 10
 
     --- List of compiler pipelines. Each pipeline runs it's compiler in the order of definition.
     --- @type { name: string, compilers: string[] }[]
