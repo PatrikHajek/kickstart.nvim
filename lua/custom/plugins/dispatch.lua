@@ -13,6 +13,17 @@ return {
       { name = 'vue + eslint', compilers = { 'vue', 'eslint' } },
     }
 
+    vim.api.nvim_create_autocmd('QuickFixCmdPost', {
+      pattern = '[m]ake',
+      callback = function()
+        -- Default quickfix list takes a little while to open.
+        vim.schedule(function()
+          vim.cmd 'cclose'
+        end)
+        vim.api.nvim_command ':Trouble quickfix'
+      end,
+    })
+
     local function pick_compiler()
       local pickers = require 'telescope.pickers'
       local finders = require 'telescope.finders'
@@ -61,6 +72,8 @@ return {
               vim.opt_local.errorformat = combined_efm
 
               vim.cmd 'Make'
+              -- Close the output buffer opened by default.
+              vim.cmd 'cclose'
               print('Compiling using ' .. selection.name)
             end)
             return true
