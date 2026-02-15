@@ -22,9 +22,24 @@ vim.opt.spellcapcheck = ''
 
 vim.opt.sidescrolloff = 15
 vim.opt.wrap = false
-vim.opt.colorcolumn = '80'
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = 'number'
+
+local colorcolumns = {
+  default = '80',
+  rust = '100',
+  lua = '100',
+}
+vim.api.nvim_create_autocmd('BufRead', {
+  callback = function()
+    local filetype = vim.bo.filetype
+    if colorcolumns[filetype] ~= nil then
+      vim.opt.colorcolumn = colorcolumns[filetype]
+    else
+      vim.opt.colorcolumn = colorcolumns.default
+    end
+  end,
+})
 
 -- [[ Tab ]]
 
