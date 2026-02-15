@@ -263,8 +263,8 @@ vim.keymap.set('n', '<leader>sq', ':Telescope quickfixhistory<CR>', { desc = '[S
 vim.keymap.set('n', '<leader>co', ':Trouble quickfix<CR>', { desc = 'Open quickfix list' })
 vim.keymap.set('n', '<leader>cf', ':cfirst<CR>', { desc = 'Go to the first item in quickfix list' })
 vim.keymap.set('n', '<leader>cl', ':clast<CR>', { desc = 'Go to the last item in quickfix list' })
-vim.keymap.set('n', '<C-n>', ':cnext<CR>', { desc = 'Go to next quickfix item' })
-vim.keymap.set('n', '<C-p>', ':cprev<CR>', { desc = 'Go to prev quickfix item' })
+vim.keymap.set('n', '<C-l>', ':cnext<CR>', { desc = 'Go to next quickfix item' })
+vim.keymap.set('n', '<C-h>', ':cprev<CR>', { desc = 'Go to prev quickfix item' })
 vim.keymap.set('n', '<leader>vg', ':vimgrep //gj ', { desc = '[V]im[G]rep using search register' })
 vim.keymap.set('n', '<leader>vr', ':cdo s//', { desc = '[V]im [R]eplace' })
 
