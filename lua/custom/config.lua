@@ -258,7 +258,7 @@ vim.keymap.set('n', '<leader>lbd', function()
   vim.api.nvim_command ':Trouble quickfix'
 end, { desc = "Populate quickfix list with current buffer's diagnostics and open it" })
 
--- quickfix keymaps
+-- [[ QuickFix List ]]
 vim.keymap.set('n', '<leader>sq', ':Telescope quickfixhistory<CR>', { desc = '[S]earch [Q]uickfix history' })
 vim.keymap.set('n', '<leader>co', ':Trouble quickfix<CR>', { desc = 'Open quickfix list' })
 vim.keymap.set('n', '<leader>cf', ':cfirst<CR>', { desc = 'Go to the first item in quickfix list' })
