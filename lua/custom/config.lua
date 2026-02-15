@@ -276,6 +276,7 @@ vim.keymap.set('n', ']d', function()
   vim.diagnostic.jump { count = 1, float = true }
 end, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+vim.keymap.set('n', '<leader>ld', ':Trouble diagnostics<CR>', { desc = '[L]ist [D]iagnostics' })
 vim.keymap.set('n', '<leader>lbd', function()
   local diagnostics = vim.diagnostic.get(0)
   vim.fn.setqflist(vim.diagnostic.toqflist(diagnostics), ' ')
