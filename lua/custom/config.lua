@@ -292,6 +292,30 @@ vim.keymap.set('n', '<C-h>', ':cprev<CR>', { desc = 'Go to prev quickfix item' }
 vim.keymap.set('n', '<leader>vg', ':vimgrep //gj ', { desc = '[V]im[G]rep using search register' })
 vim.keymap.set('n', '<leader>vr', ':cdo s//', { desc = '[V]im [R]eplace' })
 
+--- @param pattern string
+--- @return { matches: { text: string }[], rest: { text: string }[] }
+local function filter_qf(pattern)
+  local list = vim.fn.getqflist()
+  local matches = {}
+  local rest = {}
+  for _, item in ipairs(list) do
+    if vim.fn.match(item.text, pattern) ~= -1 then
+      table.insert(matches, item)
+    else
+      table.insert(rest, item)
+    end
+  end
+  return { matches = matches, rest = rest }
+end
+vim.api.nvim_create_user_command('Ckeep', function(args)
+  vim.fn.setqflist(filter_qf(args.fargs[1]).matches)
+  require('trouble').refresh()
+end, { nargs = 1, desc = 'Keep matched items in quickfix list' })
+vim.api.nvim_create_user_command('Cdiscard', function(args)
+  vim.fn.setqflist(filter_qf(args.fargs[1]).rest)
+  require('trouble').refresh()
+end, { nargs = 1, desc = 'Discard matched items from quickfix list' })
+
 -- [[ Todo Highlights ]]
 vim.keymap.set('n', '<leader>tt', ':TodoTelescope<CR>', { desc = 'Search [T]odos using [T]elescope' })
 vim.keymap.set('n', '<leader>lt', ':Trouble todo<CR>', { desc = '[L]ist [T]odos' })
