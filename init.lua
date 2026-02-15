@@ -572,12 +572,6 @@ require('lazy').setup({
 
           -- Find references for the word under your cursor.
           map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-          -- Remove default lsp keymaps.
-          vim.keymap.del('n', 'gra')
-          vim.keymap.del('n', 'gri')
-          vim.keymap.del('n', 'grn')
-          vim.keymap.del('n', 'grr')
-          vim.keymap.del('n', 'grt')
 
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.
