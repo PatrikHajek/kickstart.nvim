@@ -20,6 +20,7 @@ vim.opt.spellcapcheck = ''
 
 -- [[ Visibility ]]
 
+vim.opt.scrolloff = 1000
 vim.opt.sidescrolloff = 15
 vim.opt.wrap = false
 vim.opt.cursorline = true
