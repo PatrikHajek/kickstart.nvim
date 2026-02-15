@@ -1,6 +1,5 @@
 return {
   'tpope/vim-dispatch',
-  lazy = false, -- It's lightweight enough to load on start
   cmd = { 'Dispatch', 'Make', 'Focus', 'Start' }, -- Or lazy-load on these commands
   init = function()
     vim.g.dispatch_no_maps = 1
