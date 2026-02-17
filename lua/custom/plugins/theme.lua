@@ -9,6 +9,10 @@ return {
     require('onedarkpro').setup {
       -- NOTE: for a list of possible values, run `h attr-list`
       highlights = {
+        -- TelescopeSelection was set to purple fg and black bg before upgrading. Currently, when
+        -- setting fg, it will overwrite the TelescopeMatching - won't highlight matched chars.
+        TelescopeSelection = { bg = colors.black },
+
         ['@markup.list.checked.markdown'] = { fg = colors.purple },
         SpellBad = { fg = colors.green },
         SpellLocal = { fg = colors.green },
