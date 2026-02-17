@@ -392,7 +392,7 @@ vim.keymap.del('n', 'grt')
 vim.keymap.set('n', '<leader>rl', ':LspRestart<CR>', { desc = '[R]estart [L]SP' })
 
 local function get_servers()
-  local vue_language_server_path = require('mason-registry').get_package('vue-language-server'):get_install_path() .. '/node_modules/@vue/language-server'
+  local vue_language_server_path = vim.fn.expand '$MASON/packages' .. '/vue-language-server' .. '/node_modules/@vue/language-server'
   return {
     -- formatters
     prettierd = {},
@@ -408,16 +408,13 @@ local function get_servers()
             name = '@vue/typescript-plugin',
             location = vue_language_server_path,
             languages = { 'vue' },
+            configNamespace = 'typescript',
           },
         },
       },
       filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
     },
-    volar = {
-      settings = {
-        css = { lint = { unknownAtRules = 'ignore' } },
-      },
-    },
+    vue_ls = {},
     cssls = {
       settings = {
         css = { lint = { unknownAtRules = 'ignore' } },
