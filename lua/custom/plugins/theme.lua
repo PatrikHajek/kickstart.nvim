@@ -11,6 +11,7 @@ return {
       highlights = {
         -- TelescopeSelection was set to purple fg and black bg before upgrading. Currently, when
         -- setting fg, it will overwrite the TelescopeMatching - won't highlight matched chars.
+        TelescopeMatching = { fg = colors.purple, bold = true },
         TelescopeSelection = { bg = colors.black },
 
         ['@markup.list.checked.markdown'] = { fg = colors.purple },
