@@ -15,9 +15,10 @@ return {
             vim.api.nvim_command ':q'
           elseif view.opts.mode == 'lsp_references' then
             vim.api.nvim_command ':q'
-            -- NOTE: from `:help vim.lsp.listOpts`
             vim.lsp.buf.references(nil, {
               on_list = function(options)
+                --- This is done per documentation: `:help vim.lsp.listOpts`.
+                --- @diagnostic disable-next-line: param-type-mismatch
                 vim.fn.setqflist({}, 'r', options)
               end,
             })
