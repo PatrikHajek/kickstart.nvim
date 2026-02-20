@@ -331,7 +331,23 @@ vim.keymap.set('n', 'dS', function()
 end, { desc = '[d]iff [S]ave all buffers' })
 
 -- [[ Search ]]
-vim.keymap.set('n', '<leader>st', ':Telescope treesitter<CR>', { desc = '[S]earch [T]reesitter' })
+vim.keymap.set('n', '<leader>st', function()
+  -- This gets around the issue of treesitter picker putting you 1 column to the left, right before
+  -- the identifier. This causes another issue when the identifier is at the start of the line, it
+  -- puts you on the 2nd letter of it.
+  require('telescope.builtin').treesitter {
+    attach_mappings = function(_, map)
+      map({ 'n', 'i' }, '<CR>', function(prompt_bufnr)
+        local actions = require 'telescope.actions'
+        actions.select_default(prompt_bufnr)
+        vim.schedule(function()
+          vim.cmd 'normal! l'
+        end)
+      end)
+      return true
+    end,
+  }
+end, { desc = '[S]earch [T]reesitter' })
 vim.keymap.set('n', '<leader>saf', function()
   require('telescope.builtin').find_files {
     find_command = {
