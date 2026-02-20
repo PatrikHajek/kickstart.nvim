@@ -29,6 +29,10 @@ return {
       },
     },
     modes = {
+      quickfix = {
+        -- More info in the [source](https://github.com/folke/trouble.nvim/blob/bd67efe408d4816e25e8491cc5ad4088e708a69a/lua/trouble/sources/lsp.lua#L112).
+        title = '{hl:Title} QuickFix {hl} {count}',
+      },
       diagnostics = {
         filter = {
           severity = {
