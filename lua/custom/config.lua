@@ -304,6 +304,7 @@ vim.keymap.set('n', '<leader>cf', ':cfirst<CR>', { desc = 'Go to the first item 
 vim.keymap.set('n', '<leader>cl', ':clast<CR>', { desc = 'Go to the last item in quickfix list' })
 vim.keymap.set('n', '<C-l>', ':cnext<CR>', { desc = 'Go to next quickfix item' })
 vim.keymap.set('n', '<C-h>', ':cprev<CR>', { desc = 'Go to prev quickfix item' })
+
 vim.keymap.set('n', '<leader>cr', function()
   vim.lsp.buf.references(nil, {
     on_list = function(o)
