@@ -282,14 +282,16 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
--- Diagnostic keymaps
+-- [[ Diagnostics ]]
+vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+
 vim.keymap.set('n', '[d', function()
   vim.diagnostic.jump { count = -1, float = true }
 end, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', function()
   vim.diagnostic.jump { count = 1, float = true }
 end, { desc = 'Go to next diagnostic message' })
-vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+
 vim.keymap.set('n', '<leader>ld', function()
   local diagnostics = vim.diagnostic.get()
   vim.fn.setqflist(vim.diagnostic.toqflist(diagnostics), ' ')
