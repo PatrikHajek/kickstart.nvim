@@ -49,6 +49,12 @@ return {
           },
         },
       },
+      -- Can be used to include the item the cursor is on in lsp_references window.
+      -- lsp_base = {
+      --   params = {
+      --     include_current = true,
+      --   },
+      -- },
     },
     -- win = {},
     -- preview = {
