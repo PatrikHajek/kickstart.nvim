@@ -291,11 +291,6 @@ vim.keymap.set('n', ']d', function()
 end, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>ld', ':Trouble diagnostics<CR>', { desc = '[L]ist [D]iagnostics' })
-vim.keymap.set('n', '<leader>lbd', function()
-  local diagnostics = vim.diagnostic.get(0)
-  vim.fn.setqflist(vim.diagnostic.toqflist(diagnostics), ' ')
-  vim.api.nvim_command ':Trouble quickfix'
-end, { desc = "Populate quickfix list with current buffer's diagnostics and open it" })
 
 -- [[ QuickFix List ]]
 vim.keymap.set('n', '<leader>sq', ':Telescope quickfixhistory<CR>', { desc = '[S]earch [Q]uickfix history' })
