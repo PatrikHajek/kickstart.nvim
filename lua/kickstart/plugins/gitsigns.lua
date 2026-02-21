@@ -36,7 +36,7 @@ return {
           end, opts)
         end
 
-        -- Navigation
+        -- [[ Navigation ]]
         map_preserve('n', ']c', function()
           if vim.wo.diff then
             vim.cmd.normal { ']c', bang = true }
@@ -69,8 +69,23 @@ return {
           end
         end, { desc = 'Jump to previous hunk' })
 
-        -- Actions
-        -- visual mode
+        -- [[ Actions ]]
+        map('n', '<leader>hs', function()
+          if vim.wo.diff then
+            vim.cmd ':diffput'
+          else
+            gitsigns.stage_hunk()
+          end
+        end, { desc = 'git [s]tage hunk' })
+
+        map('n', '<leader>hr', function()
+          if vim.wo.diff then
+            vim.cmd ':diffget'
+          else
+            gitsigns.reset_hunk()
+          end
+        end, { desc = 'git [r]eset hunk' })
+
         map('v', '<leader>hs', function()
           if vim.wo.diff then
             vim.cmd 'normal! \27' -- <ESC> char
@@ -81,6 +96,7 @@ return {
             vim.api.nvim_command ':normal! `0'
           end
         end, { desc = 'stage git hunk' })
+
         map('v', '<leader>hr', function()
           if vim.wo.diff then
             vim.cmd 'normal! \27' -- <ESC> char
@@ -91,23 +107,7 @@ return {
             vim.api.nvim_command ':normal! `0'
           end
         end, { desc = 'reset git hunk' })
-        -- normal mode
-        map('n', '<leader>hs', function()
-          if vim.wo.diff then
-            vim.cmd ':diffput'
-          else
-            gitsigns.stage_hunk()
-          end
-        end, { desc = 'git [s]tage hunk' })
-        map('n', '<leader>hr', function()
-          if vim.wo.diff then
-            vim.cmd ':diffget'
-          else
-            gitsigns.reset_hunk()
-          end
-        end, { desc = 'git [r]eset hunk' })
-        -- map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
-        -- map('n', '<leader>hu', gitsigns.undo_stage_hunk, { desc = 'git [u]ndo stage hunk' })
+
         map('n', '<leader>hU', function()
           if vim.wo.diff then
             vim.api.nvim_echo({ { 'use `:%diffput <buffer-number>` instead' } }, false, {})
@@ -115,6 +115,7 @@ return {
             gitsigns.reset_buffer_index()
           end
         end, { desc = 'git [U]nstage buffer' })
+
         map('n', '<leader>hR', function()
           if vim.wo.diff then
             vim.api.nvim_echo({ { 'use `:%diffget <buffer-number>` instead' } }, false, {})
@@ -123,16 +124,17 @@ return {
           end
         end, { desc = 'git [R]eset buffer' })
 
-        -- Preview
+        -- [[ Preview ]]
         map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
         map('n', '<leader>hi', gitsigns.preview_hunk_inline, { desc = 'git preview hunk [i]nline' })
         map('n', '<leader>hb', function()
           gitsigns.blame_line { full = true }
         end)
 
+        -- [[ Selection ]]
         map({ 'o', 'x' }, 'ih', gitsigns.select_hunk, { desc = 'git select hunk' })
 
-        -- Diff
+        -- [[ Diff ]]
         map('n', '<leader>hd', function()
           local unstaged_hunks = gitsigns.get_hunks(vim.api.nvim_get_current_buf())
           if #unstaged_hunks == 0 then
@@ -141,9 +143,11 @@ return {
           end
           gitsigns.diffthis()
         end, { desc = 'git [d]iff against index' })
+
         map('n', '<leader>hDc', function()
           gitsigns.diffthis '@'
         end, { desc = 'git [D]iff against last [c]ommit' })
+
         map('n', '<leader>hDh', function()
           gitsigns.diffthis '~'
         end, { desc = 'git [D]iff against [h]ead' })
@@ -152,7 +156,7 @@ return {
           gitsigns.setqflist 'all'
         end, { desc = 'git push [h]unks to [q]flist' })
 
-        -- Toggles
+        -- [[ Toggles ]]
         map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line' })
         map('n', '<leader>tD', gitsigns.toggle_deleted, { desc = '[T]oggle git show [D]eleted' })
         map('n', '<leader>tw', gitsigns.toggle_word_diff, { desc = '[T]oggle git [w]ord diff' })
