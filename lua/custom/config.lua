@@ -88,7 +88,17 @@ vim.keymap.set('n', '<leader>vl', 'm0g_v`0', { remap = true, desc = 'Select from
 -- vim.keymap.set('n', '<leader>wb', ':w<CR>', { desc = '[W]rite [B]uffer' })
 vim.keymap.set('n', '<leader>q', function()
   if vim.wo.diff then
-    vim.cmd 'wincmd h | wincmd k | q'
+    -- Go to the file diff window to reset the cursor to the 'starting' position.
+    vim.cmd 'wincmd l | wincmd j'
+    -- Go to the git diff window.
+    vim.cmd 'wincmd h | wincmd k'
+    local is_fugitive = require('custom.utils').is_fugitive()
+    if is_fugitive then
+      -- Cursor is in a fugitive buffer. Go to the open diff window below and quit.
+      vim.cmd 'wincmd j | q'
+    end
+    -- Quit the remaining diff window.
+    vim.cmd 'q'
     return
   end
 
