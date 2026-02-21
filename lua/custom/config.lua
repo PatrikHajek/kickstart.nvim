@@ -97,6 +97,7 @@ vim.keymap.set('n', '<leader>q', function()
       -- Cursor is in a fugitive buffer. Go to the open diff window below and quit.
       vim.cmd 'wincmd j | q'
     end
+    vim.cmd 'wa'
     -- Quit the remaining diff window.
     vim.cmd 'q'
     return
