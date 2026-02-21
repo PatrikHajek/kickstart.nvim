@@ -54,7 +54,8 @@ return {
         -- visual mode
         map('v', '<leader>hs', function()
           if vim.wo.diff then
-            vim.api.nvim_echo({ { "use `:'<,'>diffput` instead" } }, false, {})
+            vim.cmd 'normal! \27' -- <ESC> char
+            vim.cmd "'<,'>diffput"
           else
             vim.api.nvim_command ':normal! m0'
             gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
@@ -63,7 +64,8 @@ return {
         end, { desc = 'stage git hunk' })
         map('v', '<leader>hr', function()
           if vim.wo.diff then
-            vim.api.nvim_echo({ { "use `'<,'>diffget` instead" } }, false, {})
+            vim.cmd 'normal! \27' -- <ESC> char
+            vim.cmd "'<,'>diffget"
           else
             vim.api.nvim_command ':normal! m0'
             gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
@@ -73,14 +75,14 @@ return {
         -- normal mode
         map('n', '<leader>hs', function()
           if vim.wo.diff then
-            vim.api.nvim_echo({ { 'use `dp` instead' } }, false, {})
+            vim.cmd ':diffput'
           else
             gitsigns.stage_hunk()
           end
         end, { desc = 'git [s]tage hunk' })
         map('n', '<leader>hr', function()
           if vim.wo.diff then
-            vim.api.nvim_echo({ { 'use `do` instead' } }, false, {})
+            vim.cmd ':diffget'
           else
             gitsigns.reset_hunk()
           end
