@@ -88,7 +88,7 @@ vim.keymap.set('n', '<leader>vl', 'm0g_v`0', { remap = true, desc = 'Select from
 -- vim.keymap.set('n', '<leader>wb', ':w<CR>', { desc = '[W]rite [B]uffer' })
 vim.keymap.set('n', '<leader>q', function()
   if vim.wo.diff then
-    vim.api.nvim_command ':wincmd h | q'
+    vim.cmd 'wincmd h | wincmd k | q'
     return
   end
 
