@@ -8,6 +8,7 @@ return {
     opts = {
       numhl = true,
       attach_to_untracked = true,
+      diff_opts = { vertical = false },
       on_attach = function(bufnr)
         local gitsigns = require 'gitsigns'
 
