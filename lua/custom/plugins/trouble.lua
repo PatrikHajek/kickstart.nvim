@@ -7,6 +7,13 @@ return {
       ['<esc>'] = false,
       ['<cr>'] = 'jump_close',
       ['='] = 'fold_toggle',
+      ['f'] = {
+        action = function()
+          vim.cmd 'q'
+          vim.cmd 'cfirst'
+        end,
+        desc = 'Close and jump to the first item',
+      },
       ['c'] = {
         action = function(view)
           if view.opts.mode == 'diagnostics' then
