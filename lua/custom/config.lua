@@ -310,6 +310,7 @@ vim.keymap.set('n', '<leader>cr', function()
       --- This is done per documentation: `:help vim.lsp.listOpts`.
       --- @diagnostic disable-next-line: param-type-mismatch
       vim.fn.setqflist({}, 'r', o)
+      vim.cmd 'Trouble quickfix'
     end,
   })
 end, { desc = 'Fill quickfix list with references' })
