@@ -179,6 +179,7 @@ end, { desc = 'Search word under the cursor' })
 vim.keymap.set('x', '<CR>', function()
   local is_visual_block = vim.fn.mode() == '\22'
 
+  local default_register = vim.fn.getreg '"'
   vim.api.nvim_command ':normal! m0'
   vim.api.nvim_command ':normal! "sy'
   local selection = vim.fn.getreg 's'
@@ -196,11 +197,13 @@ vim.keymap.set('x', '<CR>', function()
   vim.fn.setreg('/', selection)
   vim.api.nvim_command ':normal! n'
   vim.api.nvim_command ':normal! `0'
+  vim.fn.setreg('"', default_register)
 end, { desc = 'Search selected text' })
 
 local function select_search_no_indent()
   local is_visual_block = vim.fn.mode() == '\22'
 
+  local default_register = vim.fn.getreg '"'
   vim.api.nvim_command ':normal! m0'
   vim.api.nvim_command ':normal! "sy'
   local selection = vim.fn.getreg 's'
@@ -234,6 +237,7 @@ local function select_search_no_indent()
   vim.fn.setreg('/', selection)
   vim.api.nvim_command ':normal! n'
   vim.api.nvim_command ':normal! `0'
+  vim.fn.setreg('"', default_register)
 end
 vim.keymap.set('x', '<leader><CR>', select_search_no_indent, { desc = 'Search selected text ignoring indentation' })
 vim.keymap.set('n', '<leader><CR>', function()
