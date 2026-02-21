@@ -18,8 +18,26 @@ return {
           vim.keymap.set(mode, l, r, opts)
         end
 
+        --- Map a keybind and, after running it, preserve cursor column position.
+        --- @param mode string
+        --- @param l string
+        --- @param r function
+        --- @param opts table
+        local function map_preserve(mode, l, r, opts)
+          map(mode, l, function()
+            local pos_old = vim.api.nvim_win_get_cursor(0)
+            r()
+            vim.defer_fn(function()
+              local pos_new = vim.api.nvim_win_get_cursor(0)
+              if pos_old[2] > pos_new[2] then
+                vim.api.nvim_win_set_cursor(0, { pos_new[1], pos_old[2] })
+              end
+            end, 2)
+          end, opts)
+        end
+
         -- Navigation
-        map('n', ']c', function()
+        map_preserve('n', ']c', function()
           if vim.wo.diff then
             vim.cmd.normal { ']c', bang = true }
           else
@@ -27,7 +45,7 @@ return {
           end
         end, { desc = 'Jump to next git [c]hange' })
 
-        map('n', '[c', function()
+        map_preserve('n', '[c', function()
           if vim.wo.diff then
             vim.cmd.normal { '[c', bang = true }
           else
@@ -35,7 +53,7 @@ return {
           end
         end, { desc = 'Jump to previous git [c]hange' })
 
-        map('n', '<C-j>', function()
+        map_preserve('n', '<C-j>', function()
           if vim.wo.diff then
             vim.cmd.normal { ']c', bang = true }
           else
@@ -43,7 +61,7 @@ return {
           end
         end, { desc = 'Jump to next hunk' })
 
-        map('n', '<C-k>', function()
+        map_preserve('n', '<C-k>', function()
           if vim.wo.diff then
             vim.cmd.normal { '[c', bang = true }
           else
