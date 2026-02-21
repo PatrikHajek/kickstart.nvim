@@ -313,6 +313,9 @@ vim.keymap.set('n', '<leader>cr', function()
     end,
   })
 end, { desc = 'Fill quickfix list with references' })
+vim.keymap.set('n', '<leader>chu', function()
+  require('gitsigns').setqflist 'all'
+end, { desc = 'Fill quickfix list with unstaged hunks' })
 
 vim.keymap.set('n', '<leader>vg', ':vimgrep //gj ', { desc = '[V]im[G]rep using search register' })
 vim.keymap.set('n', '<leader>vr', ':cdo s//', { desc = '[V]im [R]eplace' })
