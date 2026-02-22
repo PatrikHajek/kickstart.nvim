@@ -44,6 +44,11 @@ return {
       ['d'] = {
         --- @param view trouble.View
         action = function(view)
+          if view.opts.mode ~= 'quickfix' then
+            print 'Deletions work only in quickfix windows!'
+            return
+          end
+
           local selection = view:selection()
           --- @type string[]
           local ids = {}
