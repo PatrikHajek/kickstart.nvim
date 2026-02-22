@@ -42,23 +42,15 @@ return {
         desc = 'Send items to quickfix list and close the window',
       },
       ['dd'] = {
-        action = function()
+        --- @param view trouble.View
+        action = function(view)
           local trouble = require 'trouble'
 
-          local line_curr = vim.api.nvim_get_current_line()
-          local text, line, column = line_curr:match '╴ (.+) %[(%d+), (%d+)]'
-          if text == nil or line == nil or column == nil then
-            print "Couldn't match current line"
-            return
-          end
-          assert(type(text) == 'string')
-          line = tonumber(line)
-          column = tonumber(column)
-
+          local at = view:at()
           --- @param item trouble.Item
           --- @type trouble.Item[]
           local items = vim.fn.filter(trouble.get_items(), function(_, item)
-            return vim.trim(item.text) ~= text or item.pos[1] ~= line or item.pos[2] + 1 ~= column
+            return at.item.id ~= item.id
           end)
 
           --- @type vim.quickfix.entry[]
