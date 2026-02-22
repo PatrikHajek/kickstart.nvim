@@ -4,6 +4,22 @@ local function to_qf_entry(item)
   return item.item
 end
 
+--- Delete items from Trouble quickfix window.
+--- @param ids string[] List of item ids to be deleted.
+local function delete(ids)
+  local trouble = require 'trouble'
+
+  --- @param item trouble.Item
+  local items = vim.tbl_filter(function(item)
+    return not vim.list_contains(ids, item.id)
+  end, trouble.get_items())
+
+  --- @type vim.quickfix.entry[]
+  local qf_entries = vim.tbl_map(to_qf_entry, items)
+  vim.fn.setqflist(qf_entries, 'r')
+  trouble.refresh()
+end
+
 return {
   'folke/trouble.nvim',
   cmd = 'Trouble',
@@ -60,17 +76,7 @@ return {
             vim.list_extend(ids, item_ids)
           end
 
-          local trouble = require 'trouble'
-
-          --- @param item trouble.Item
-          local items = vim.tbl_filter(function(item)
-            return not vim.list_contains(ids, item.id)
-          end, trouble.get_items())
-
-          --- @type vim.quickfix.entry[]
-          local qf_entries = vim.tbl_map(to_qf_entry, items)
-          vim.fn.setqflist(qf_entries, 'r')
-          trouble.refresh()
+          delete(ids)
         end,
       },
       ['dd'] = {
