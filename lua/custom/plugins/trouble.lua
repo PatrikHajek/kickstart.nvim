@@ -78,6 +78,7 @@ return {
 
           delete(ids)
         end,
+        desc = 'Delete selected nodes',
       },
       ['dd'] = {
         --- @param view trouble.View
@@ -98,7 +99,7 @@ return {
             print "Couldn't get current node"
           end
         end,
-        desc = 'Save changes',
+        desc = 'Delete the node under the cursor',
       },
     },
     modes = {
