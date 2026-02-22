@@ -41,6 +41,33 @@ return {
         end,
         desc = 'Send items to quickfix list and close the window',
       },
+      ['d'] = {
+        --- @param view trouble.View
+        action = function(view)
+          local selection = view:selection()
+          --- @type string[]
+          local ids = {}
+          for _, node in ipairs(selection) do
+            --- @param item trouble.Item
+            local item_ids = vim.tbl_map(function(item)
+              return item.id
+            end, node:flatten())
+            vim.list_extend(ids, item_ids)
+          end
+
+          local trouble = require 'trouble'
+
+          --- @param item trouble.Item
+          local items = vim.tbl_filter(function(item)
+            return not vim.list_contains(ids, item.id)
+          end, trouble.get_items())
+
+          --- @type vim.quickfix.entry[]
+          local qf_entries = vim.tbl_map(to_qf_entry, items)
+          vim.fn.setqflist(qf_entries, 'r')
+          trouble.refresh()
+        end,
+      },
       ['dd'] = {
         --- @param view trouble.View
         action = function(view)
