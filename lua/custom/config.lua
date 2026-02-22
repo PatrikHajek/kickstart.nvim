@@ -301,7 +301,14 @@ end, { desc = '[L]ist [D]iagnostics' })
 
 -- [[ QuickFix List ]]
 vim.keymap.set('n', '<leader>sq', ':Telescope quickfixhistory<CR>', { desc = '[S]earch [Q]uickfix history' })
-vim.keymap.set('n', '<leader>co', ':Trouble quickfix<CR>', { desc = 'Open quickfix list' })
+vim.keymap.set('n', '<leader>co', function()
+  local trouble = require 'trouble'
+  if vim.bo.filetype == 'trouble' then
+    trouble.close()
+  else
+    trouble.open 'quickfix'
+  end
+end, { desc = 'Open quickfix list' })
 vim.keymap.set('n', '<leader>cf', ':cfirst<CR>', { desc = 'Go to the first item in quickfix list' })
 vim.keymap.set('n', '<leader>cl', ':clast<CR>', { desc = 'Go to the last item in quickfix list' })
 vim.keymap.set('n', '<C-l>', ':cnext<CR>', { desc = 'Go to next quickfix item' })
