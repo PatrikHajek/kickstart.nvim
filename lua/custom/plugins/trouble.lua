@@ -47,6 +47,11 @@ return {
           local trouble = require 'trouble'
 
           local at = view:at()
+          if at.item == nil then
+            print 'Not a quickfix entry'
+            return
+          end
+
           --- @param item trouble.Item
           --- @type trouble.Item[]
           local items = vim.fn.filter(trouble.get_items(), function(_, item)
