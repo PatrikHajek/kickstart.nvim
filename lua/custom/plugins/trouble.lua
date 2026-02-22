@@ -47,13 +47,6 @@ return {
       -- },
     },
     preview = { scratch = false },
-    -- win = {},
-    -- preview = {
-    --   type = 'split',
-    --   relative = 'win',
-    --   position = 'right',
-    --   size = 0.45,
-    -- },
     keys = {
       ['<esc>'] = false,
       ['<cr>'] = 'jump_close',
