@@ -45,7 +45,7 @@ return {
         --- @param view trouble.View
         action = function(view)
           if view.opts.mode ~= 'quickfix' then
-            print 'Deletions work only in quickfix windows!'
+            print 'Deletions only work in quickfix windows!'
             return
           end
 
