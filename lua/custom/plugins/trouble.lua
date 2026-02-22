@@ -1,3 +1,9 @@
+--- @param item trouble.Item
+--- @return vim.quickfix.entry
+local function to_qf_entry(item)
+  return item.item
+end
+
 return {
   'folke/trouble.nvim',
   cmd = 'Trouble',
@@ -34,6 +40,33 @@ return {
           end
         end,
         desc = 'Send items to quickfix list and close the window',
+      },
+      ['dd'] = {
+        action = function()
+          local trouble = require 'trouble'
+
+          local line_curr = vim.api.nvim_get_current_line()
+          local text, line, column = line_curr:match '╴ (.+) %[(%d+), (%d+)]'
+          if text == nil or line == nil or column == nil then
+            print "Couldn't match current line"
+            return
+          end
+          assert(type(text) == 'string')
+          line = tonumber(line)
+          column = tonumber(column)
+
+          --- @param item trouble.Item
+          --- @type trouble.Item[]
+          local items = vim.fn.filter(trouble.get_items(), function(_, item)
+            return vim.trim(item.text) ~= text or item.pos[1] ~= line or item.pos[2] + 1 ~= column
+          end)
+
+          --- @type vim.quickfix.entry[]
+          local qf_entries = vim.tbl_map(to_qf_entry, items)
+          vim.fn.setqflist(qf_entries, 'r')
+          trouble.refresh()
+        end,
+        desc = 'Save changes',
       },
     },
     modes = {
