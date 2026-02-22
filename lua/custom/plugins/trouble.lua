@@ -23,6 +23,7 @@ end
 return {
   'folke/trouble.nvim',
   cmd = 'Trouble',
+  --- @type trouble.Config
   opts = {
     focus = true,
     modes = {
