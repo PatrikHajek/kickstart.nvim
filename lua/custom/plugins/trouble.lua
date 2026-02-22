@@ -82,24 +82,21 @@ return {
       ['dd'] = {
         --- @param view trouble.View
         action = function(view)
-          local trouble = require 'trouble'
-
-          local at = view:at()
-          if at.item == nil then
-            print 'Not a quickfix entry'
+          if view.opts.mode ~= 'quickfix' then
+            print 'Deletions only work in quickfix windows!'
             return
           end
 
-          --- @param item trouble.Item
-          --- @type trouble.Item[]
-          local items = vim.fn.filter(trouble.get_items(), function(_, item)
-            return at.item.id ~= item.id
-          end)
-
-          --- @type vim.quickfix.entry[]
-          local qf_entries = vim.tbl_map(to_qf_entry, items)
-          vim.fn.setqflist(qf_entries, 'r')
-          trouble.refresh()
+          local at = view:at()
+          if at.node ~= nil then
+            --- @param item trouble.Item
+            local item_ids = vim.tbl_map(function(item)
+              return item.id
+            end, at.node:flatten())
+            delete(item_ids)
+          else
+            print "Couldn't get current node"
+          end
         end,
         desc = 'Save changes',
       },
