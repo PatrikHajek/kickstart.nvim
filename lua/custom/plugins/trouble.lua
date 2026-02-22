@@ -25,6 +25,34 @@ return {
   cmd = 'Trouble',
   opts = {
     focus = true,
+    modes = {
+      quickfix = {
+        -- More info in the [source](https://github.com/folke/trouble.nvim/blob/bd67efe408d4816e25e8491cc5ad4088e708a69a/lua/trouble/sources/lsp.lua#L112).
+        title = '{hl:Title} QuickFix {hl} {count}',
+      },
+      diagnostics = {
+        filter = {
+          severity = {
+            vim.diagnostic.severity.ERROR,
+            vim.diagnostic.severity.WARN,
+          },
+        },
+      },
+      -- Can be used to include the item the cursor is on in lsp_references window.
+      -- lsp_base = {
+      --   params = {
+      --     include_current = true,
+      --   },
+      -- },
+    },
+    preview = { scratch = false },
+    -- win = {},
+    -- preview = {
+    --   type = 'split',
+    --   relative = 'win',
+    --   position = 'right',
+    --   size = 0.45,
+    -- },
     keys = {
       ['<esc>'] = false,
       ['<cr>'] = 'jump_close',
@@ -102,33 +130,5 @@ return {
         desc = 'Delete the node under the cursor',
       },
     },
-    modes = {
-      quickfix = {
-        -- More info in the [source](https://github.com/folke/trouble.nvim/blob/bd67efe408d4816e25e8491cc5ad4088e708a69a/lua/trouble/sources/lsp.lua#L112).
-        title = '{hl:Title} QuickFix {hl} {count}',
-      },
-      diagnostics = {
-        filter = {
-          severity = {
-            vim.diagnostic.severity.ERROR,
-            vim.diagnostic.severity.WARN,
-          },
-        },
-      },
-      -- Can be used to include the item the cursor is on in lsp_references window.
-      -- lsp_base = {
-      --   params = {
-      --     include_current = true,
-      --   },
-      -- },
-    },
-    preview = { scratch = false },
-    -- win = {},
-    -- preview = {
-    --   type = 'split',
-    --   relative = 'win',
-    --   position = 'right',
-    --   size = 0.45,
-    -- },
   },
 }
