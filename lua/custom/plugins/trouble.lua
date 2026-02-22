@@ -122,6 +122,7 @@ return {
       --   },
       -- },
     },
+    preview = { scratch = false },
     -- win = {},
     -- preview = {
     --   type = 'split',
