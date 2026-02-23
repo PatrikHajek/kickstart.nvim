@@ -157,14 +157,7 @@ return {
         end, { desc = 'git [D]iff against [h]ead' })
 
         -- [[ Toggles ]]
-        map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line' })
-        map('n', '<leader>tD', gitsigns.toggle_deleted, { desc = '[T]oggle git show [D]eleted' })
         map('n', '<leader>tw', gitsigns.toggle_word_diff, { desc = '[T]oggle git [w]ord diff' })
-        map('n', '<leader>gm', function()
-          gitsigns.toggle_linehl()
-          gitsigns.toggle_deleted()
-          gitsigns.toggle_word_diff()
-        end, { desc = '[T]oggle Buffer [G]it Diff [M]ode' })
       end,
     },
   },
