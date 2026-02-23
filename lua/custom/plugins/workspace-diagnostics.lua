@@ -1,3 +1,6 @@
+-- TODO: Remove? Only really useful for languages I can't easily run in the terminal - in
+-- vim-dispatch, like neovim lua code.
+
 return {
   'artemave/workspace-diagnostics.nvim',
   config = function()
