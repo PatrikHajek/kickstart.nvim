@@ -57,6 +57,8 @@ return {
           if vim.wo.diff then
             vim.cmd.normal { ']c', bang = true }
           else
+            --- LSP errors, but help pages show that the fields are optional.
+            --- @diagnostic disable-next-line: missing-fields
             gitsigns.nav_hunk('next', { target = 'all', wrap = false })
           end
         end, { desc = 'Jump to next hunk' })
@@ -65,6 +67,8 @@ return {
           if vim.wo.diff then
             vim.cmd.normal { '[c', bang = true }
           else
+            --- LSP errors, but help pages show that the fields are optional.
+            --- @diagnostic disable-next-line: missing-fields
             gitsigns.nav_hunk('prev', { target = 'all', wrap = false })
           end
         end, { desc = 'Jump to previous hunk' })
