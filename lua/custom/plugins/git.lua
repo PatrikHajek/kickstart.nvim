@@ -28,9 +28,17 @@ local function open_diff(commits_left)
   print(commits_left .. ' commits left')
 end
 
--- TODO: Option to specify optional target.
-local commit_count = get_commit_count 'origin/dev'
-local commits_left = commit_count
+local commit_count --- @type integer
+local commits_left --- @type integer
+
+--- Initialize the state.
+--- @param target string
+local function init(target)
+  -- TODO: Move initialization into first.
+  commit_count = get_commit_count(target)
+  commits_left = commit_count
+end
+init 'origin/dev'
 
 local commands = {
   next = function()
@@ -67,6 +75,7 @@ local commands = {
 -- TODO: Add autocomplete.
 -- FIX: Calling `:Commit show` closes diff.
 -- TODO: Add good API to force the user to `git pull` and start reviewing from the first commit.
+-- TODO: Option to specify target.
 vim.api.nvim_create_user_command('Commit', function(args)
   vim.cmd 'DiffviewClose'
   local command = args.fargs[1]
