@@ -43,8 +43,12 @@ end
 
 local commands = {
   next = function()
-    commits_left = commits_left - 1
-    open_diff()
+    if commits_left > 1 then
+      commits_left = commits_left - 1
+      open_diff()
+    else
+      print 'Reached the last commit'
+    end
   end,
 
   prev = function()
