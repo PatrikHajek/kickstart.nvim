@@ -66,6 +66,7 @@ local commands = {
 
 -- TODO: Add autocomplete.
 -- FIX: Calling `:Commit show` closes diff.
+-- TODO: Add good API to force the user to `git pull` and start reviewing from the first commit.
 vim.api.nvim_create_user_command('Commit', function(args)
   vim.cmd 'DiffviewClose'
   local command = args.fargs[1]
