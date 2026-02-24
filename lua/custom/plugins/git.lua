@@ -32,28 +32,45 @@ end
 local commit_count = get_commit_count 'origin/dev'
 local commits_left = commit_count
 
+local commands = {
+  next = function()
+    commits_left = commits_left - 1
+    open_diff(commits_left)
+  end,
+
+  prev = function()
+    commits_left = commits_left + 1
+    open_diff(commits_left)
+  end,
+
+  first = function()
+    commits_left = commit_count
+    open_diff(commits_left)
+  end,
+
+  last = function()
+    commits_left = 1
+    open_diff(commits_left)
+  end,
+
+  diff = function()
+    open_diff(commits_left)
+  end,
+
+  show = function()
+    local hash = get_commit_hash(commits_left)
+    -- `-s` suppresses diff.
+    vim.cmd('G show -s ' .. hash)
+  end,
+}
+
 -- TODO: Add autocomplete.
 -- FIX: Calling `:Commit show` closes diff.
 vim.api.nvim_create_user_command('Commit', function(args)
   vim.cmd 'DiffviewClose'
-  if args.fargs[1] == 'next' then
-    commits_left = commits_left - 1
-    open_diff(commits_left)
-  elseif args.fargs[1] == 'prev' then
-    commits_left = commits_left + 1
-    open_diff(commits_left)
-  elseif args.fargs[1] == 'first' then
-    commits_left = commit_count
-    open_diff(commits_left)
-  elseif args.fargs[1] == 'last' then
-    commits_left = 1
-    open_diff(commits_left)
-  elseif args.fargs[1] == 'diff' then
-    open_diff(commits_left)
-  elseif args.fargs[1] == 'show' then
-    local hash = get_commit_hash(commits_left)
-    -- `-s` suppresses diff.
-    vim.cmd('G show -s ' .. hash)
+  local command = args.fargs[1]
+  if commands[command] ~= nil then
+    commands[command]()
   else
     print 'Not a command'
   end
