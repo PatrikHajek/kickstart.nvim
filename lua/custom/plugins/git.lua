@@ -38,7 +38,7 @@ init 'origin/HEAD'
 local function open_diff()
   vim.cmd 'DiffviewClose'
   vim.cmd('DiffviewOpen ' .. get_commit_diff_hash(commits_left))
-  print(('Commit %i/%i'):format(1 + commit_count - commits_left, commit_count))
+  print(('Commit HEAD~%i / %i'):format(commits_left, commit_count))
 end
 
 local commands = {
