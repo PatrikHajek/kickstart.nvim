@@ -36,6 +36,7 @@ init 'origin/HEAD'
 
 --- Open diff against the adjacent commits.
 local function open_diff()
+  vim.cmd 'DiffviewClose'
   vim.cmd('DiffviewOpen ' .. get_commit_diff_hash(commits_left))
   print(('Commit %i/%i'):format(1 + commit_count - commits_left, commit_count))
 end
@@ -77,7 +78,6 @@ local commands = {
 -- TODO: Add good API to force the user to `git pull` and start reviewing from the first commit.
 -- TODO: Option to specify target.
 vim.api.nvim_create_user_command('Commit', function(args)
-  vim.cmd 'DiffviewClose'
   local command = args.fargs[1]
   if commands[command] ~= nil then
     commands[command]()
