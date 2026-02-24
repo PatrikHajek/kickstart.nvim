@@ -22,13 +22,6 @@ local function get_commit_hash(commits_left)
   return ('HEAD~%i'):format(commits_left)
 end
 
---- Open diff against the adjacent commits.
---- @param commits_left integer
-local function open_diff(commits_left)
-  vim.cmd('DiffviewOpen ' .. get_commit_diff_hash(commits_left))
-  print(commits_left .. ' commits left')
-end
-
 local commit_count --- @type integer
 local commits_left --- @type integer
 
@@ -40,6 +33,13 @@ local function init(target)
   commits_left = commit_count
 end
 init 'origin/HEAD'
+
+--- Open diff against the adjacent commits.
+--- @param commits_left integer
+local function open_diff(commits_left)
+  vim.cmd('DiffviewOpen ' .. get_commit_diff_hash(commits_left))
+  print(commits_left .. ' commits left')
+end
 
 local commands = {
   next = function()
