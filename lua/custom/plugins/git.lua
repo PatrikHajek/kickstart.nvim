@@ -35,35 +35,34 @@ end
 init 'origin/HEAD'
 
 --- Open diff against the adjacent commits.
---- @param commits_left integer
-local function open_diff(commits_left)
+local function open_diff()
   vim.cmd('DiffviewOpen ' .. get_commit_diff_hash(commits_left))
-  print(commits_left .. ' commits left')
+  print(('Commit %i/%i'):format(1 + commit_count - commits_left, commit_count))
 end
 
 local commands = {
   next = function()
     commits_left = commits_left - 1
-    open_diff(commits_left)
+    open_diff()
   end,
 
   prev = function()
     commits_left = commits_left + 1
-    open_diff(commits_left)
+    open_diff()
   end,
 
   first = function()
     commits_left = commit_count
-    open_diff(commits_left)
+    open_diff()
   end,
 
   last = function()
     commits_left = 1
-    open_diff(commits_left)
+    open_diff()
   end,
 
   diff = function()
-    open_diff(commits_left)
+    open_diff()
   end,
 
   show = function()
