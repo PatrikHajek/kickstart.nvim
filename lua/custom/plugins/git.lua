@@ -25,4 +25,15 @@ return {
     end,
   },
   'tpope/vim-rhubarb',
+
+  {
+    'sindrets/diffview.nvim',
+    opts = {
+      view = {
+        default = {
+          layout = 'diff2_vertical',
+        },
+      },
+    },
+  },
 }
