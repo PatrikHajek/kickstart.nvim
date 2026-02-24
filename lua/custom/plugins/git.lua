@@ -8,9 +8,10 @@ local function get_commit_count(target)
 end
 
 --- Get the commit hash.
---- @param commits_left integer
+--- @param commits_left integer Must be greater than 0.
 --- @return string
 local function get_commit_diff_hash(commits_left)
+  assert(commits_left > 0, 'There must be at least 1 commit left to open diff.')
   return ('HEAD~%i..HEAD~%i'):format(commits_left - 1, commits_left)
 end
 
