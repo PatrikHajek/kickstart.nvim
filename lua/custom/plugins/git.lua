@@ -39,7 +39,7 @@ local function init(target)
   commit_count = get_commit_count(target)
   commits_left = commit_count
 end
-init 'origin/dev'
+init 'origin/HEAD'
 
 local commands = {
   next = function()
