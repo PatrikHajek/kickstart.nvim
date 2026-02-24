@@ -80,7 +80,10 @@ local commands = {
 -- TODO: Add autocomplete.
 -- FIX: Calling `:Commit show` closes diff.
 -- TODO: Add good API to force the user to `git pull` and start reviewing from the first commit.
+-- TODO: Support count in next and prev commands to skip commits.
 -- TODO: Option to specify target.
+-- TODO: Support going beyond the first commit?
+-- TODO: Create a telescope git_commits action that uses this logic to diff the chosen commit.
 vim.api.nvim_create_user_command('Commit', function(args)
   local command = args.fargs[1]
   if commands[command] ~= nil then
@@ -120,6 +123,12 @@ return {
 
   {
     'sindrets/diffview.nvim',
+    -- TODO: Type opts.
+    -- TODO: Change default keymaps.
+    -- TODO: Put toggling sidebar to `<leader>e`.
+    -- TODO: Quit using `<leader>q`.
+    -- TODO: Keymap to jump into main diff.
+    -- TODO: Add keymaps for the :Commit command.
     opts = {
       view = {
         default = {
