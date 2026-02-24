@@ -14,6 +14,9 @@ return {
         TelescopeMatching = { fg = colors.purple, bold = true },
         TelescopeSelection = { bg = colors.black },
 
+        -- Added chars inline.
+        GitsignsAddInline = { bg = '#295058' },
+
         ['@markup.list.checked.markdown'] = { fg = colors.purple },
         SpellBad = { fg = colors.green },
         SpellLocal = { fg = colors.green },
