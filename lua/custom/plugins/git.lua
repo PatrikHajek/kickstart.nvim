@@ -28,7 +28,6 @@ local commits_left --- @type integer
 --- Initialize the state.
 --- @param target string
 local function init(target)
-  -- TODO: Move initialization into first.
   commit_count = get_commit_count(target)
   commits_left = commit_count
 end
