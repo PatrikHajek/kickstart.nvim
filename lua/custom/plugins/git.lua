@@ -34,6 +34,7 @@ end
 
 --- Open diff against the adjacent commits.
 local function open_diff()
+  -- TODO: Could possibly use `DiffviewRefresh` for a smoother experience.
   vim.cmd 'DiffviewClose'
   vim.cmd('DiffviewOpen ' .. get_commit_diff_hash(commits_left))
   print(('Commit HEAD~%i / %i'):format(commits_left, commit_count))
@@ -49,6 +50,7 @@ local BRANCH_DEFAULT = 'origin/HEAD'
 
 --- @type table<string, fun(args: string[])>
 local commands = {
+  -- TODO: Add autocomplete for branches here.
   init = function(args)
     -- TODO: Validate?
     local target = args[1] or BRANCH_DEFAULT
@@ -87,6 +89,9 @@ local commands = {
 }
 
 init(BRANCH_DEFAULT)
+
+-- TODO: When navigating, show the commit info first and then, upon closing the buffer, jump to the
+-- diff.
 -- TODO: Add autocomplete.
 -- FIX: Calling `:Commit show` closes diff.
 -- TODO: Add good API to force the user to `git pull` and start reviewing from the first commit.
