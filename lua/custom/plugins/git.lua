@@ -41,7 +41,20 @@ local function open_diff()
   print(('Commit HEAD~%i / %i'):format(commits_left, commit_count))
 end
 
+local function show()
+  local hash = get_commit_hash(commits_left)
+  -- `-s` suppresses diff.
+  vim.cmd('G show -s ' .. hash)
+end
+
+--- @type table<string, fun(args: string[])>
 local commands = {
+  init = function(args)
+    -- TODO: Validate?
+    local target = args[1]
+    init(target)
+  end,
+
   next = function()
     if commits_left > 1 then
       commits_left = commits_left - 1
@@ -70,11 +83,7 @@ local commands = {
     open_diff()
   end,
 
-  show = function()
-    local hash = get_commit_hash(commits_left)
-    -- `-s` suppresses diff.
-    vim.cmd('G show -s ' .. hash)
-  end,
+  show = show,
 }
 
 -- TODO: Add autocomplete.
@@ -87,11 +96,12 @@ local commands = {
 vim.api.nvim_create_user_command('Commit', function(args)
   local command = args.fargs[1]
   if commands[command] ~= nil then
-    commands[command]()
+    local command_args = vim.list_slice(args.fargs, 2)
+    commands[command](command_args)
   else
     print 'Not a command'
   end
-end, { desc = 'See introduced changes commit by commit', nargs = 1 })
+end, { desc = 'See introduced changes commit by commit', nargs = '*' })
 
 return {
   {
