@@ -32,7 +32,6 @@ local function init(target)
   commit_count = get_commit_count(target)
   commits_left = commit_count
 end
-init 'origin/HEAD'
 
 --- Open diff against the adjacent commits.
 local function open_diff()
@@ -47,11 +46,13 @@ local function show()
   vim.cmd('G show -s ' .. hash)
 end
 
+local BRANCH_DEFAULT = 'origin/HEAD'
+
 --- @type table<string, fun(args: string[])>
 local commands = {
   init = function(args)
     -- TODO: Validate?
-    local target = args[1]
+    local target = args[1] or BRANCH_DEFAULT
     init(target)
   end,
 
@@ -86,6 +87,7 @@ local commands = {
   show = show,
 }
 
+init(BRANCH_DEFAULT)
 -- TODO: Add autocomplete.
 -- FIX: Calling `:Commit show` closes diff.
 -- TODO: Add good API to force the user to `git pull` and start reviewing from the first commit.
