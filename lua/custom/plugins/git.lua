@@ -133,6 +133,28 @@ return {
           end, { buffer = ev.buf })
         end,
       })
+
+      vim.api.nvim_create_autocmd('WinNew', {
+        pattern = 'fugitive://*',
+        callback = function()
+          vim.schedule(function()
+            if vim.wo.diff then
+              local TAB_BAR_HEIGHT = 1
+              local STATUSLINE_HEIGHT = 1
+              local BUFFER_PATH_HEIGHT = 1
+              local FUGITIVE_HEIGHT = 1
+              local height = vim.o.lines - TAB_BAR_HEIGHT - STATUSLINE_HEIGHT - vim.o.cmdheight - BUFFER_PATH_HEIGHT * 2 - FUGITIVE_HEIGHT
+              -- Go to the top window - fugitive buffer.
+              vim.cmd 'wincmd t'
+              vim.api.nvim_win_set_height(0, FUGITIVE_HEIGHT)
+              vim.cmd 'wincmd j'
+              vim.api.nvim_win_set_height(0, height / 2)
+              vim.cmd 'wincmd j'
+              vim.api.nvim_win_set_height(0, height / 2)
+            end
+          end)
+        end,
+      })
     end,
   },
   'tpope/vim-rhubarb',
