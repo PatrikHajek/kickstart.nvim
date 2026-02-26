@@ -148,9 +148,9 @@ return {
               vim.cmd 'wincmd t'
               vim.api.nvim_win_set_height(0, FUGITIVE_HEIGHT)
               vim.cmd 'wincmd j'
-              vim.api.nvim_win_set_height(0, height / 2)
+              vim.api.nvim_win_set_height(0, math.floor(height / 2))
               vim.cmd 'wincmd j'
-              vim.api.nvim_win_set_height(0, height / 2)
+              vim.api.nvim_win_set_height(0, math.ceil(height / 2))
             end
           end)
         end,
