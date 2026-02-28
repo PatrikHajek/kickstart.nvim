@@ -168,12 +168,45 @@ return {
     -- TODO: Add keymaps for the :Commit command.
     -- TODO: Make LSPs work in the main diff buffer. Either the buffer use the actual file or change
     -- LSP config to run in that buffer.
-    opts = {
-      view = {
-        default = {
-          layout = 'diff2_vertical',
+    config = function()
+      local diffview = require 'diffview'
+      local actions = require('diffview.config').actions
+
+      local keymaps_global = {
+        ['<leader>e'] = actions.toggle_files,
+        ['<leader>b'] = false,
+
+        -- custom
+        ['<leader>q'] = ':DiffviewClose<CR>',
+      }
+
+      diffview.setup {
+        hooks = {
+          --@ Attach gitsigns to the buffers.
+          view_opened = function(view)
+            local wins = vim.api.nvim_tabpage_list_wins(view.tabpage)
+            local buffers = {} --- @type integer[]
+            for _, win in ipairs(wins) do
+              local id = vim.api.nvim_win_get_buf(win)
+              table.insert(buffers, id)
+            end
+            for _, buf in ipairs(buffers) do
+              require('gitsigns').attach(buf)
+            end
+          end,
         },
-      },
-    },
+
+        view = {
+          default = {
+            layout = 'diff2_vertical',
+          },
+        },
+
+        keymaps = {
+          view = keymaps_global,
+          file_panel = keymaps_global,
+        },
+      }
+    end,
   },
 }
