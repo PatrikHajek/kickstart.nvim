@@ -65,4 +65,17 @@ M.is_fugitive = function()
   return vim.startswith(buf_name, 'fugitive://')
 end
 
+--- Preserves cursor column position after running the function.
+--- @param func fun()
+M.preserve_cursor_column = function(func)
+  local pos_old = vim.api.nvim_win_get_cursor(0)
+  func()
+  vim.defer_fn(function()
+    local pos_new = vim.api.nvim_win_get_cursor(0)
+    if pos_old[2] > pos_new[2] then
+      vim.api.nvim_win_set_cursor(0, { pos_new[1], pos_old[2] })
+    end
+  end, 2)
+end
+
 return M

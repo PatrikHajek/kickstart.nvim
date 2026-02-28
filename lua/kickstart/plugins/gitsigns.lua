@@ -25,14 +25,7 @@ return {
         --- @param opts table
         local function map_preserve(mode, l, r, opts)
           map(mode, l, function()
-            local pos_old = vim.api.nvim_win_get_cursor(0)
-            r()
-            vim.defer_fn(function()
-              local pos_new = vim.api.nvim_win_get_cursor(0)
-              if pos_old[2] > pos_new[2] then
-                vim.api.nvim_win_set_cursor(0, { pos_new[1], pos_old[2] })
-              end
-            end, 2)
+            require('custom.utils').preserve_cursor_column(r)
           end, opts)
         end
 
