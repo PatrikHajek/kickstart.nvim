@@ -37,11 +37,11 @@ local function open_diff()
   -- TODO: Could possibly use `DiffviewRefresh` for a smoother experience.
   vim.cmd 'DiffviewClose'
   vim.cmd('DiffviewOpen ' .. get_commit_diff_hash(commits_left))
-  print(('Commit HEAD~%i / %i'):format(commits_left, commit_count))
+  print(('Commit HEAD~%i / %i'):format(commits_left - 1, commit_count))
 end
 
 local function show()
-  local hash = get_commit_hash(commits_left)
+  local hash = get_commit_hash(commits_left - 1)
   -- `-s` suppresses diff.
   vim.cmd('G show -s ' .. hash)
 end
