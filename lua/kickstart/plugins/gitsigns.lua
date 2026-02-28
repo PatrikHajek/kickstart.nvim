@@ -32,7 +32,7 @@ return {
         -- [[ Navigation ]]
         map_preserve('n', ']c', function()
           if vim.wo.diff then
-            vim.cmd.normal { ']c', bang = true }
+            vim.cmd.normal { ']c_', bang = true }
           else
             gitsigns.nav_hunk 'next'
           end
@@ -40,7 +40,7 @@ return {
 
         map_preserve('n', '[c', function()
           if vim.wo.diff then
-            vim.cmd.normal { '[c', bang = true }
+            vim.cmd.normal { '[c_', bang = true }
           else
             gitsigns.nav_hunk 'prev'
           end
@@ -48,7 +48,7 @@ return {
 
         map_preserve('n', '<C-j>', function()
           if vim.wo.diff then
-            vim.cmd.normal { ']c', bang = true }
+            vim.cmd.normal { ']c_', bang = true }
           else
             --- LSP errors, but help pages show that the fields are optional.
             --- @diagnostic disable-next-line: missing-fields
@@ -58,7 +58,7 @@ return {
 
         map_preserve('n', '<C-k>', function()
           if vim.wo.diff then
-            vim.cmd.normal { '[c', bang = true }
+            vim.cmd.normal { '[c_', bang = true }
           else
             --- LSP errors, but help pages show that the fields are optional.
             --- @diagnostic disable-next-line: missing-fields
