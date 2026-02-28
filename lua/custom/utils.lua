@@ -40,13 +40,14 @@ M.get_selection_marks = function()
   return { start = start, end_ = end_ }
 end
 
---- Gets the git root for the cwd.
+--- Get the git root for the cwd.
 ---
 --- Returned path always ends with a `/`.
 ---
+--- @param cwd string
 --- @return string
-M.get_git_root = function()
-  local out = vim.system({ 'git', 'rev-parse', '--show-toplevel' }):wait()
+M.get_git_root = function(cwd)
+  local out = vim.system({ 'git', 'rev-parse', '--show-toplevel' }, { cwd = cwd }):wait()
   local path = out.stdout
   assert(type(path) == 'string', 'Failed to parse git root command output.')
   path = vim.trim(path)
