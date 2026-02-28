@@ -8,40 +8,40 @@ local function get_commit_count(target)
 end
 
 --- Get the commit hash.
---- @param commits_left integer Must be greater than 0.
+--- @param commit_index integer Must be greater than or equal to 0.
 --- @return string
-local function get_commit_diff_hash(commits_left)
-  assert(commits_left > 0, 'There must be at least 1 commit left to open diff.')
-  return ('HEAD~%i..HEAD~%i'):format(commits_left, commits_left - 1)
+local function get_commit_diff_hash(commit_index)
+  assert(commit_index >= 0, 'There must be at least 1 commit left to open diff.')
+  return ('HEAD~%i..HEAD~%i'):format(commit_index + 1, commit_index)
 end
 
 --- Get the commit hash.
---- @param commits_left integer
+--- @param commit_index integer
 --- @return string
-local function get_commit_hash(commits_left)
-  return ('HEAD~%i'):format(commits_left)
+local function get_commit_hash(commit_index)
+  return ('HEAD~%i'):format(commit_index)
 end
 
 local commit_count --- @type integer
-local commits_left --- @type integer
+local commit_index --- @type integer
 
 --- Initialize the state.
 --- @param target string
 local function init(target)
   commit_count = get_commit_count(target)
-  commits_left = commit_count
+  commit_index = commit_count - 1
 end
 
 --- Open diff against the adjacent commits.
 local function open_diff()
   -- TODO: Could possibly use `DiffviewRefresh` for a smoother experience.
   vim.cmd 'DiffviewClose'
-  vim.cmd('DiffviewOpen ' .. get_commit_diff_hash(commits_left))
-  print(('Commit HEAD~%i / %i'):format(commits_left - 1, commit_count))
+  vim.cmd('DiffviewOpen ' .. get_commit_diff_hash(commit_index))
+  print(('Commit HEAD~%i / %i'):format(commit_index, commit_count))
 end
 
 local function show()
-  local hash = get_commit_hash(commits_left - 1)
+  local hash = get_commit_hash(commit_index)
   -- `-s` suppresses diff.
   vim.cmd('G show -s ' .. hash)
 end
@@ -58,8 +58,8 @@ local commands = {
   end,
 
   next = function()
-    if commits_left > 1 then
-      commits_left = commits_left - 1
+    if commit_index > 0 then
+      commit_index = commit_index - 1
       open_diff()
     else
       print 'Reached the last commit'
@@ -67,17 +67,17 @@ local commands = {
   end,
 
   prev = function()
-    commits_left = commits_left + 1
+    commit_index = commit_index + 1
     open_diff()
   end,
 
   first = function()
-    commits_left = commit_count
+    commit_index = commit_count - 1
     open_diff()
   end,
 
   last = function()
-    commits_left = 1
+    commit_index = 0
     open_diff()
   end,
 
