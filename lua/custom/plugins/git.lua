@@ -162,9 +162,6 @@ return {
   {
     'sindrets/diffview.nvim',
     -- TODO: Type opts.
-    -- TODO: Change default keymaps.
-    -- TODO: Put toggling sidebar to `<leader>e`.
-    -- TODO: Quit using `<leader>q`.
     -- TODO: Add keymaps for the :Commit command.
     -- TODO: Make LSPs work in the main diff buffer. Either the buffer use the actual file or change
     -- LSP config to run in that buffer.
