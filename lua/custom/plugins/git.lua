@@ -166,6 +166,7 @@ return {
     -- TODO: Make LSPs work in the main diff buffer. Either the buffer use the actual file or change
     -- LSP config to run in that buffer.
     config = function()
+      local utils = require 'custom.utils'
       local diffview = require 'diffview'
       local actions = require('diffview.config').actions
 
@@ -193,7 +194,18 @@ return {
         },
 
         keymaps = {
-          view = keymaps_global,
+          view = vim.tbl_extend('error', keymaps_global, {
+            ['<C-k>'] = function()
+              utils.preserve_cursor_column(function()
+                vim.cmd 'normal! [c_'
+              end)
+            end,
+            ['<C-j>'] = function()
+              utils.preserve_cursor_column(function()
+                vim.cmd 'normal! ]c_'
+              end)
+            end,
+          }),
           file_panel = keymaps_global,
         },
       }
