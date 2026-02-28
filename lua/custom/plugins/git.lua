@@ -179,17 +179,10 @@ return {
 
       diffview.setup {
         hooks = {
-          --@ Attach gitsigns to the buffers.
-          view_opened = function(view)
-            local wins = vim.api.nvim_tabpage_list_wins(view.tabpage)
-            local buffers = {} --- @type integer[]
-            for _, win in ipairs(wins) do
-              local id = vim.api.nvim_win_get_buf(win)
-              table.insert(buffers, id)
-            end
-            for _, buf in ipairs(buffers) do
-              require('gitsigns').attach(buf)
-            end
+          --@ Attach gitsigns to the buffers. Only works when the main diff buffer is a real file,
+          --@ not a state coming from .git/.
+          diff_buf_read = function(buf)
+            require('gitsigns').attach(buf)
           end,
         },
 
