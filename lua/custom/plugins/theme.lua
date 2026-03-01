@@ -26,6 +26,11 @@ return {
         ['@lsp.type.parameter.scala'] = { link = '@variable.parameter' },
         ['@lsp.typemod.variable.readonly.scala'] = {},
         ['@lsp.type.namespace.scala'] = { link = '@constant' },
+
+        -- Typescript/Vue
+        ['@lsp.mod.readonly.typescript'] = {},
+        ['@lsp.mod.defaultLibrary.typescript'] = {},
+        ['@lsp.typemod.method.defaultLibrary.vue'] = {},
       },
     }
     vim.cmd 'colorscheme onedark_vivid'
