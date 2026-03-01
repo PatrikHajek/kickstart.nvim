@@ -173,7 +173,6 @@ return {
       'lewis6991/gitsigns.nvim',
     },
     config = function()
-      local diffview = require 'diffview'
       local actions = require('diffview.config').actions
 
       local keymaps_global = {
@@ -184,7 +183,7 @@ return {
         { 'n', '<leader>q', ':wa | DiffviewClose<CR>', { desc = 'Save all buffers and quit' } },
       }
 
-      diffview.setup {
+      require('diffview').setup {
         hooks = {
           --@ Attach gitsigns to the buffers.
           diff_buf_read = function(buf)
