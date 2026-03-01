@@ -175,7 +175,17 @@ return {
         ['<leader>b'] = false,
 
         -- custom
-        ['<leader>q'] = ':DiffviewClose<CR>',
+        ['<leader>q'] = function()
+          vim.cmd 'DiffviewClose'
+
+          local gitsigns = require 'gitsigns'
+          local bufs = vim.api.nvim_list_bufs()
+          -- Needed to reset all gitsigns mappings that get overwritten in diffview.
+          for _, buf in ipairs(bufs) do
+            gitsigns.detach(buf)
+            gitsigns.attach(buf)
+          end
+        end,
       }
 
       diffview.setup {
