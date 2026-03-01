@@ -17,8 +17,9 @@ return {
         -- TelescopePreviewTitle = { fg = colors.black, bg = colors.blue, bold = true },
         -- TelescopePromptTitle = { fg = colors.black, bg = colors.red, bold = true },
 
-        -- Added chars inline.
-        GitsignsAddInline = { bg = '#295058' },
+        -- #516c56 corresponds to the 20% mark between #43554d (GitsignsAddInline) and #89CA78
+        -- (@string).
+        GitsignsAddInline = { bg = '#516c56' },
 
         ['@markup.list.checked.markdown'] = { fg = colors.purple },
         SpellBad = { fg = colors.green },
