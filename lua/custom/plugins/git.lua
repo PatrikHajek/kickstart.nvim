@@ -194,7 +194,31 @@ return {
           --@ Attach gitsigns to the buffers. Only works when the main diff buffer is a real file,
           --@ not a state coming from .git/.
           diff_buf_read = function(buf)
-            require('gitsigns').attach(buf)
+            local name = vim.api.nvim_buf_get_name(buf)
+            -- Skip as gitsigns will attach automatically to the real file.
+            if not vim.startswith(name, 'diffview') then
+              return
+            end
+
+            vim.defer_fn(function()
+              local ctx = {}
+
+              local staged = name:match '%.git/:0:/(.+)'
+              local commit, path = name:match '%.git/([^/]+)/(.+)'
+              if staged then
+                ctx.file = staged
+                ctx.base = 'HEAD'
+              elseif commit and path then
+                ctx.file = path
+                local parent = vim.fn.system('git rev-parse ' .. commit .. '^'):gsub('%s+', '')
+                ctx.base = parent
+              else
+                print('cannot attach gitsigns to ' .. name)
+                return
+              end
+
+              require('gitsigns').attach(buf, ctx)
+            end, 100)
           end,
         },
 
@@ -205,38 +229,7 @@ return {
         },
 
         keymaps = {
-          view = vim.tbl_extend('error', keymaps_global, {
-            ['<C-k>'] = function()
-              utils.preserve_cursor_column(function()
-                vim.cmd 'normal! [c_'
-              end)
-            end,
-            ['<C-j>'] = function()
-              utils.preserve_cursor_column(function()
-                vim.cmd 'normal! ]c_'
-              end)
-            end,
-            { 'n', '<leader>hs', ':diffput<CR>', { bufnr = nil } },
-            { 'n', '<leader>hr', ':diffget<CR>', { bufnr = nil } },
-            {
-              'v',
-              '<leader>hs',
-              function()
-                vim.cmd 'normal! \27' -- <ESC> char
-                vim.cmd "'<,'>diffput"
-              end,
-              { bufnr = nil },
-            },
-            {
-              'v',
-              '<leader>hr',
-              function()
-                vim.cmd 'normal! \27' -- <ESC> char
-                vim.cmd "'<,'>diffget"
-              end,
-              { bufnr = nil },
-            },
-          }),
+          view = keymaps_global,
           file_panel = keymaps_global,
         },
       }
