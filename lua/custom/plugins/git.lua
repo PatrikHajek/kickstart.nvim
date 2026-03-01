@@ -205,6 +205,26 @@ return {
                 vim.cmd 'normal! ]c_'
               end)
             end,
+            { 'n', '<leader>hs', ':diffput<CR>', { bufnr = nil } },
+            { 'n', '<leader>hr', ':diffget<CR>', { bufnr = nil } },
+            {
+              'v',
+              '<leader>hs',
+              function()
+                vim.cmd 'normal! \27' -- <ESC> char
+                vim.cmd "'<,'>diffput"
+              end,
+              { bufnr = nil },
+            },
+            {
+              'v',
+              '<leader>hr',
+              function()
+                vim.cmd 'normal! \27' -- <ESC> char
+                vim.cmd "'<,'>diffget"
+              end,
+              { bufnr = nil },
+            },
           }),
           file_panel = keymaps_global,
         },
