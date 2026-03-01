@@ -217,7 +217,31 @@ return {
 
         keymaps = {
           view = keymaps_global,
-          file_panel = keymaps_global,
+          file_panel = vim.list_extend(keymaps_global, {
+            { 'n', 'h', false },
+            { 'n', 'j', false },
+            { 'n', 'k', false },
+            { 'n', 'l', false },
+            {
+              'n',
+              '=',
+              function()
+                local pos = vim.api.nvim_win_get_cursor(0)
+                actions.toggle_fold()
+                vim.api.nvim_win_set_cursor(0, pos)
+              end,
+              { desc = 'Toggle fold' },
+            },
+            -- {
+            --   'n',
+            --   '<CR>',
+            --   function()
+            --     actions.select_entry()
+            --     actions.toggle_files()
+            --   end,
+            --   { desc = 'Jump to the diff for the selected entry' },
+            -- },
+          }),
         },
       }
     end,
