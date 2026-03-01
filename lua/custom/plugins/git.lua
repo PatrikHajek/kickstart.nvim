@@ -92,7 +92,6 @@ init(BRANCH_DEFAULT)
 
 -- TODO: When navigating, show the commit info first and then, upon closing the buffer, jump to the
 -- diff.
--- TODO: Add autocomplete.
 -- FIX: Calling `:Commit show` closes diff.
 -- TODO: Add good API to force the user to `git pull` and start reviewing from the first commit.
 -- TODO: Support count in next and prev commands to skip commits.
@@ -107,7 +106,16 @@ vim.api.nvim_create_user_command('Commit', function(args)
   else
     print 'Not a command'
   end
-end, { desc = 'See introduced changes commit by commit', nargs = '*' })
+end, {
+  desc = 'See introduced changes commit by commit',
+  nargs = '*',
+  complete = function(lead)
+    local cmds = vim.tbl_keys(commands)
+    return vim.tbl_filter(function(cmd)
+      return vim.startswith(cmd, lead)
+    end, cmds)
+  end,
+})
 
 return {
   {
