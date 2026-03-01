@@ -204,23 +204,18 @@ return {
             end
 
             vim.defer_fn(function()
-              local ctx = {}
+              local gitsigns = require 'gitsigns'
 
-              local staged = name:match '%.git/:0:/(.+)'
-              local commit, path = name:match '%.git/([^/]+)/(.+)'
-              if staged then
-                ctx.file = staged
-                ctx.base = 'HEAD'
-              elseif commit and path then
-                ctx.file = path
-                local parent = vim.fn.system('git rev-parse ' .. commit .. '^'):gsub('%s+', '')
-                ctx.base = parent
-              else
-                print('cannot attach gitsigns to ' .. name)
-                return
+              local staged_file = name:match '%.git/:0:/(.+)'
+              if staged_file then
+                gitsigns.attach(buf, { file = staged_file, base = 'HEAD' })
               end
 
-              require('gitsigns').attach(buf, ctx)
+              local commit, path = name:match '%.git/([^/]+)/(.+)'
+              if commit and path then
+                local parent = vim.fn.system('git rev-parse ' .. commit .. '^'):gsub('%s+', '')
+                gitsigns.attach(buf, { file = path, base = parent })
+              end
             end, 100)
           end,
         },
