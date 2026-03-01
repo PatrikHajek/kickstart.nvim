@@ -61,6 +61,7 @@ local commands = {
     if commit_index > 0 then
       commit_index = commit_index - 1
       open_diff()
+      require('diffview.config').actions.open_commit_log()
     else
       print 'Reached the last commit'
     end
@@ -69,16 +70,19 @@ local commands = {
   prev = function()
     commit_index = commit_index + 1
     open_diff()
+    require('diffview.config').actions.open_commit_log()
   end,
 
   first = function()
     commit_index = commit_count - 1
     open_diff()
+    require('diffview.config').actions.open_commit_log()
   end,
 
   last = function()
     commit_index = 0
     open_diff()
+    require('diffview.config').actions.open_commit_log()
   end,
 
   diff = function()
@@ -90,8 +94,6 @@ local commands = {
 
 init(BRANCH_DEFAULT)
 
--- TODO: When navigating, show the commit info first and then, upon closing the buffer, jump to the
--- diff.
 -- TODO: Add good API to force the user to `git pull` and start reviewing from the first commit.
 -- TODO: Support count in next and prev commands to skip commits.
 -- TODO: Create a telescope git_commits action that uses this logic to diff the chosen commit.
