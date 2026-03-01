@@ -13,6 +13,9 @@ return {
         -- setting fg, it will overwrite the TelescopeMatching - won't highlight matched chars.
         TelescopeMatching = { fg = colors.purple, bold = true },
         TelescopeSelection = { bg = colors.black },
+        -- TODO: Style Telescope titles?
+        -- TelescopePreviewTitle = { fg = colors.black, bg = colors.blue, bold = true },
+        -- TelescopePromptTitle = { fg = colors.black, bg = colors.red, bold = true },
 
         -- Added chars inline.
         GitsignsAddInline = { bg = '#295058' },
