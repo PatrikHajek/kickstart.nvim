@@ -176,6 +176,7 @@ return {
 
         -- custom
         ['<leader>q'] = function()
+          vim.cmd 'wa'
           vim.cmd 'DiffviewClose'
 
           local gitsigns = require 'gitsigns'
