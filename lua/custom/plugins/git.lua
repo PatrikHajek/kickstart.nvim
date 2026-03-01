@@ -165,6 +165,9 @@ return {
     -- TODO: Add keymaps for the :Commit command.
     -- TODO: Make LSPs work in the main diff buffer. Either the buffer use the actual file or change
     -- LSP config to run in that buffer.
+    dependencies = {
+      'lewis6991/gitsigns.nvim',
+    },
     config = function()
       local utils = require 'custom.utils'
       local diffview = require 'diffview'
