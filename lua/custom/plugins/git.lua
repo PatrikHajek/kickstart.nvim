@@ -178,10 +178,7 @@ return {
         ['<leader>b'] = false,
 
         -- custom
-        ['<leader>q'] = function()
-          vim.cmd 'wa'
-          vim.cmd 'DiffviewClose'
-        end,
+        ['<leader>q'] = ':wa | DiffviewClose<CR>',
       }
 
       diffview.setup {
