@@ -169,7 +169,6 @@ return {
       'lewis6991/gitsigns.nvim',
     },
     config = function()
-      local utils = require 'custom.utils'
       local diffview = require 'diffview'
       local actions = require('diffview.config').actions
 
