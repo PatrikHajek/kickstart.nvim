@@ -173,6 +173,8 @@ return {
       'lewis6991/gitsigns.nvim',
     },
     config = function()
+      vim.keymap.set('n', '<leader>hDa', ':DiffviewOpen<CR>', { desc = 'Diff against index (show (un)staged hunks)' })
+
       local actions = require('diffview.config').actions
 
       local keymaps_global = {
