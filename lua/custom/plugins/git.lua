@@ -175,11 +175,11 @@ return {
       local actions = require('diffview.config').actions
 
       local keymaps_global = {
-        ['<leader>e'] = actions.toggle_files,
-        ['<leader>b'] = false,
+        { 'n', '<leader>e', actions.toggle_files, { desc = 'Toggle files' } },
+        { 'n', '<leader>b', false },
 
         -- custom
-        ['<leader>q'] = ':wa | DiffviewClose<CR>',
+        { 'n', '<leader>q', ':wa | DiffviewClose<CR>', { desc = 'Save all buffers and quit' } },
       }
 
       diffview.setup {
