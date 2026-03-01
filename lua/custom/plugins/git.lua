@@ -194,8 +194,7 @@ return {
 
       diffview.setup {
         hooks = {
-          --@ Attach gitsigns to the buffers. Only works when the main diff buffer is a real file,
-          --@ not a state coming from .git/.
+          --@ Attach gitsigns to the buffers.
           diff_buf_read = function(buf)
             local name = vim.api.nvim_buf_get_name(buf)
             -- Skip as gitsigns will attach automatically to the real file.
