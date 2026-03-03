@@ -35,7 +35,7 @@ return {
       -- TODO: key-value pairs
 
       -- subword
-      vim.keymap.set({ 'o', 'x' }, 'as', '<cmd>lua require("various-textobjs").subword("outer")<CR>', { desc = '[S]ubword' })
+      -- vim.keymap.set({ 'o', 'x' }, 'as', '<cmd>lua require("various-textobjs").subword("outer")<CR>', { desc = '[S]ubword' })
       vim.keymap.set({ 'o', 'x' }, 'is', '<cmd>lua require("various-textobjs").subword("inner")<CR>', { desc = '[S]ubword' })
       -- url
       vim.keymap.set({ 'o', 'x' }, 'au', '<cmd>lua require("various-textobjs").url("outer")<CR>', { desc = '[U]RL' })
