@@ -54,6 +54,14 @@ return {
         require('nvim-treesitter-textobjects.select').select_textobject('@conditional.inner', 'textobjects')
       end)
 
+      -- [[ Swap ]]
+      vim.keymap.set('n', '<leader>a', function()
+        require('nvim-treesitter-textobjects.swap').swap_next '@parameter.inner'
+      end)
+      vim.keymap.set('n', '<leader>A', function()
+        require('nvim-treesitter-textobjects.swap').swap_previous '@parameter.outer'
+      end)
+
       -- [[ Move ]]
       vim.keymap.set({ 'n', 'x', 'o' }, '[m', function()
         require('nvim-treesitter-textobjects.move').goto_previous_start('@function.outer', 'textobjects')
