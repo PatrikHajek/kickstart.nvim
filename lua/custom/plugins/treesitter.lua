@@ -45,6 +45,12 @@ return {
       vim.keymap.set({ 'x', 'o' }, 'im', function()
         require('nvim-treesitter-textobjects.select').select_textobject('@function.inner', 'textobjects')
       end)
+      vim.keymap.set({ 'x', 'o' }, 'ac', function()
+        require('nvim-treesitter-textobjects.select').select_textobject('@conditional.outer', 'textobjects')
+      end)
+      vim.keymap.set({ 'x', 'o' }, 'ic', function()
+        require('nvim-treesitter-textobjects.select').select_textobject('@conditional.inner', 'textobjects')
+      end)
 
       -- [[ Move ]]
       vim.keymap.set({ 'n', 'x', 'o' }, '[m', function()
