@@ -7,10 +7,10 @@ return {
       -- See https://github.com/neovim/neovim/tree/master/runtime/ftplugin for built-in ftplugins.
       vim.g.no_plugin_maps = true
 
-      vim.keymap.set({ 'n', 'x', 'o' }, '[[', function()
+      vim.keymap.set({ 'n', 'x', 'o' }, '[s', function()
         require('nvim-treesitter-textobjects.move').goto_previous_start('@local.scope', 'locals')
       end)
-      vim.keymap.set({ 'n', 'x', 'o' }, ']]', function()
+      vim.keymap.set({ 'n', 'x', 'o' }, ']s', function()
         require('nvim-treesitter-textobjects.move').goto_next_start('@local.scope', 'locals')
       end)
     end,
