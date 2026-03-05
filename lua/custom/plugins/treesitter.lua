@@ -219,6 +219,8 @@ return {
       end)
       vim.keymap.set({ 'n', 'x', 'o' }, ']a', aerial_next, { desc = 'Next Aerial symbol' })
       vim.keymap.set({ 'n', 'x', 'o' }, '[a', aerial_prev, { desc = 'Next Aerial symbol' })
+
+      vim.keymap.set('n', '<leader>an', ':AerialNavToggle<CR>', { desc = 'Open [A]erial [N]av' })
     end,
   },
 }
