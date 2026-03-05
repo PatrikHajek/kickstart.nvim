@@ -151,10 +151,10 @@ return {
       end, { desc = 'conditional' })
 
       -- [[ Swap ]]
-      vim.keymap.set('n', '<leader>a', function()
+      vim.keymap.set('n', '<leader>ta', function()
         require('nvim-treesitter-textobjects.swap').swap_next '@parameter.inner'
       end, { desc = 'Swap parameter with the next one' })
-      vim.keymap.set('n', '<leader>A', function()
+      vim.keymap.set('n', '<leader>tA', function()
         require('nvim-treesitter-textobjects.swap').swap_previous '@parameter.outer'
       end, { desc = 'Swap parameter with the previous one' })
     end,
