@@ -136,6 +136,13 @@ return {
         require('nvim-treesitter-textobjects.select').select_textobject('@parameter.inner', 'textobjects')
       end, { desc = 'parameter' })
 
+      vim.keymap.set({ 'x', 'o' }, 'ao', function()
+        require('nvim-treesitter-textobjects.select').select_textobject('@loop.outer', 'textobjects')
+      end, { desc = 'loop' })
+      vim.keymap.set({ 'x', 'o' }, 'io', function()
+        require('nvim-treesitter-textobjects.select').select_textobject('@loop.inner', 'textobjects')
+      end, { desc = 'loop' })
+
       vim.keymap.set({ 'x', 'o' }, 'ac', function()
         require('nvim-treesitter-textobjects.select').select_textobject('@conditional.outer', 'textobjects')
       end, { desc = 'conditional' })
