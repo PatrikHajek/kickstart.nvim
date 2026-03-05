@@ -62,7 +62,7 @@ return {
       vim.keymap.set({ 'n', 'x', 'o' }, 'T', ts_repeat_move.builtin_T_expr, { expr = true })
 
       -- [[ Move ]]
-      local function jump_to_parent_context()
+      local jump_to_parent_context = ts_repeat_move.make_repeatable_move(function()
         local ts_utils = require 'nvim-treesitter.ts_utils'
         local node = ts_utils.get_node_at_cursor()
         if not node then
@@ -92,8 +92,10 @@ return {
           parent = parent:parent()
         end
         print 'No parent context found'
-      end
-      vim.keymap.set({ 'n', 'x', 'o' }, '[}', jump_to_parent_context, { desc = 'Jump to parent context' })
+      end)
+      vim.keymap.set({ 'n', 'x', 'o' }, '<leader>tk', function()
+        jump_to_parent_context { forward = true }
+      end, { desc = 'Jump to parent context' })
 
       vim.keymap.set({ 'n', 'x', 'o' }, ']s', function()
         require('nvim-treesitter-textobjects.move').goto_next_start('@local.scope', 'locals')
