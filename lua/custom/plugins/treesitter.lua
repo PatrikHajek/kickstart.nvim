@@ -62,6 +62,39 @@ return {
       vim.keymap.set({ 'n', 'x', 'o' }, 'T', ts_repeat_move.builtin_T_expr, { expr = true })
 
       -- [[ Move ]]
+      local function jump_to_parent_context()
+        local ts_utils = require 'nvim-treesitter.ts_utils'
+        local node = ts_utils.get_node_at_cursor()
+        if not node then
+          return
+        end
+
+        local context_types = {
+          'function_declaration',
+          'function_definition',
+          'method_declaration',
+          'class_declaration',
+          'if_statement',
+          'for_statement',
+          'while_statement',
+          'arrow_function',
+          'function',
+        }
+
+        local parent = node:parent()
+        while parent do
+          if vim.tbl_contains(context_types, parent:type()) then
+            vim.cmd 'normal! m`'
+            local start_row, start_col = parent:range()
+            vim.api.nvim_win_set_cursor(0, { start_row + 1, start_col })
+            return
+          end
+          parent = parent:parent()
+        end
+        print 'No parent context found'
+      end
+      vim.keymap.set({ 'n', 'x', 'o' }, '[}', jump_to_parent_context, { desc = 'Jump to parent context' })
+
       vim.keymap.set({ 'n', 'x', 'o' }, ']s', function()
         require('nvim-treesitter-textobjects.move').goto_next_start('@local.scope', 'locals')
       end, { desc = 'Next scope' })
