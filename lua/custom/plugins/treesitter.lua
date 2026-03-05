@@ -200,4 +200,25 @@ return {
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
   },
+
+  {
+    'stevearc/aerial.nvim',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-tree/nvim-web-devicons',
+      'kiyoon/repeatable-move.nvim',
+    },
+    opts = {},
+    init = function()
+      local repeat_move = require 'repeatable_move'
+
+      local aerial_next, aerial_prev = repeat_move.make_repeatable_move_pair(function()
+        vim.cmd 'AerialNext'
+      end, function()
+        vim.cmd 'AerialPrev'
+      end)
+      vim.keymap.set({ 'n', 'x', 'o' }, ']a', aerial_next, { desc = 'Next Aerial symbol' })
+      vim.keymap.set({ 'n', 'x', 'o' }, '[a', aerial_prev, { desc = 'Next Aerial symbol' })
+    end,
+  },
 }
