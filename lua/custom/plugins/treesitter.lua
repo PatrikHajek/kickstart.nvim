@@ -64,57 +64,57 @@ return {
       -- [[ Move ]]
       vim.keymap.set({ 'n', 'x', 'o' }, ']s', function()
         require('nvim-treesitter-textobjects.move').goto_next_start('@local.scope', 'locals')
-      end)
+      end, { desc = 'Next scope' })
       vim.keymap.set({ 'n', 'x', 'o' }, '[s', function()
         require('nvim-treesitter-textobjects.move').goto_previous_start('@local.scope', 'locals')
-      end)
+      end, { desc = 'Previous scope' })
 
       vim.keymap.set({ 'n', 'x', 'o' }, ']m', function()
         require('nvim-treesitter-textobjects.move').goto_next_start('@function.outer', 'textobjects')
-      end)
+      end, { desc = 'Next function start' })
       vim.keymap.set({ 'n', 'x', 'o' }, '[m', function()
         require('nvim-treesitter-textobjects.move').goto_previous_start('@function.outer', 'textobjects')
-      end)
+      end, { desc = 'Previous function start' })
       vim.keymap.set({ 'n', 'x', 'o' }, ']M', function()
         require('nvim-treesitter-textobjects.move').goto_next_end('@function.outer', 'textobjects')
-      end)
+      end, { desc = 'Next function end' })
       vim.keymap.set({ 'n', 'x', 'o' }, '[M', function()
         require('nvim-treesitter-textobjects.move').goto_previous_end('@function.outer', 'textobjects')
-      end)
+      end, { desc = 'Previous function end' })
 
       -- [[ Select ]]
       vim.keymap.set({ 'x', 'o' }, 'as', function()
         require('nvim-treesitter-textobjects.select').select_textobject('@local.scope', 'locals')
-      end)
+      end, { desc = 'scope' })
 
       vim.keymap.set({ 'x', 'o' }, 'am', function()
         require('nvim-treesitter-textobjects.select').select_textobject('@function.outer', 'textobjects')
-      end)
+      end, { desc = 'function' })
       vim.keymap.set({ 'x', 'o' }, 'im', function()
         require('nvim-treesitter-textobjects.select').select_textobject('@function.inner', 'textobjects')
-      end)
+      end, { desc = 'function' })
 
       vim.keymap.set({ 'x', 'o' }, 'aa', function()
         require('nvim-treesitter-textobjects.select').select_textobject('@parameter.outer', 'textobjects')
-      end)
+      end, { desc = 'parameter' })
       vim.keymap.set({ 'x', 'o' }, 'ia', function()
         require('nvim-treesitter-textobjects.select').select_textobject('@parameter.inner', 'textobjects')
-      end)
+      end, { desc = 'parameter' })
 
       vim.keymap.set({ 'x', 'o' }, 'ac', function()
         require('nvim-treesitter-textobjects.select').select_textobject('@conditional.outer', 'textobjects')
-      end)
+      end, { desc = 'conditional' })
       vim.keymap.set({ 'x', 'o' }, 'ic', function()
         require('nvim-treesitter-textobjects.select').select_textobject('@conditional.inner', 'textobjects')
-      end)
+      end, { desc = 'conditional' })
 
       -- [[ Swap ]]
       vim.keymap.set('n', '<leader>a', function()
         require('nvim-treesitter-textobjects.swap').swap_next '@parameter.inner'
-      end)
+      end, { desc = 'Swap parameter with the next one' })
       vim.keymap.set('n', '<leader>A', function()
         require('nvim-treesitter-textobjects.swap').swap_previous '@parameter.outer'
-      end)
+      end, { desc = 'Swap parameter with the previous one' })
     end,
   },
 
