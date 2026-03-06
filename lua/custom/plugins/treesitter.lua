@@ -119,13 +119,16 @@ return {
 
       -- [[ Select ]]
       vim.keymap.set({ 'x', 'o' }, 'as', function()
+        vim.cmd 'normal! m`'
         require('nvim-treesitter-textobjects.select').select_textobject('@local.scope', 'locals')
       end, { desc = 'scope' })
 
       vim.keymap.set({ 'x', 'o' }, 'am', function()
+        vim.cmd 'normal! m`'
         require('nvim-treesitter-textobjects.select').select_textobject('@function.outer', 'textobjects')
       end, { desc = 'function' })
       vim.keymap.set({ 'x', 'o' }, 'im', function()
+        vim.cmd 'normal! m`'
         require('nvim-treesitter-textobjects.select').select_textobject('@function.inner', 'textobjects')
       end, { desc = 'function' })
 
@@ -137,16 +140,20 @@ return {
       end, { desc = 'parameter' })
 
       vim.keymap.set({ 'x', 'o' }, 'ao', function()
+        vim.cmd 'normal! m`'
         require('nvim-treesitter-textobjects.select').select_textobject('@loop.outer', 'textobjects')
       end, { desc = 'loop' })
       vim.keymap.set({ 'x', 'o' }, 'io', function()
+        vim.cmd 'normal! m`'
         require('nvim-treesitter-textobjects.select').select_textobject('@loop.inner', 'textobjects')
       end, { desc = 'loop' })
 
       vim.keymap.set({ 'x', 'o' }, 'ac', function()
+        vim.cmd 'normal! m`'
         require('nvim-treesitter-textobjects.select').select_textobject('@conditional.outer', 'textobjects')
       end, { desc = 'conditional' })
       vim.keymap.set({ 'x', 'o' }, 'ic', function()
+        vim.cmd 'normal! m`'
         require('nvim-treesitter-textobjects.select').select_textobject('@conditional.inner', 'textobjects')
       end, { desc = 'conditional' })
 
