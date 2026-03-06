@@ -90,7 +90,10 @@ return {
             preview_cutoff = 1, -- Preview should always show (unless previewer = false)
             vertical = {
               preview_height = function(_, _, max_lines)
-                return math.min(max_lines / 3, 6)
+                local BORDER = 1
+                local QUERY = 1
+                local height = (max_lines - 6 * BORDER - QUERY) / 2
+                return math.floor(height)
               end,
             },
           },
