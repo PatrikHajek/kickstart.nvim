@@ -291,12 +291,13 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 -- [[ Diagnostics ]]
 vim.keymap.set('n', '?', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 
-vim.keymap.set('n', '[d', function()
-  vim.diagnostic.jump { count = -1, float = true }
-end, { desc = 'Go to previous diagnostic message' })
-vim.keymap.set('n', ']d', function()
+local diagnostic_next, diagnostic_prev = require('repeatable_move').make_repeatable_move_pair(function()
   vim.diagnostic.jump { count = 1, float = true }
-end, { desc = 'Go to next diagnostic message' })
+end, function()
+  vim.diagnostic.jump { count = -1, float = true }
+end)
+vim.keymap.set('n', ']d', diagnostic_next, { desc = 'Next diagnostic' })
+vim.keymap.set('n', '[d', diagnostic_prev, { desc = 'Previous diagnostic' })
 
 vim.keymap.set('n', '<leader>ld', function()
   local diagnostics = vim.diagnostic.get()
