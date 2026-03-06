@@ -60,10 +60,12 @@ return {
             i = {
               ['<C-q>'] = require('telescope.actions').smart_send_to_qflist,
               ['<C-x>'] = require('telescope.actions').delete_buffer,
+              ['<C-o>'] = require('telescope.actions.layout').toggle_preview,
             },
             n = {
               ['<C-q>'] = require('telescope.actions').smart_send_to_qflist,
               ['<C-x>'] = require('telescope.actions').delete_buffer,
+              ['<C-o>'] = require('telescope.actions.layout').toggle_preview,
             },
           },
           vimgrep_arguments = {
