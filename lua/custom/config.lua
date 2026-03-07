@@ -337,59 +337,6 @@ vim.keymap.set('n', '<leader>gb', ':Telescope git_branches<CR>', { desc = '[G]it
 vim.keymap.set('n', '<leader>gc', ':Telescope git_commits<CR>', { desc = '[G]it [C]ommits' })
 vim.keymap.set('n', '<leader>bc', ':Telescope git_bcommits<CR>', { desc = 'Show [B]uffer [C]ommits' })
 
--- [[ Search ]]
-vim.keymap.set('n', '<leader>st', function()
-  -- This gets around the issue of treesitter picker putting you 1 column to the left, right before
-  -- the identifier. This causes another issue when the identifier is at the start of the line, it
-  -- puts you on the 2nd letter of it.
-  require('telescope.builtin').treesitter {
-    attach_mappings = function(_, map)
-      map({ 'n', 'i' }, '<CR>', function(prompt_bufnr)
-        local actions = require 'telescope.actions'
-        actions.select_default(prompt_bufnr)
-        vim.schedule(function()
-          vim.cmd 'normal! l'
-        end)
-      end)
-      return true
-    end,
-  }
-end, { desc = '[S]earch [T]reesitter' })
-vim.keymap.set('n', '<leader>saf', function()
-  require('telescope.builtin').find_files {
-    find_command = {
-      'rg',
-      '--files',
-      '--follow',
-      '--hidden',
-      '--no-ignore',
-      '--glob=!.git',
-      '--glob=!node_modules',
-    },
-  }
-end, { desc = '[S]earch [A]ll [F]iles' })
-vim.keymap.set('n', '<leader>sag', function()
-  require('telescope.builtin').live_grep {
-    additional_args = { '--no-ignore' },
-    glob_pattern = { '!node_modules' },
-  }
-end, { desc = '[S]earch [A]ll files using [G]rep' })
-
----@param prefix string
----@param path string
----@param name string
-local function map_search(prefix, path, name)
-  vim.keymap.set('n', '<leader>s' .. prefix .. 'f', function()
-    require('telescope.builtin').find_files { cwd = vim.fn.expand(path) }
-  end, { desc = '[S]earch ' .. name .. ' [F]iles' })
-  vim.keymap.set('n', '<leader>s' .. prefix .. 'g', function()
-    require('telescope.builtin').live_grep { cwd = vim.fn.expand(path) }
-  end, { desc = '[S]earch ' .. name .. ' by [G]rep' })
-end
-map_search('p', '$HOME/notes/', '[P]KM')
-map_search('o', '$HOME/notes-tomake/', '[O]rganization')
-map_search('n', vim.fn.stdpath 'config', '[N]eovim')
-
 -- Changing directories
 vim.keymap.set('n', '<leader>cdf', function()
   vim.api.nvim_command ':cd %:h'
