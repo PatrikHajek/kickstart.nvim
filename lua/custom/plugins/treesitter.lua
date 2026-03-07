@@ -19,7 +19,7 @@ return {
       incremental_selection = {
         enable = true,
         keymaps = {
-          -- init_selection = '<TAB>',
+          init_selection = '<Nop>',
           node_incremental = '<C-l>',
           scope_incremental = '<TAB>',
           node_decremental = '<C-h>',
