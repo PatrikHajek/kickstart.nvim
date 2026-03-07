@@ -576,3 +576,4 @@ qf
 teardown
 matchers
 textobject
+coroutine
