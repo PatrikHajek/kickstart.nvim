@@ -290,9 +290,15 @@ return {
                 return {
                   value = entry,
                   display = function(ent)
+                    local hl_group = '@' .. ent.value.kind
+                    if vim.fn.hlexists(hl_group) == 0 then
+                      hl_group = 'TelescopeResultsVariable'
+                    end
+
                     return displayer {
+                      { '●', hl_group },
                       { ent.value.lnum .. ':' .. ent.value.col },
-                      { captures[ent.value.kind], 'TelescopeResultsVariable' },
+                      { captures[ent.value.kind], hl_group },
                       ent.value.text,
                     }
                   end,
