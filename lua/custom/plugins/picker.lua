@@ -190,7 +190,7 @@ return {
         ['comment.documentation'] = 'doc',
       }
 
-      local ts_extended_picker = function()
+      vim.keymap.set('n', '<leader>st', function()
         local opts = {}
         local bufnr = vim.api.nvim_get_current_buf()
         local ft = vim.bo[bufnr].filetype
@@ -305,38 +305,6 @@ return {
             previewer = conf.qflist_previewer(opts),
           })
           :find()
-      end
-
-      vim.keymap.set('n', '<leader>st', function()
-        ts_extended_picker()
-        -- This gets around the issue of treesitter picker putting you 1 column to the left, right before
-        -- the identifier. This causes another issue when the identifier is at the start of the line, it
-        -- puts you on the 2nd letter of it.
-        -- require('telescope.builtin').treesitter {
-        --   symbols = {
-        --     'function_declaration',
-        --     'function_definition',
-        --     'method_declaration',
-        --     'class_declaration',
-        --     'if_statement',
-        --     'for_statement',
-        --     'while_statement',
-        --     'arrow_function',
-        --     'function',
-        --   },
-        --   -- ignore_symbols = {},
-        --   -- symbol_highlights = {},
-        --   attach_mappings = function(_, map)
-        --     map({ 'n', 'i' }, '<CR>', function(prompt_bufnr)
-        --       local actions = require 'telescope.actions'
-        --       actions.select_default(prompt_bufnr)
-        --       vim.schedule(function()
-        --         vim.cmd 'normal! l'
-        --       end)
-        --     end)
-        --     return true
-        --   end,
-        -- }
       end, { desc = '[S]earch [T]reesitter' })
       vim.keymap.set('n', '<leader>saf', function()
         require('telescope.builtin').find_files {
