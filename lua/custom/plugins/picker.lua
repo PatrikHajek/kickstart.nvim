@@ -326,6 +326,7 @@ return {
           })
           :find()
       end, { desc = '[S]earch [T]reesitter' })
+
       vim.keymap.set('n', '<leader>saf', function()
         require('telescope.builtin').find_files {
           find_command = {
