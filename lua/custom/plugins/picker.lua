@@ -186,7 +186,7 @@ return {
         { kind = 'variable.parameter', name = 'param' },
         { kind = 'string.regexp', name = 'regexp' },
         -- TODO: Remove?
-        { kind = 'punctuation.special', name = '' }, -- template strings?
+        { kind = 'punctuation.special', name = 'punc' }, -- template strings?
         { kind = 'comment', name = 'comment' },
         { kind = 'comment.documentation', name = 'doc' },
       }
