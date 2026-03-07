@@ -278,12 +278,17 @@ return {
                   end
                 end
 
+                local icon_width = 1
+                local text_width = 60
+                local cord_width = max_cord_width
+                local kind_width = math.min(max_kind_width, 1000)
                 local displayer = entry_display.create {
                   separator = '  ',
                   items = {
-                    { width = max_cord_width }, -- line number
-                    { width = math.min(max_kind_width, 8) }, -- node type
-                    { remaining = true }, -- line content
+                    { width = icon_width },
+                    { width = text_width },
+                    { width = cord_width },
+                    { width = kind_width },
                   },
                 }
 
@@ -297,9 +302,9 @@ return {
 
                     return displayer {
                       { '●', hl_group },
+                      ent.value.text,
                       { ent.value.lnum .. ':' .. ent.value.col },
                       { captures[ent.value.kind], hl_group },
-                      ent.value.text,
                     }
                   end,
                   ordinal = entry.text .. ' ' .. entry.kind,
