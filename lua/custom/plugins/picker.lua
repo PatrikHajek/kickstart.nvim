@@ -244,6 +244,7 @@ return {
           end, results)
           return #winners == 0
         end, results)
+
         table.sort(results, function(a, b)
           return a.lnum < b.lnum
         end)
