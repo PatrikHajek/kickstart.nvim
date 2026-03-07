@@ -498,6 +498,7 @@ local function goto_next_reference()
         next_item = fallback_item
       end
 
+      vim.cmd 'normal! m`'
       vim.api.nvim_win_set_cursor(0, { next_item.lnum, next_item.col })
     end,
   })
@@ -537,6 +538,7 @@ local function goto_prev_reference()
         prev_item = fallback_item
       end
 
+      vim.cmd 'normal! m`'
       vim.api.nvim_win_set_cursor(0, { prev_item.lnum, prev_item.col })
     end,
   })
