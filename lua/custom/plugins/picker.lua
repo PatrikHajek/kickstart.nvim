@@ -164,30 +164,31 @@ return {
       }
       --- The order matters. Values with lower index are prioritized if there is a conflict.
       --- Multiple matches with the same text are compared and the value with the lower index wins.
+      --- @type { kind: string, name: string }[]
       local captures = {
-        ['local.definition.import'] = 'import',
-        ['module'] = 'module',
-        ['function'] = 'function',
-        ['function.method'] = 'method',
-        ['function.call'] = 'call fn',
-        ['function.method.call'] = 'call mtd',
-        ['keyword.coroutine'] = 'coroutine',
-        ['keyword.repeat'] = 'loop',
-        ['keyword.conditional'] = 'condition',
-        ['keyword.conditional.ternary'] = 'cond ternany',
-        ['label'] = 'label',
-        ['type'] = 'type',
-        ['keyword.exception'] = 'exception',
-        ['constant'] = 'constant',
+        { kind = 'local.definition.import', name = 'import' },
+        { kind = 'module', name = 'module' },
+        { kind = 'function', name = 'function' },
+        { kind = 'function.method', name = 'method' },
+        { kind = 'function.call', name = 'call fn' },
+        { kind = 'function.method.call', name = 'call mtd' },
+        { kind = 'keyword.coroutine', name = 'coroutine' },
+        { kind = 'keyword.repeat', name = 'loop' },
+        { kind = 'keyword.conditional', name = 'condition' },
+        { kind = 'keyword.conditional.ternary', name = 'cond ternany' },
+        { kind = 'label', name = 'label' },
+        { kind = 'type', name = 'type' },
+        { kind = 'keyword.exception', name = 'exception' },
+        { kind = 'constant', name = 'constant' },
         -- FIX:
-        ['variable'] = 'variable',
-        ['variable.member'] = 'member',
-        ['variable.parameter'] = 'param',
-        ['string.regexp'] = 'regexp',
+        { kind = 'variable', name = 'variable' },
+        { kind = 'variable.member', name = 'member' },
+        { kind = 'variable.parameter', name = 'param' },
+        { kind = 'string.regexp', name = 'regexp' },
         -- TODO: Remove?
-        ['punctuation.special'] = '', -- template strings?
-        ['comment'] = 'comment',
-        ['comment.documentation'] = 'doc',
+        { kind = 'punctuation.special', name = '' }, -- template strings?
+        { kind = 'comment', name = 'comment' },
+        { kind = 'comment.documentation', name = 'doc' },
       }
 
       vim.keymap.set('n', '<leader>st', function()
@@ -196,9 +197,15 @@ return {
         local lang = vim.treesitter.language.get_lang(ft) or ft
 
         --- @type string[]
-        local capture_names = {}
-        for k in pairs(captures) do
-          table.insert(capture_names, k)
+        local capture_kinds = {}
+        for _, capture in ipairs(captures) do
+          table.insert(capture_kinds, capture.kind)
+        end
+
+        --- @type { [string]: { kind: string, name: string } }
+        local captures_by_kind = {}
+        for _, capture in ipairs(captures) do
+          captures_by_kind[capture.kind] = capture
         end
 
         local results = {}
@@ -218,7 +225,7 @@ return {
           for id, node, _ in query:iter_captures(root, bufnr, 0, -1) do
             local name = query.captures[id] --@ This turns the ID into "conditional", etc.
 
-            if vim.list_contains(capture_names, name) then
+            if vim.list_contains(capture_kinds, name) then
               local row, col, _ = node:start()
               local line = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1]
 
@@ -228,7 +235,7 @@ return {
                 kind = name,
                 lnum = row + 1,
                 col = col + 1,
-                priority = vim.fn.indexof(capture_names, function(_, c)
+                priority = vim.fn.indexof(capture_kinds, function(_, c)
                   return name == c
                 end),
               })
@@ -304,7 +311,7 @@ return {
                       { '●', hl_group },
                       ent.value.text:sub(ent.value.col),
                       { ent.value.lnum .. ':' .. ent.value.col },
-                      { captures[ent.value.kind], hl_group },
+                      { captures_by_kind[ent.value.kind].name, hl_group },
                     }
                   end,
                   ordinal = entry.text .. ' ' .. entry.kind,
