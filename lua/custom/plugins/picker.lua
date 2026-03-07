@@ -112,10 +112,34 @@ return {
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
+        local make_entry = require 'telescope.make_entry'
+        local entry_display = require 'telescope.pickers.entry_display'
+
         builtin.live_grep {
+          prompt_title = 'Live Grep in Current Buffer',
           search_dirs = { '%' },
+          path_display = { 'hidden' },
+
+          entry_maker = function(entry)
+            local displayer = entry_display.create {
+              separator = ' │ ',
+              items = {
+                { width = 4 },
+                { remaining = true },
+              },
+            }
+
+            local e = make_entry.gen_from_vimgrep {}(entry)
+            e.display = function(ent)
+              return displayer {
+                ent.lnum,
+                ent.text,
+              }
+            end
+
+            return e
+          end,
         }
-        -- builtin.current_buffer_fuzzy_find()
       end, { desc = '[/] Search in current buffer' })
 
       -- It's also possible to pass additional configuration options.
