@@ -156,22 +156,187 @@ return {
       --   builtin.find_files { cwd = vim.fn.stdpath 'config' }
       -- end, { desc = '[S]earch [N]eovim files' })
 
+      local query_files = {
+        'highlights',
+        'locals',
+        -- 'folds',
+        -- 'textobjects',
+      }
+      --- The order matters. Values with lower index are prioritized if there is a conflict.
+      --- Multiple matches with the same text are compared and the value with the lower index wins.
+      local captures = {
+        ['local.definition.import'] = 'import',
+        ['module'] = 'module',
+        ['function'] = 'function',
+        ['function.method'] = 'method',
+        ['function.call'] = 'call fn',
+        ['function.method.call'] = 'call mtd',
+        ['keyword.coroutine'] = 'coroutine',
+        ['keyword.repeat'] = 'loop',
+        ['keyword.conditional'] = 'condition',
+        ['keyword.conditional.ternary'] = 'cond ternany',
+        ['label'] = 'label',
+        ['type'] = 'type',
+        ['keyword.exception'] = 'exception',
+        ['constant'] = 'constant',
+        -- FIX:
+        ['variable'] = 'variable',
+        ['variable.member'] = 'member',
+        ['variable.parameter'] = 'param',
+        ['string.regexp'] = 'regexp',
+        -- TODO: Remove?
+        ['punctuation.special'] = '', -- template strings?
+        ['comment'] = 'comment',
+        ['comment.documentation'] = 'doc',
+      }
+
+      local ts_extended_picker = function()
+        local opts = {}
+        local bufnr = vim.api.nvim_get_current_buf()
+        local ft = vim.bo[bufnr].filetype
+        local lang = vim.treesitter.language.get_lang(ft) or ft
+
+        --- @type string[]
+        local capture_names = {}
+        for k in pairs(captures) do
+          table.insert(capture_names, k)
+        end
+
+        local results = {}
+        for _, file in ipairs(query_files) do
+          local query = vim.treesitter.query.get(lang, file)
+          if not query then
+            goto continue
+          end
+
+          local parser = vim.treesitter.get_parser(bufnr, lang)
+          if not parser then
+            goto continue
+          end
+
+          local tree = parser:parse()[1]
+          local root = tree:root()
+          for id, node, _ in query:iter_captures(root, bufnr, 0, -1) do
+            local name = query.captures[id] --@ This turns the ID into "conditional", etc.
+
+            if vim.list_contains(capture_names, name) then
+              local row, col, _ = node:start()
+              local line = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1]
+
+              table.insert(results, {
+                display = string.format('[%s] %s', name, vim.trim(line)),
+                text = line,
+                kind = name,
+                lnum = row + 1,
+                col = col + 1,
+                priority = vim.fn.indexof(capture_names, function(_, c)
+                  return name == c
+                end),
+              })
+            end
+          end
+          ::continue::
+        end
+
+        -- PERF:
+        results = vim.tbl_filter(function(result)
+          local winners = vim.tbl_filter(function(r)
+            return r.text == result.text and r.priority < result.priority
+          end, results)
+          return #winners == 0
+        end, results)
+        table.sort(results, function(a, b)
+          return a.lnum < b.lnum
+        end)
+
+        local pickers = require 'telescope.pickers'
+        local finders = require 'telescope.finders'
+        local conf = require('telescope.config').values
+        local entry_display = require 'telescope.pickers.entry_display'
+
+        pickers
+          .new(opts, {
+            prompt_title = 'Treesitter',
+            finder = finders.new_table {
+              results = results,
+              entry_maker = function(entry)
+                local max_pos_width = 0
+                for _, result in ipairs(results) do
+                  local pos_width = #(result.lnum .. ':' .. result.col)
+                  if pos_width > max_pos_width then
+                    max_pos_width = pos_width
+                  end
+                end
+
+                local max_kind_width = 0
+                for _, result in ipairs(results) do
+                  local kind_width = #result.kind
+                  if kind_width > max_kind_width then
+                    max_kind_width = kind_width
+                  end
+                end
+
+                local displayer = entry_display.create {
+                  separator = '  ',
+                  items = {
+                    { width = max_pos_width }, -- line number
+                    { width = math.min(max_kind_width, 8) }, -- node type
+                    { remaining = true }, -- line content
+                  },
+                }
+
+                return {
+                  value = entry,
+                  display = function(ent)
+                    return displayer {
+                      { ent.value.lnum .. ':' .. ent.value.col },
+                      { captures[ent.value.kind], 'TelescopeResultsVariable' },
+                      ent.value.text,
+                    }
+                  end,
+                  ordinal = entry.text .. ' ' .. entry.kind,
+                  lnum = entry.lnum,
+                  col = entry.col,
+                  filename = vim.api.nvim_buf_get_name(bufnr),
+                }
+              end,
+            },
+            sorter = conf.generic_sorter(opts),
+            previewer = conf.qflist_previewer(opts),
+          })
+          :find()
+      end
+
       vim.keymap.set('n', '<leader>st', function()
+        ts_extended_picker()
         -- This gets around the issue of treesitter picker putting you 1 column to the left, right before
         -- the identifier. This causes another issue when the identifier is at the start of the line, it
         -- puts you on the 2nd letter of it.
-        require('telescope.builtin').treesitter {
-          attach_mappings = function(_, map)
-            map({ 'n', 'i' }, '<CR>', function(prompt_bufnr)
-              local actions = require 'telescope.actions'
-              actions.select_default(prompt_bufnr)
-              vim.schedule(function()
-                vim.cmd 'normal! l'
-              end)
-            end)
-            return true
-          end,
-        }
+        -- require('telescope.builtin').treesitter {
+        --   symbols = {
+        --     'function_declaration',
+        --     'function_definition',
+        --     'method_declaration',
+        --     'class_declaration',
+        --     'if_statement',
+        --     'for_statement',
+        --     'while_statement',
+        --     'arrow_function',
+        --     'function',
+        --   },
+        --   -- ignore_symbols = {},
+        --   -- symbol_highlights = {},
+        --   attach_mappings = function(_, map)
+        --     map({ 'n', 'i' }, '<CR>', function(prompt_bufnr)
+        --       local actions = require 'telescope.actions'
+        --       actions.select_default(prompt_bufnr)
+        --       vim.schedule(function()
+        --         vim.cmd 'normal! l'
+        --       end)
+        --     end)
+        --     return true
+        --   end,
+        -- }
       end, { desc = '[S]earch [T]reesitter' })
       vim.keymap.set('n', '<leader>saf', function()
         require('telescope.builtin').find_files {
