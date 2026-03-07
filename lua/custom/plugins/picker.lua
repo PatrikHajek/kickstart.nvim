@@ -262,11 +262,11 @@ return {
             finder = finders.new_table {
               results = results,
               entry_maker = function(entry)
-                local max_pos_width = 0
+                local max_cord_width = 0
                 for _, result in ipairs(results) do
-                  local pos_width = #(result.lnum .. ':' .. result.col)
-                  if pos_width > max_pos_width then
-                    max_pos_width = pos_width
+                  local cord_width = #(result.lnum .. ':' .. result.col)
+                  if cord_width > max_cord_width then
+                    max_cord_width = cord_width
                   end
                 end
 
@@ -281,7 +281,7 @@ return {
                 local displayer = entry_display.create {
                   separator = '  ',
                   items = {
-                    { width = max_pos_width }, -- line number
+                    { width = max_cord_width }, -- line number
                     { width = math.min(max_kind_width, 8) }, -- node type
                     { remaining = true }, -- line content
                   },
