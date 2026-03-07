@@ -191,7 +191,6 @@ return {
       }
 
       vim.keymap.set('n', '<leader>st', function()
-        local opts = {}
         local bufnr = vim.api.nvim_get_current_buf()
         local ft = vim.bo[bufnr].filetype
         local lang = vim.treesitter.language.get_lang(ft) or ft
@@ -253,6 +252,8 @@ return {
         local finders = require 'telescope.finders'
         local conf = require('telescope.config').values
         local entry_display = require 'telescope.pickers.entry_display'
+
+        local opts = {}
 
         pickers
           .new(opts, {
