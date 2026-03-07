@@ -314,7 +314,7 @@ return {
                 }
               end,
             },
-            sorter = conf.generic_sorter(opts),
+            sorter = require('telescope').extensions.fzf.native_fzf_sorter(),
             previewer = conf.qflist_previewer(opts),
           })
           :find()
