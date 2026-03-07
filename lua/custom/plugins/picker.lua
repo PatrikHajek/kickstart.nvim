@@ -302,7 +302,7 @@ return {
 
                     return displayer {
                       { '●', hl_group },
-                      ent.value.text,
+                      ent.value.text:sub(ent.value.col),
                       { ent.value.lnum .. ':' .. ent.value.col },
                       { captures[ent.value.kind], hl_group },
                     }
