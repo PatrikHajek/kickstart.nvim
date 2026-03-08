@@ -206,15 +206,15 @@ return {
           captures_by_kind[capture.kind] = capture
         end
 
+        local parser = vim.treesitter.get_parser(bufnr, lang)
+        if not parser then
+          return
+        end
+
         local results = {}
         for _, file in ipairs(query_files) do
           local query = vim.treesitter.query.get(lang, file)
           if not query then
-            goto continue
-          end
-
-          local parser = vim.treesitter.get_parser(bufnr, lang)
-          if not parser then
             goto continue
           end
 
