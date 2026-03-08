@@ -165,7 +165,8 @@ return {
       }
       --- The order matters. Values with lower index are prioritized if there is a conflict.
       --- Multiple matches with the same text are compared and the value with the lower index wins.
-      --- @type { kind: string, name: string, hl: string? }[]
+      --- @alias Capture { kind: string, name: string, hl: string?, trim: (fun(text: string): string)? }
+      --- @type Capture[]
       local captures = {
         { kind = 'local.definition.import', name = 'import', hl = '@keyword.import' },
         { kind = 'module', name = 'module' },
@@ -182,7 +183,14 @@ return {
         { kind = 'type', name = 'type' },
         { kind = 'keyword.exception', name = 'exception' },
         { kind = 'constant', name = 'constant' },
-        { kind = 'local.definition.var', name = 'variable', hl = '@variable' },
+        {
+          kind = 'local.definition.var',
+          name = 'variable',
+          hl = '@variable',
+          trim = function(text)
+            return text:match '^[%w_]+' or text
+          end,
+        },
         { kind = 'local.definition.parameter', name = 'param', hl = '@variable.parameter' },
         { kind = 'variable.parameter', name = 'param' },
         { kind = 'string.regexp', name = 'regexp' },
@@ -198,7 +206,7 @@ return {
           table.insert(capture_kinds, capture.kind)
         end
 
-        --- @type { [string]: { kind: string, name: string, hl: string? } }
+        --- @type { [string]: Capture }
         local captures_by_kind = {}
         for _, capture in ipairs(captures) do
           captures_by_kind[capture.kind] = capture
@@ -303,9 +311,14 @@ return {
 
                 local capture_name = captures_by_kind[entry.kind].name
 
+                local text = entry.text:sub(entry.col)
+                if captures_by_kind[entry.kind].trim then
+                  text = captures_by_kind[entry.kind].trim(text)
+                end
+
                 return {
                   value = entry,
-                  ordinal = ('%s<>%s<>%s'):format(capture_name, entry.text:sub(entry.col), capture_name),
+                  ordinal = ('%s<>%s<>%s'):format(capture_name, text, capture_name),
                   lnum = entry.lnum,
                   col = entry.col,
                   filename = vim.api.nvim_buf_get_name(bufnr),
