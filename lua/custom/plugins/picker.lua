@@ -307,8 +307,9 @@ return {
                       hl_group = 'TelescopeResultsVariable'
                     end
 
+                    local icon = captures_by_kind[ent.value.kind].name:sub(1, 1):upper()
                     return displayer {
-                      { '●', hl_group },
+                      { icon, hl_group },
                       ent.value.text:sub(ent.value.col),
                       { ent.value.lnum .. ':' .. ent.value.col },
                       { captures_by_kind[ent.value.kind].name, hl_group },
