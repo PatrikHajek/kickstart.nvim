@@ -1,5 +1,7 @@
 local M = {}
 
+-- [[ Types ]]
+
 --- @class picker_treesitter_Capture
 --- @field kind string
 --- @field name string
@@ -12,6 +14,8 @@ local M = {}
 --- @field lnum integer
 --- @field col integer
 --- @field priority integer
+
+-- [[ Config ]]
 
 --- @param text string
 --- @return string
@@ -67,6 +71,8 @@ local captures_by_kind = {}
 for _, capture in ipairs(captures) do
   captures_by_kind[capture.kind] = capture
 end
+
+-- [[ Implementation ]]
 
 --- @param opts { bufnr: integer, displayer: fun(items: (string | [string, string])[]) }
 local function make_entry(opts)
