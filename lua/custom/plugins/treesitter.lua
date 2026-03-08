@@ -110,6 +110,19 @@ return {
         require('nvim-treesitter-textobjects.move').goto_previous_end('@function.outer', 'textobjects')
       end, { desc = 'Previous function end' })
 
+      vim.keymap.set({ 'n', 'x', 'o' }, ']o', function()
+        require('nvim-treesitter-textobjects.move').goto_next_start('@loop.outer', 'textobjects')
+      end, { desc = 'Next loop start' })
+      vim.keymap.set({ 'n', 'x', 'o' }, '[o', function()
+        require('nvim-treesitter-textobjects.move').goto_previous_start('@loop.outer', 'textobjects')
+      end, { desc = 'Previous loop start' })
+      vim.keymap.set({ 'n', 'x', 'o' }, ']O', function()
+        require('nvim-treesitter-textobjects.move').goto_next_end('@loop.outer', 'textobjects')
+      end, { desc = 'Next loop end' })
+      vim.keymap.set({ 'n', 'x', 'o' }, '[O', function()
+        require('nvim-treesitter-textobjects.move').goto_previous_end('@loop.outer', 'textobjects')
+      end, { desc = 'Previous loop end' })
+
       -- [[ Select ]]
       vim.keymap.set({ 'x', 'o' }, 'as', function()
         vim.cmd 'normal! m`'
