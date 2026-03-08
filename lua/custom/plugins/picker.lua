@@ -311,7 +311,7 @@ return {
                     return displayer {
                       { icon, hl_group },
                       ent.value.text:sub(ent.value.col),
-                      { ent.value.lnum .. ':' .. ent.value.col },
+                      ent.value.lnum .. ':' .. ent.value.col,
                       { captures_by_kind[ent.value.kind].name, hl_group },
                     }
                   end,
