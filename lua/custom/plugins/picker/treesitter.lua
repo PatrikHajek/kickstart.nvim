@@ -43,19 +43,19 @@ local captures = {
   { kind = 'comment.documentation', name = 'documentation' },
 }
 
+--- @type string[]
+local capture_kinds = {}
+for _, capture in ipairs(captures) do
+  table.insert(capture_kinds, capture.kind)
+end
+
+--- @type { [string]: Capture }
+local captures_by_kind = {}
+for _, capture in ipairs(captures) do
+  captures_by_kind[capture.kind] = capture
+end
+
 M.treesitter = function()
-  --- @type string[]
-  local capture_kinds = {}
-  for _, capture in ipairs(captures) do
-    table.insert(capture_kinds, capture.kind)
-  end
-
-  --- @type { [string]: Capture }
-  local captures_by_kind = {}
-  for _, capture in ipairs(captures) do
-    captures_by_kind[capture.kind] = capture
-  end
-
   local bufnr = vim.api.nvim_get_current_buf()
   local ft = vim.bo[bufnr].filetype
   local parser = vim.treesitter.get_parser(bufnr, ft)
