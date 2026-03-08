@@ -97,13 +97,6 @@ return {
         jump_to_parent_context { forward = true }
       end, { desc = 'Jump to parent context' })
 
-      vim.keymap.set({ 'n', 'x', 'o' }, ']s', function()
-        require('nvim-treesitter-textobjects.move').goto_next_start('@local.scope', 'locals')
-      end, { desc = 'Next scope' })
-      vim.keymap.set({ 'n', 'x', 'o' }, '[s', function()
-        require('nvim-treesitter-textobjects.move').goto_previous_start('@local.scope', 'locals')
-      end, { desc = 'Previous scope' })
-
       vim.keymap.set({ 'n', 'x', 'o' }, ']m', function()
         require('nvim-treesitter-textobjects.move').goto_next_start('@function.outer', 'textobjects')
       end, { desc = 'Next function start' })
