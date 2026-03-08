@@ -1,5 +1,11 @@
 local M = {}
 
+--- @param text string
+--- @return string
+local function trim_var(text)
+  return text:match '^[%w_]+' or text
+end
+
 local query_files = {
   'highlights',
   'locals',
@@ -25,14 +31,7 @@ local captures = {
   { kind = 'type', name = 'type' },
   { kind = 'keyword.exception', name = 'exception' },
   { kind = 'constant', name = 'constant' },
-  {
-    kind = 'local.definition.var',
-    name = 'variable',
-    hl = '@variable',
-    trim = function(text)
-      return text:match '^[%w_]+' or text
-    end,
-  },
+  { kind = 'local.definition.var', name = 'variable', hl = '@variable', trim = trim_var },
   { kind = 'variable.parameter', name = 'param' },
   { kind = 'local.definition.parameter', name = 'param', hl = '@variable.parameter' },
   { kind = 'variable.member', name = 'member' },
