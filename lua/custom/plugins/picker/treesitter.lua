@@ -104,6 +104,12 @@ local function make_entry(opts)
   end
 end
 
+local telescope_pickers = require 'telescope.pickers'
+local telescope_finders = require 'telescope.finders'
+local telescope_extensions = require('telescope').extensions
+local telescope_config = require('telescope.config').values
+local telescope_entry_display = require 'telescope.pickers.entry_display'
+
 M.treesitter = function()
   local bufnr = vim.api.nvim_get_current_buf()
   local ft = vim.bo[bufnr].filetype
@@ -160,12 +166,6 @@ M.treesitter = function()
     end
   end)
 
-  local pickers = require 'telescope.pickers'
-  local finders = require 'telescope.finders'
-  local conf = require('telescope.config').values
-
-  local opts = {}
-
   local max_cord_width = 0
   for _, result in ipairs(results) do
     local cord_width = #(result.lnum .. ':' .. result.col)
@@ -187,8 +187,7 @@ M.treesitter = function()
   local cord_width = max_cord_width
   local kind_width = math.min(max_kind_width, 1000)
 
-  local entry_display = require 'telescope.pickers.entry_display'
-  local displayer = entry_display.create {
+  local displayer = telescope_entry_display.create {
     separator = '  ',
     items = {
       { width = icon_width },
@@ -198,15 +197,17 @@ M.treesitter = function()
     },
   }
 
-  pickers
+  local opts = {}
+
+  telescope_pickers
     .new(opts, {
       prompt_title = 'Treesitter',
-      finder = finders.new_table {
+      finder = telescope_finders.new_table {
         results = results,
         entry_maker = make_entry { bufnr = bufnr, displayer = displayer },
       },
-      sorter = require('telescope').extensions.fzf.native_fzf_sorter(),
-      previewer = conf.qflist_previewer(opts),
+      sorter = telescope_extensions.fzf.native_fzf_sorter(),
+      previewer = telescope_config.qflist_previewer(opts),
     })
     :find()
 end
