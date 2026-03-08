@@ -159,8 +159,7 @@ return {
       local query_files = {
         'highlights',
         'locals',
-        -- 'folds',
-        -- 'textobjects',
+        'textobjects',
       }
       --- The order matters. Values with lower index are prioritized if there is a conflict.
       --- Multiple matches with the same text are compared and the value with the lower index wins.
@@ -168,27 +167,26 @@ return {
       local captures = {
         { kind = 'local.definition.import', name = 'import', hl = '@keyword.import' },
         { kind = 'module', name = 'module' },
+        { kind = 'class.outer', name = 'class' },
         { kind = 'function', name = 'function' },
         { kind = 'function.method', name = 'method' },
         { kind = 'function.call', name = 'call fn' },
         { kind = 'function.method.call', name = 'call mtd' },
         { kind = 'keyword.coroutine', name = 'coroutine' },
-        { kind = 'keyword.repeat', name = 'loop' },
-        { kind = 'keyword.conditional', name = 'condition' },
+        { kind = 'loop.outer', name = 'loop' },
+        { kind = 'conditional.outer', name = 'condition', hl = '@keyword.conditional' },
         { kind = 'keyword.conditional.ternary', name = 'cond ternany' },
         { kind = 'label', name = 'label' },
         { kind = 'type', name = 'type' },
         { kind = 'keyword.exception', name = 'exception' },
         { kind = 'constant', name = 'constant' },
-        -- FIX:
-        { kind = 'variable', name = 'variable' },
-        { kind = 'variable.member', name = 'member' },
+        { kind = 'local.definition.var', name = 'variable' },
+        { kind = 'local.definition.parameter', name = 'param' },
         { kind = 'variable.parameter', name = 'param' },
         { kind = 'string.regexp', name = 'regexp' },
-        -- TODO: Remove?
         { kind = 'punctuation.special', name = 'punc' }, -- template strings?
         { kind = 'comment', name = 'comment' },
-        { kind = 'comment.documentation', name = 'doc' },
+        { kind = 'comment.documentation', name = 'documentation' },
       }
 
       vim.keymap.set('n', '<leader>st', function()
