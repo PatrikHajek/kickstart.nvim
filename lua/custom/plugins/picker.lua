@@ -303,6 +303,10 @@ return {
 
                 return {
                   value = entry,
+                  ordinal = ('%s<>%s<>%s'):format(captures_by_kind[entry.kind].name, entry.text:sub(entry.col), captures_by_kind[entry.kind].name),
+                  lnum = entry.lnum,
+                  col = entry.col,
+                  filename = vim.api.nvim_buf_get_name(bufnr),
                   display = function(ent)
                     local capture = captures_by_kind[ent.value.kind]
                     local hl_group = '@' .. ent.value.kind
@@ -318,10 +322,6 @@ return {
                       { captures_by_kind[ent.value.kind].name, hl_group },
                     }
                   end,
-                  ordinal = ('%s<>%s<>%s'):format(captures_by_kind[entry.kind].name, entry.text:sub(entry.col), captures_by_kind[entry.kind].name),
-                  lnum = entry.lnum,
-                  col = entry.col,
-                  filename = vim.api.nvim_buf_get_name(bufnr),
                 }
               end,
             },
