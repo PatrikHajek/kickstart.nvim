@@ -80,13 +80,8 @@ local function make_entry(opts)
   return function(entry)
     local capture = captures_by_kind[entry.kind]
 
-    local text = entry.text:sub(entry.col)
-    if capture.trim then
-      text = capture.trim(text)
-    end
-
     return {
-      ordinal = ('%s<>%s<>%s'):format(capture.name, text, capture.name),
+      ordinal = ('%s<>%s<>%s'):format(capture.name, entry.text, capture.name),
       lnum = entry.lnum,
       col = entry.col,
       filename = vim.api.nvim_buf_get_name(opts.bufnr),
@@ -99,10 +94,7 @@ local function make_entry(opts)
 
         local ent_icon = ent_capture.name:sub(1, 1):upper()
 
-        local ent_text = ent.text:sub(ent.col)
-        if ent_capture.trim then
-          ent_text = ent_capture.trim(ent_text)
-        end
+        local ent_text = ent.text
 
         local ent_cord = ent.lnum .. ':' .. ent.col
 
@@ -149,11 +141,19 @@ M.treesitter = function()
           local name = query.captures[id]
 
           if vim.list_contains(capture_kinds, name) then
-            local row, col, _ = node:start()
-            local line = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
+            local identifier_node = node
+            for child in node:iter_children() do
+              if child:type():find 'identifier' then
+                identifier_node = child
+                break
+              end
+            end
+
+            local row, col = identifier_node:start()
+            local text = vim.treesitter.get_node_text(identifier_node, bufnr)
 
             table.insert(results, {
-              text = line,
+              text = text,
               kind = name,
               lnum = row + 1,
               col = col + 1,
