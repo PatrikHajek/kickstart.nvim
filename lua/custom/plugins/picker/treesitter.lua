@@ -68,6 +68,42 @@ for _, capture in ipairs(captures) do
   captures_by_kind[capture.kind] = capture
 end
 
+--- @param opts { bufnr: integer, displayer: fun(items: (string | [string, string])[]) }
+local function make_entry(opts)
+  --- @param entry picker.treesitter.Entry
+  return function(entry)
+    local capture_name = captures_by_kind[entry.kind].name
+
+    local text = entry.text:sub(entry.col)
+    if captures_by_kind[entry.kind].trim then
+      text = captures_by_kind[entry.kind].trim(text)
+    end
+
+    return {
+      value = entry,
+      ordinal = ('%s<>%s<>%s'):format(capture_name, text, capture_name),
+      lnum = entry.lnum,
+      col = entry.col,
+      filename = vim.api.nvim_buf_get_name(opts.bufnr),
+      display = function(ent)
+        local capture = captures_by_kind[ent.value.kind]
+        local hl_group = '@' .. ent.value.kind
+        if capture.hl then
+          hl_group = capture.hl
+        end
+
+        local icon = capture.name:sub(1, 1):upper()
+        return opts.displayer {
+          { icon, hl_group },
+          ent.value.text:sub(ent.value.col),
+          ent.value.lnum .. ':' .. ent.value.col,
+          { capture.name, hl_group },
+        }
+      end,
+    }
+  end
+end
+
 M.treesitter = function()
   local bufnr = vim.api.nvim_get_current_buf()
   local ft = vim.bo[bufnr].filetype
@@ -127,76 +163,47 @@ M.treesitter = function()
   local pickers = require 'telescope.pickers'
   local finders = require 'telescope.finders'
   local conf = require('telescope.config').values
-  local entry_display = require 'telescope.pickers.entry_display'
 
   local opts = {}
+
+  local max_cord_width = 0
+  for _, result in ipairs(results) do
+    local cord_width = #(result.lnum .. ':' .. result.col)
+    if cord_width > max_cord_width then
+      max_cord_width = cord_width
+    end
+  end
+
+  local max_kind_width = 0
+  for _, result in ipairs(results) do
+    local kind_width = #result.kind
+    if kind_width > max_kind_width then
+      max_kind_width = kind_width
+    end
+  end
+
+  local icon_width = 1
+  local text_width = 60
+  local cord_width = max_cord_width
+  local kind_width = math.min(max_kind_width, 1000)
+
+  local entry_display = require 'telescope.pickers.entry_display'
+  local displayer = entry_display.create {
+    separator = '  ',
+    items = {
+      { width = icon_width },
+      { width = text_width },
+      { width = cord_width },
+      { width = kind_width },
+    },
+  }
 
   pickers
     .new(opts, {
       prompt_title = 'Treesitter',
       finder = finders.new_table {
         results = results,
-        entry_maker = function(entry)
-          local max_cord_width = 0
-          for _, result in ipairs(results) do
-            local cord_width = #(result.lnum .. ':' .. result.col)
-            if cord_width > max_cord_width then
-              max_cord_width = cord_width
-            end
-          end
-
-          local max_kind_width = 0
-          for _, result in ipairs(results) do
-            local kind_width = #result.kind
-            if kind_width > max_kind_width then
-              max_kind_width = kind_width
-            end
-          end
-
-          local icon_width = 1
-          local text_width = 60
-          local cord_width = max_cord_width
-          local kind_width = math.min(max_kind_width, 1000)
-          local displayer = entry_display.create {
-            separator = '  ',
-            items = {
-              { width = icon_width },
-              { width = text_width },
-              { width = cord_width },
-              { width = kind_width },
-            },
-          }
-
-          local capture_name = captures_by_kind[entry.kind].name
-
-          local text = entry.text:sub(entry.col)
-          if captures_by_kind[entry.kind].trim then
-            text = captures_by_kind[entry.kind].trim(text)
-          end
-
-          return {
-            value = entry,
-            ordinal = ('%s<>%s<>%s'):format(capture_name, text, capture_name),
-            lnum = entry.lnum,
-            col = entry.col,
-            filename = vim.api.nvim_buf_get_name(bufnr),
-            display = function(ent)
-              local capture = captures_by_kind[ent.value.kind]
-              local hl_group = '@' .. ent.value.kind
-              if capture.hl then
-                hl_group = capture.hl
-              end
-
-              local icon = capture.name:sub(1, 1):upper()
-              return displayer {
-                { icon, hl_group },
-                ent.value.text:sub(ent.value.col),
-                ent.value.lnum .. ':' .. ent.value.col,
-                { capture.name, hl_group },
-              }
-            end,
-          }
-        end,
+        entry_maker = make_entry { bufnr = bufnr, displayer = displayer },
       },
       sorter = require('telescope').extensions.fzf.native_fzf_sorter(),
       previewer = conf.qflist_previewer(opts),
