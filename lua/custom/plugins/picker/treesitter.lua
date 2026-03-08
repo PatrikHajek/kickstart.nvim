@@ -6,6 +6,12 @@ local M = {}
 --- @field kind string
 --- @field name string
 --- @field hl? string
+--- Controls how many characters are inserted into the query. The more characters
+--- there is, the worse the search priority of this item will be. Use this option
+--- to prioritize some captures over others.
+---
+--- Default value for all captures is 0.
+--- @field chars? integer
 
 --- @class picker_treesitter_Entry
 --- @field text string
@@ -31,8 +37,8 @@ local captures = {
   { kind = 'class.outer', name = 'class', hl = '@type' },
   { kind = 'function', name = 'function' },
   { kind = 'function.method', name = 'method' },
-  { kind = 'function.call', name = 'call fn' },
-  { kind = 'function.method.call', name = 'call mtd' },
+  { kind = 'function.call', name = 'call fn', chars = 10 },
+  { kind = 'function.method.call', name = 'call mtd', chars = 10 },
   { kind = 'keyword.coroutine', name = 'coroutine' },
   { kind = 'loop.outer', name = 'loop', hl = '@keyword.repeat' },
   { kind = 'conditional.outer', name = 'condition', hl = '@keyword.conditional' },
@@ -44,13 +50,13 @@ local captures = {
   { kind = 'local.definition.var', name = 'variable', hl = '@variable' },
   { kind = 'variable.parameter', name = 'param' },
   { kind = 'local.definition.parameter', name = 'param', hl = '@variable.parameter' },
-  { kind = 'variable.member', name = 'member' },
+  { kind = 'variable.member', name = 'member', chars = 10 },
   { kind = 'tag', name = 'tag' },
   { kind = 'tag.attribute', name = 'attribute' },
   { kind = 'string.regexp', name = 'regexp' },
   { kind = 'punctuation.special', name = 'punc' }, -- template strings?
-  { kind = 'comment', name = 'comment' },
-  { kind = 'comment.documentation', name = 'documentation' },
+  { kind = 'comment', name = 'comment', chars = 100 },
+  { kind = 'comment.documentation', name = 'documentation', chars = 90 },
 }
 
 --- @type string[]
@@ -73,8 +79,13 @@ local function make_entry(opts)
   return function(entry)
     local capture = captures_by_kind[entry.kind]
 
+    local text = entry.text
+    if capture.chars then
+      text = text .. ('_'):rep(capture.chars)
+    end
+
     return {
-      ordinal = ('%s<>%s<>%s'):format(capture.name, entry.text, capture.name),
+      ordinal = ('%s<>%s<>%s'):format(capture.name, text, capture.name),
       lnum = entry.lnum,
       col = entry.col,
       filename = vim.api.nvim_buf_get_name(opts.bufnr),
