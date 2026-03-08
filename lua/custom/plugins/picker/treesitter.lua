@@ -33,8 +33,8 @@ local captures = {
       return text:match '^[%w_]+' or text
     end,
   },
-  { kind = 'local.definition.parameter', name = 'param', hl = '@variable.parameter' },
   { kind = 'variable.parameter', name = 'param' },
+  { kind = 'local.definition.parameter', name = 'param', hl = '@variable.parameter' },
   { kind = 'variable.member', name = 'member' },
   { kind = 'tag', name = 'tag' },
   { kind = 'tag.attribute', name = 'attribute' },
