@@ -1,12 +1,12 @@
 local M = {}
 
---- @class picker.treesitter.Capture
+--- @class picker_treesitter_Capture
 --- @field kind string
 --- @field name string
 --- @field hl? string
 --- @field trim? fun(text: string): string
 
---- @class picker.treesitter.Entry
+--- @class picker_treesitter_Entry
 --- @field text string
 --- @field kind string
 --- @field lnum integer
@@ -27,7 +27,7 @@ local query_files = {
 
 --- The order matters. Values with lower index are prioritized if there is a conflict.
 --- Multiple matches with the same text are compared and the value with the lower index wins.
---- @type picker.treesitter.Capture[]
+--- @type picker_treesitter_Capture[]
 local captures = {
   { kind = 'local.definition.import', name = 'import', hl = '@keyword.import' },
   { kind = 'module', name = 'module' },
@@ -62,7 +62,7 @@ for _, capture in ipairs(captures) do
   table.insert(capture_kinds, capture.kind)
 end
 
---- @type { [string]: picker.treesitter.Capture }
+--- @type { [string]: picker_treesitter_Capture }
 local captures_by_kind = {}
 for _, capture in ipairs(captures) do
   captures_by_kind[capture.kind] = capture
@@ -70,7 +70,7 @@ end
 
 --- @param opts { bufnr: integer, displayer: fun(items: (string | [string, string])[]) }
 local function make_entry(opts)
-  --- @param entry picker.treesitter.Entry
+  --- @param entry picker_treesitter_Entry
   return function(entry)
     local capture_name = captures_by_kind[entry.kind].name
 
@@ -118,7 +118,7 @@ M.treesitter = function()
     return
   end
 
-  --- @type picker.treesitter.Entry[]
+  --- @type picker_treesitter_Entry[]
   local results = {}
   parser:for_each_tree(function(tstree, lang_tree)
     local tree_lang = lang_tree:lang()
@@ -150,7 +150,7 @@ M.treesitter = function()
   end)
 
   -- PERF:
-  --- @type picker.treesitter.Entry[]
+  --- @type picker_treesitter_Entry[]
   results = vim.tbl_filter(function(result)
     local winners = vim.tbl_filter(function(r)
       return r.lnum == result.lnum and r.col == result.col and r.priority < result.priority
