@@ -164,9 +164,9 @@ return {
       }
       --- The order matters. Values with lower index are prioritized if there is a conflict.
       --- Multiple matches with the same text are compared and the value with the lower index wins.
-      --- @type { kind: string, name: string }[]
+      --- @type { kind: string, name: string, hl: string? }[]
       local captures = {
-        { kind = 'local.definition.import', name = 'import' },
+        { kind = 'local.definition.import', name = 'import', hl = '@keyword.import' },
         { kind = 'module', name = 'module' },
         { kind = 'function', name = 'function' },
         { kind = 'function.method', name = 'method' },
@@ -202,7 +202,7 @@ return {
           table.insert(capture_kinds, capture.kind)
         end
 
-        --- @type { [string]: { kind: string, name: string } }
+        --- @type { [string]: { kind: string, name: string, hl: string? } }
         local captures_by_kind = {}
         for _, capture in ipairs(captures) do
           captures_by_kind[capture.kind] = capture
@@ -306,9 +306,10 @@ return {
                 return {
                   value = entry,
                   display = function(ent)
+                    local capture = captures_by_kind[ent.value.kind]
                     local hl_group = '@' .. ent.value.kind
-                    if vim.fn.hlexists(hl_group) == 0 then
-                      hl_group = 'TelescopeResultsVariable'
+                    if capture.hl then
+                      hl_group = capture.hl
                     end
 
                     local icon = captures_by_kind[ent.value.kind].name:sub(1, 1):upper()
