@@ -11,10 +11,16 @@ local query_files = {
   'locals',
   'textobjects',
 }
+
+--- @class picker.treesitter.Capture
+--- @field kind string
+--- @field name string
+--- @field hl? string
+--- @field trim? fun(text: string): string
+
 --- The order matters. Values with lower index are prioritized if there is a conflict.
 --- Multiple matches with the same text are compared and the value with the lower index wins.
---- @alias Capture { kind: string, name: string, hl: string?, trim: (fun(text: string): string)? }
---- @type Capture[]
+--- @type picker.treesitter.Capture[]
 local captures = {
   { kind = 'local.definition.import', name = 'import', hl = '@keyword.import' },
   { kind = 'module', name = 'module' },
@@ -49,7 +55,7 @@ for _, capture in ipairs(captures) do
   table.insert(capture_kinds, capture.kind)
 end
 
---- @type { [string]: Capture }
+--- @type { [string]: picker.treesitter.Capture }
 local captures_by_kind = {}
 for _, capture in ipairs(captures) do
   captures_by_kind[capture.kind] = capture
