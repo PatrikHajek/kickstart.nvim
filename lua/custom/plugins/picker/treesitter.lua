@@ -1,5 +1,11 @@
 local M = {}
 
+--- @class picker.treesitter.Capture
+--- @field kind string
+--- @field name string
+--- @field hl? string
+--- @field trim? fun(text: string): string
+
 --- @param text string
 --- @return string
 local function trim_var(text)
@@ -11,12 +17,6 @@ local query_files = {
   'locals',
   'textobjects',
 }
-
---- @class picker.treesitter.Capture
---- @field kind string
---- @field name string
---- @field hl? string
---- @field trim? fun(text: string): string
 
 --- The order matters. Values with lower index are prioritized if there is a conflict.
 --- Multiple matches with the same text are compared and the value with the lower index wins.
