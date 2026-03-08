@@ -301,9 +301,11 @@ return {
                   },
                 }
 
+                local capture_name = captures_by_kind[entry.kind].name
+
                 return {
                   value = entry,
-                  ordinal = ('%s<>%s<>%s'):format(captures_by_kind[entry.kind].name, entry.text:sub(entry.col), captures_by_kind[entry.kind].name),
+                  ordinal = ('%s<>%s<>%s'):format(capture_name, entry.text:sub(entry.col), capture_name),
                   lnum = entry.lnum,
                   col = entry.col,
                   filename = vim.api.nvim_buf_get_name(bufnr),
