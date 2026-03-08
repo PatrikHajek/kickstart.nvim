@@ -6,7 +6,6 @@ local M = {}
 --- @field kind string
 --- @field name string
 --- @field hl? string
---- @field trim? fun(text: string): string
 
 --- @class picker_treesitter_Entry
 --- @field text string
@@ -16,12 +15,6 @@ local M = {}
 --- @field priority integer
 
 -- [[ Config ]]
-
---- @param text string
---- @return string
-local function trim_var(text)
-  return text:match '^[%w_]+' or text
-end
 
 local query_files = {
   'highlights',
@@ -48,7 +41,7 @@ local captures = {
   { kind = 'type', name = 'type' },
   { kind = 'keyword.exception', name = 'exception' },
   { kind = 'constant', name = 'constant' },
-  { kind = 'local.definition.var', name = 'variable', hl = '@variable', trim = trim_var },
+  { kind = 'local.definition.var', name = 'variable', hl = '@variable' },
   { kind = 'variable.parameter', name = 'param' },
   { kind = 'local.definition.parameter', name = 'param', hl = '@variable.parameter' },
   { kind = 'variable.member', name = 'member' },
