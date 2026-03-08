@@ -35,6 +35,9 @@ local captures = {
   },
   { kind = 'local.definition.parameter', name = 'param', hl = '@variable.parameter' },
   { kind = 'variable.parameter', name = 'param' },
+  { kind = 'variable.member', name = 'member' },
+  { kind = 'tag', name = 'tag' },
+  { kind = 'tag.attribute', name = 'attribute' },
   { kind = 'string.regexp', name = 'regexp' },
   { kind = 'punctuation.special', name = 'punc' }, -- template strings?
   { kind = 'comment', name = 'comment' },
