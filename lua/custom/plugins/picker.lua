@@ -245,7 +245,7 @@ return {
         -- PERF:
         results = vim.tbl_filter(function(result)
           local winners = vim.tbl_filter(function(r)
-            return r.text == result.text and r.priority < result.priority
+            return r.lnum == result.lnum and r.col == result.col and r.priority < result.priority
           end, results)
           return #winners == 0
         end, results)
