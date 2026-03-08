@@ -100,6 +100,9 @@ local function make_entry(opts)
         local ent_icon = ent_capture.name:sub(1, 1):upper()
 
         local ent_text = ent.text:sub(ent.col)
+        if ent_capture.trim then
+          ent_text = ent_capture.trim(ent_text)
+        end
 
         local ent_cord = ent.lnum .. ':' .. ent.col
 
