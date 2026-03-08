@@ -93,7 +93,6 @@ M.treesitter = function()
             local line = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
 
             table.insert(results, {
-              display = string.format('[%s] %s', name, vim.trim(line)),
               text = line,
               kind = name,
               lnum = row + 1,
