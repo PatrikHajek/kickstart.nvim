@@ -190,10 +190,6 @@ return {
       }
 
       vim.keymap.set('n', '<leader>st', function()
-        local bufnr = vim.api.nvim_get_current_buf()
-        local ft = vim.bo[bufnr].filetype
-        local lang = vim.treesitter.language.get_lang(ft) or ft
-
         --- @type string[]
         local capture_kinds = {}
         for _, capture in ipairs(captures) do
@@ -206,41 +202,43 @@ return {
           captures_by_kind[capture.kind] = capture
         end
 
-        local parser = vim.treesitter.get_parser(bufnr, lang)
+        local bufnr = vim.api.nvim_get_current_buf()
+        local ft = vim.bo[bufnr].filetype
+        local parser = vim.treesitter.get_parser(bufnr, ft)
         if not parser then
           return
         end
 
         local results = {}
-        for _, file in ipairs(query_files) do
-          local query = vim.treesitter.query.get(lang, file)
-          if not query then
-            goto continue
-          end
+        parser:for_each_tree(function(tstree, lang_tree)
+          local tree_lang = lang_tree:lang()
+          local root = tstree:root()
 
-          local tree = parser:parse()[1]
-          local root = tree:root()
-          for id, node, _ in query:iter_captures(root, bufnr, 0, -1) do
-            local name = query.captures[id] --@ This turns the ID into "conditional", etc.
+          for _, query_file in ipairs(query_files) do
+            local query = vim.treesitter.query.get(tree_lang, query_file)
+            if query then
+              for id, node, _ in query:iter_captures(root, bufnr, 0, -1) do
+                local name = query.captures[id]
 
-            if vim.list_contains(capture_kinds, name) then
-              local row, col, _ = node:start()
-              local line = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1]
+                if vim.list_contains(capture_kinds, name) then
+                  local row, col, _ = node:start()
+                  local line = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
 
-              table.insert(results, {
-                display = string.format('[%s] %s', name, vim.trim(line)),
-                text = line,
-                kind = name,
-                lnum = row + 1,
-                col = col + 1,
-                priority = vim.fn.indexof(capture_kinds, function(_, c)
-                  return name == c
-                end),
-              })
+                  table.insert(results, {
+                    display = string.format('[%s] %s', name, vim.trim(line)),
+                    text = line,
+                    kind = name,
+                    lnum = row + 1,
+                    col = col + 1,
+                    priority = vim.fn.indexof(capture_kinds, function(_, c)
+                      return name == c
+                    end),
+                  })
+                end
+              end
             end
           end
-          ::continue::
-        end
+        end)
 
         -- PERF:
         results = vim.tbl_filter(function(result)
