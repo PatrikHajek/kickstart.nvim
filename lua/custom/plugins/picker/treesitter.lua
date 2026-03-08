@@ -187,12 +187,12 @@ M.treesitter = function()
                 hl_group = capture.hl
               end
 
-              local icon = captures_by_kind[ent.value.kind].name:sub(1, 1):upper()
+              local icon = capture.name:sub(1, 1):upper()
               return displayer {
                 { icon, hl_group },
                 ent.value.text:sub(ent.value.col),
                 ent.value.lnum .. ':' .. ent.value.col,
-                { captures_by_kind[ent.value.kind].name, hl_group },
+                { capture.name, hl_group },
               }
             end,
           }
