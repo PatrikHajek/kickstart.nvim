@@ -158,6 +158,9 @@ return {
       --   builtin.find_files { cwd = vim.fn.stdpath 'config' }
       -- end, { desc = '[S]earch [N]eovim files' })
 
+      local pickers = require 'custom.plugins.picker.treesitter'
+      vim.keymap.set('n', '<leader>st', pickers.treesitter, { desc = '[S]earch [T]reesitter' })
+
       vim.keymap.set('n', '<leader>saf', function()
         require('telescope.builtin').find_files {
           find_command = {

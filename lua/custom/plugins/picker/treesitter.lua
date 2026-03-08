@@ -1,3 +1,5 @@
+local M = {}
+
 local query_files = {
   'highlights',
   'locals',
@@ -39,7 +41,7 @@ local captures = {
   { kind = 'comment.documentation', name = 'documentation' },
 }
 
-vim.keymap.set('n', '<leader>st', function()
+M.treesitter = function()
   --- @type string[]
   local capture_kinds = {}
   for _, capture in ipairs(captures) do
@@ -184,4 +186,6 @@ vim.keymap.set('n', '<leader>st', function()
       previewer = conf.qflist_previewer(opts),
     })
     :find()
-end, { desc = '[S]earch [T]reesitter' })
+end
+
+return M
