@@ -26,6 +26,9 @@ return {
         SpellLocal = { fg = colors.green },
         -- SpellBad = { underdashed = true },
 
+        -- Lua
+        ['@lsp.type.variable.lua'] = {},
+
         -- Scala
         ['@lsp.type.parameter.scala'] = { link = '@variable.parameter' },
         ['@lsp.typemod.variable.readonly.scala'] = {},
