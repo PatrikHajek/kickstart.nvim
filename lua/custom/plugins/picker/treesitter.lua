@@ -6,6 +6,13 @@ local M = {}
 --- @field hl? string
 --- @field trim? fun(text: string): string
 
+--- @class picker.treesitter.Entry
+--- @field text string
+--- @field kind string
+--- @field lnum integer
+--- @field col integer
+--- @field priority integer
+
 --- @param text string
 --- @return string
 local function trim_var(text)
@@ -69,6 +76,7 @@ M.treesitter = function()
     return
   end
 
+  --- @type picker.treesitter.Entry[]
   local results = {}
   parser:for_each_tree(function(tstree, lang_tree)
     local tree_lang = lang_tree:lang()
@@ -101,6 +109,7 @@ M.treesitter = function()
   end)
 
   -- PERF:
+  --- @type picker.treesitter.Entry[]
   results = vim.tbl_filter(function(result)
     local winners = vim.tbl_filter(function(r)
       return r.lnum == result.lnum and r.col == result.col and r.priority < result.priority
