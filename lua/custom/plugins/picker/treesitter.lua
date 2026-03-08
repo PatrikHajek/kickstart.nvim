@@ -78,32 +78,41 @@ end
 local function make_entry(opts)
   --- @param entry picker_treesitter_Entry
   return function(entry)
-    local capture_name = captures_by_kind[entry.kind].name
+    local capture = captures_by_kind[entry.kind]
 
     local text = entry.text:sub(entry.col)
-    if captures_by_kind[entry.kind].trim then
-      text = captures_by_kind[entry.kind].trim(text)
+    if capture.trim then
+      text = capture.trim(text)
     end
 
     return {
-      value = entry,
-      ordinal = ('%s<>%s<>%s'):format(capture_name, text, capture_name),
+      ordinal = ('%s<>%s<>%s'):format(capture.name, text, capture.name),
       lnum = entry.lnum,
       col = entry.col,
       filename = vim.api.nvim_buf_get_name(opts.bufnr),
-      display = function(ent)
-        local capture = captures_by_kind[ent.value.kind]
-        local hl_group = '@' .. ent.value.kind
-        if capture.hl then
-          hl_group = capture.hl
+
+      entry = entry,
+      --- @param value { entry: picker_treesitter_Entry }
+      display = function(value)
+        local ent = value.entry
+        local ent_capture = captures_by_kind[ent.kind]
+
+        local ent_icon = ent_capture.name:sub(1, 1):upper()
+
+        local ent_text = ent.text:sub(ent.col)
+
+        local ent_cord = ent.lnum .. ':' .. ent.col
+
+        local ent_hl = '@' .. ent.kind
+        if ent_capture.hl then
+          ent_hl = ent_capture.hl
         end
 
-        local icon = capture.name:sub(1, 1):upper()
         return opts.displayer {
-          { icon, hl_group },
-          ent.value.text:sub(ent.value.col),
-          ent.value.lnum .. ':' .. ent.value.col,
-          { capture.name, hl_group },
+          { ent_icon, ent_hl },
+          ent_text,
+          ent_cord,
+          { ent_capture.name, ent_hl },
         }
       end,
     }
