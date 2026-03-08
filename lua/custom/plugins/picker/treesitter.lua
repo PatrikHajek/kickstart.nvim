@@ -155,7 +155,6 @@ M.treesitter = function()
     end
   end)
 
-  -- PERF:
   --- @type picker_treesitter_Entry[]
   results = vim.tbl_filter(function(result)
     local winners = vim.tbl_filter(function(r)
