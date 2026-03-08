@@ -253,7 +253,11 @@ return {
         end, results)
 
         table.sort(results, function(a, b)
-          return a.lnum < b.lnum
+          if a.lnum == b.lnum then
+            return a.col < b.col
+          else
+            return a.lnum < b.lnum
+          end
         end)
 
         local pickers = require 'telescope.pickers'
