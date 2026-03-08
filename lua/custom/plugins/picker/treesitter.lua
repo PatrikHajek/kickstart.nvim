@@ -79,9 +79,18 @@ local function make_entry(opts)
   return function(entry)
     local capture = captures_by_kind[entry.kind]
 
+    local icon = capture.name:sub(1, 1):upper()
+
     local text = entry.text
     if capture.chars then
       text = text .. ('_'):rep(capture.chars)
+    end
+
+    local cord = entry.lnum .. ':' .. entry.col
+
+    local hl = '@' .. entry.kind
+    if capture.hl then
+      hl = capture.hl
     end
 
     return {
@@ -90,28 +99,17 @@ local function make_entry(opts)
       col = entry.col,
       filename = vim.api.nvim_buf_get_name(opts.bufnr),
 
-      entry = entry,
-      --- @param value { entry: picker_treesitter_Entry }
-      display = function(value)
-        local ent = value.entry
-        local ent_capture = captures_by_kind[ent.kind]
-
-        local ent_icon = ent_capture.name:sub(1, 1):upper()
-
-        local ent_text = ent.text
-
-        local ent_cord = ent.lnum .. ':' .. ent.col
-
-        local ent_hl = '@' .. ent.kind
-        if ent_capture.hl then
-          ent_hl = ent_capture.hl
-        end
-
+      icon = icon,
+      text = entry.text,
+      cord = cord,
+      kind = capture.name,
+      hl = hl,
+      display = function(ent)
         return opts.displayer {
-          { ent_icon, ent_hl },
-          ent_text,
-          ent_cord,
-          { ent_capture.name, ent_hl },
+          { ent.icon, ent.hl },
+          ent.text,
+          ent.cord,
+          { ent.kind, ent.hl },
         }
       end,
     }
