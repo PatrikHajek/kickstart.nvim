@@ -314,7 +314,7 @@ return {
                       { captures_by_kind[ent.value.kind].name, hl_group },
                     }
                   end,
-                  ordinal = entry.kind .. ' ' .. entry.text:sub(entry.col),
+                  ordinal = entry.kind .. '<>' .. entry.text:sub(entry.col),
                   lnum = entry.lnum,
                   col = entry.col,
                   filename = vim.api.nvim_buf_get_name(bufnr),
