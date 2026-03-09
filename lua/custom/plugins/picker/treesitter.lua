@@ -36,13 +36,13 @@ local query_files = {
 --- Multiple matches with the same text are compared and the value with the lower index wins.
 --- @type picker_treesitter_Capture[]
 local captures = {
-  { kind = 'local.definition.import', name = 'import', hl = '@keyword.import' },
+  { kind = 'local.definition.import', name = 'import', hl = '@keyword.import', chars = 100 },
   { kind = 'module', name = 'module' },
-  { kind = 'class.outer', name = 'class', hl = '@type' },
+  { kind = 'class.outer', name = 'class', hl = '@type', chars = 4 },
   { kind = 'function', name = 'function' },
   { kind = 'function.method', name = 'method' },
-  { kind = 'function.call', name = 'call fn', chars = 10, full = true },
-  { kind = 'function.method.call', name = 'call mtd', chars = 10, full = true },
+  { kind = 'function.call', name = 'call fn', full = true },
+  { kind = 'function.method.call', name = 'call mtd', full = true },
   { kind = 'keyword.coroutine', name = 'coroutine' },
   { kind = 'loop.outer', name = 'loop', hl = '@keyword.repeat' },
   { kind = 'conditional.outer', name = 'condition', hl = '@keyword.conditional' },
@@ -59,8 +59,8 @@ local captures = {
   { kind = 'tag.attribute', name = 'attribute' },
   { kind = 'string.regexp', name = 'regexp' },
   { kind = 'punctuation.special', name = 'punc' }, -- template strings?
-  { kind = 'comment', name = 'comment', chars = 100 },
-  { kind = 'comment.documentation', name = 'documentation', chars = 90 },
+  { kind = 'comment', name = 'comment', chars = 200 },
+  { kind = 'comment.documentation', name = 'documentation', chars = 190 },
 }
 
 --- @type string[]
