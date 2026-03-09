@@ -98,7 +98,7 @@ local function make_entry(opts)
     end
 
     return {
-      ordinal = ('%s<>%s<>%s'):format(capture.name, text, capture.name),
+      ordinal = ('%s %s'):format(capture.name, text, capture.name),
       lnum = entry.lnum,
       col = entry.col,
       filename = vim.api.nvim_buf_get_name(opts.bufnr),
