@@ -168,6 +168,7 @@ M.treesitter = function()
               text = vim.treesitter.get_node_text(identifier_node, bufnr)
             end
 
+            text = text:match '([^\n]*)'
             table.insert(results, {
               text = text,
               kind = name,
