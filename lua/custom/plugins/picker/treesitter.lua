@@ -12,6 +12,10 @@ local M = {}
 ---
 --- Default value for all captures is 0.
 --- @field chars? integer
+--- Whether to get the full line of just the identifier.
+---
+--- Defaults to false.
+--- @field full? boolean
 
 --- @class picker_treesitter_Entry
 --- @field text string
@@ -37,8 +41,8 @@ local captures = {
   { kind = 'class.outer', name = 'class', hl = '@type' },
   { kind = 'function', name = 'function' },
   { kind = 'function.method', name = 'method' },
-  { kind = 'function.call', name = 'call fn', chars = 10 },
-  { kind = 'function.method.call', name = 'call mtd', chars = 10 },
+  { kind = 'function.call', name = 'call fn', chars = 10, full = true },
+  { kind = 'function.method.call', name = 'call mtd', chars = 10, full = true },
   { kind = 'keyword.coroutine', name = 'coroutine' },
   { kind = 'loop.outer', name = 'loop', hl = '@keyword.repeat' },
   { kind = 'conditional.outer', name = 'condition', hl = '@keyword.conditional' },
@@ -144,15 +148,25 @@ M.treesitter = function()
 
           if vim.list_contains(capture_kinds, name) then
             local identifier_node = node
-            for child in node:iter_children() do
-              if child:type():find 'identifier' then
-                identifier_node = child
-                break
-              end
-            end
+            local text = ''
+            local row = 0
+            local col = 0
 
-            local row, col = identifier_node:start()
-            local text = vim.treesitter.get_node_text(identifier_node, bufnr)
+            if captures_by_kind[name].full then
+              row, col = identifier_node:start()
+              text = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
+              text = vim.trim(text)
+            else
+              for child in node:iter_children() do
+                if child:type():find 'identifier' then
+                  identifier_node = child
+                  break
+                end
+              end
+
+              row, col = identifier_node:start()
+              text = vim.treesitter.get_node_text(identifier_node, bufnr)
+            end
 
             table.insert(results, {
               text = text,
