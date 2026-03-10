@@ -3,8 +3,11 @@ local M = {}
 -- [[ Types ]]
 
 --- @class picker_treesitter_Capture
+--- Treesitter capture.
 --- @field kind string
+--- Name to replace `kind` in the results.
 --- @field name string
+--- Highlight group to apply to the `kind`.
 --- @field hl? string
 --- Controls how many characters are inserted into the query. The more characters
 --- there is, the worse the search priority of this item will be. Use this option
