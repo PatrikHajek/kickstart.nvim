@@ -126,6 +126,13 @@ return {
         require('nvim-treesitter-textobjects.move').goto_previous_end('@loop.outer', 'textobjects')
       end, { desc = 'Previous loop end' })
 
+      vim.keymap.set({ 'n', 'x', 'o' }, ']c', function()
+        require('nvim-treesitter-textobjects.move').goto_next_start('@conditional.outer', 'textobjects')
+      end, { desc = 'Next condition start' })
+      vim.keymap.set({ 'n', 'x', 'o' }, '[c', function()
+        require('nvim-treesitter-textobjects.move').goto_previous_start('@conditional.outer', 'textobjects')
+      end, { desc = 'Previous condition start' })
+
       -- [[ Select ]]
       vim.keymap.set({ 'x', 'o' }, 'as', function()
         vim.cmd 'normal! m`'

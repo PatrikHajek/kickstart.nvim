@@ -30,7 +30,7 @@ return {
         end
 
         -- [[ Navigation ]]
-        map_preserve('n', ']c', function()
+        map_preserve('n', ']h', function()
           if vim.wo.diff then
             vim.cmd.normal { ']c_', bang = true }
           else
@@ -38,7 +38,7 @@ return {
           end
         end, { desc = 'Jump to next git [c]hange' })
 
-        map_preserve('n', '[c', function()
+        map_preserve('n', '[h', function()
           if vim.wo.diff then
             vim.cmd.normal { '[c_', bang = true }
           else
