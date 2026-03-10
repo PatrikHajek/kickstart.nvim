@@ -79,6 +79,9 @@ return {
           'while_statement',
           'arrow_function',
           'function',
+
+          -- Markdown
+          'section',
         }
 
         local parent = node:parent()
