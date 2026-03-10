@@ -166,6 +166,23 @@ return {
         require('nvim-treesitter-textobjects.select').select_textobject('@conditional.inner', 'textobjects')
       end, { desc = 'conditional' })
 
+      vim.keymap.set({ 'x', 'o' }, 'a=', function()
+        vim.cmd 'normal! m`'
+        require('nvim-treesitter-textobjects.select').select_textobject('@assignment.outer', 'textobjects')
+      end, { desc = 'assignment' })
+      vim.keymap.set({ 'x', 'o' }, 'i=', function()
+        vim.cmd 'normal! m`'
+        require('nvim-treesitter-textobjects.select').select_textobject('@assignment.inner', 'textobjects')
+      end, { desc = 'assignment' })
+      vim.keymap.set({ 'x', 'o' }, 'in=', function()
+        vim.cmd 'normal! m`'
+        require('nvim-treesitter-textobjects.select').select_textobject('@assignment.rhs', 'textobjects')
+      end, { desc = 'rhs of assignment' })
+      vim.keymap.set({ 'x', 'o' }, 'il=', function()
+        vim.cmd 'normal! m`'
+        require('nvim-treesitter-textobjects.select').select_textobject('@assignment.lhs', 'textobjects')
+      end, { desc = 'lhs of assignment' })
+
       -- [[ Swap ]]
       vim.keymap.set('n', '<leader>ta', function()
         require('nvim-treesitter-textobjects.swap').swap_next '@parameter.inner'
