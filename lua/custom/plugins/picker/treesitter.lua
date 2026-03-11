@@ -158,7 +158,9 @@ M.treesitter = function()
             if captures_by_kind[name].full then
               row, col = identifier_node:start()
               text = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
-              text = text:sub(col + 1)
+
+              local prefix = text:sub(1, col):match '[^%s]+$' or ''
+              text = prefix .. text:sub(col + 1)
             else
               for child in node:iter_children() do
                 if child:type():find 'identifier' then
