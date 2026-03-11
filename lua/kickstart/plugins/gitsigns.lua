@@ -53,8 +53,8 @@ return {
             end
           end)
         end)
-        map_preserve('n', ']h', hunk_next, { desc = 'Jump to next git [c]hange' })
-        map_preserve('n', '[h', hunk_prev, { desc = 'Jump to previous git [c]hange' })
+        map_preserve('n', ']h', hunk_next, { desc = 'Next hunk' })
+        map_preserve('n', '[h', hunk_prev, { desc = 'Previous hunk' })
 
         map_preserve('n', '<C-j>', function()
           if vim.wo.diff then
