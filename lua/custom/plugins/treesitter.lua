@@ -100,6 +100,13 @@ return {
         jump_to_parent_context { forward = true }
       end, { desc = 'Jump to parent context' })
 
+      vim.keymap.set({ 'n', 'x', 'o' }, ']b', function()
+        require('nvim-treesitter-textobjects.move').goto_next_start('@statement.outer', 'textobjects')
+      end, { desc = 'Next code block (statement)' })
+      vim.keymap.set({ 'n', 'x', 'o' }, '[b', function()
+        require('nvim-treesitter-textobjects.move').goto_previous_start('@statement.outer', 'textobjects')
+      end, { desc = 'Previous code block (statement)' })
+
       vim.keymap.set({ 'n', 'x', 'o' }, ']m', function()
         require('nvim-treesitter-textobjects.move').goto_next_start('@function.outer', 'textobjects')
       end, { desc = 'Next function start' })
@@ -134,6 +141,15 @@ return {
       end, { desc = 'Previous condition start' })
 
       -- [[ Select ]]
+      vim.keymap.set({ 'x', 'o' }, 'ab', function()
+        vim.cmd 'normal! m`'
+        require('nvim-treesitter-textobjects.select').select_textobject('@statement.outer', 'textobjects')
+      end, { desc = 'code block (statement)' })
+      vim.keymap.set({ 'x', 'o' }, 'ib', function()
+        vim.cmd 'normal! m`'
+        require('nvim-treesitter-textobjects.select').select_textobject('@statement.inner', 'textobjects')
+      end, { desc = 'code block (statement)' })
+
       vim.keymap.set({ 'x', 'o' }, 'as', function()
         vim.cmd 'normal! m`'
         require('nvim-treesitter-textobjects.select').select_textobject('@local.scope', 'locals')
