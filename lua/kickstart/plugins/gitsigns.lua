@@ -5,6 +5,9 @@
 return {
   {
     'lewis6991/gitsigns.nvim',
+    dependencies = {
+      'kiyoon/repeatable-move.nvim',
+    },
     opts = {
       numhl = true,
       attach_to_untracked = true,
@@ -30,21 +33,28 @@ return {
         end
 
         -- [[ Navigation ]]
-        map_preserve('n', ']h', function()
-          if vim.wo.diff then
-            vim.cmd.normal { ']c_', bang = true }
-          else
-            gitsigns.nav_hunk 'next'
-          end
-        end, { desc = 'Jump to next git [c]hange' })
+        local repeat_move = require 'repeatable_move'
+        local utils = require 'custom.utils'
 
-        map_preserve('n', '[h', function()
-          if vim.wo.diff then
-            vim.cmd.normal { '[c_', bang = true }
-          else
-            gitsigns.nav_hunk 'prev'
-          end
-        end, { desc = 'Jump to previous git [c]hange' })
+        local hunk_next, hunk_prev = repeat_move.make_repeatable_move_pair(function()
+          utils.preserve_cursor_column(function()
+            if vim.wo.diff then
+              vim.cmd.normal { ']c_', bang = true }
+            else
+              gitsigns.nav_hunk 'next'
+            end
+          end)
+        end, function()
+          utils.preserve_cursor_column(function()
+            if vim.wo.diff then
+              vim.cmd.normal { '[c_', bang = true }
+            else
+              gitsigns.nav_hunk 'prev'
+            end
+          end)
+        end)
+        map_preserve('n', ']h', hunk_next, { desc = 'Jump to next git [c]hange' })
+        map_preserve('n', '[h', hunk_prev, { desc = 'Jump to previous git [c]hange' })
 
         map_preserve('n', '<C-j>', function()
           if vim.wo.diff then
