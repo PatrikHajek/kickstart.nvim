@@ -149,9 +149,11 @@ return {
       end, { desc = 'function' })
 
       vim.keymap.set({ 'x', 'o' }, 'aa', function()
+        vim.cmd 'normal! m`'
         require('nvim-treesitter-textobjects.select').select_textobject('@parameter.outer', 'textobjects')
       end, { desc = 'parameter' })
       vim.keymap.set({ 'x', 'o' }, 'ia', function()
+        vim.cmd 'normal! m`'
         require('nvim-treesitter-textobjects.select').select_textobject('@parameter.inner', 'textobjects')
       end, { desc = 'parameter' })
 
