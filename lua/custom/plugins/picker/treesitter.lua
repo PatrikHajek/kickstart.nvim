@@ -60,7 +60,7 @@ local captures = {
   { kind = 'variable.member', name = 'member', chars = 10 },
   { kind = 'tag', name = 'tag' },
   { kind = 'tag.attribute', name = 'attribute' },
-  { kind = 'string.regexp', name = 'regexp' },
+  { kind = 'string.regexp', name = 'regexp', char = 100 },
   { kind = 'punctuation.special', name = 'punc' }, -- template strings?
   { kind = 'comment', name = 'comment', chars = 200 },
   { kind = 'comment.documentation', name = 'documentation', chars = 190 },
