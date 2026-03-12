@@ -128,7 +128,11 @@ return {
     },
     init = function()
       -- [[ Quickfix ]]
-      vim.keymap.set('n', '<leader>sq', ':Telescope quickfixhistory<CR>', { desc = '[S]earch [Q]uickfix history' })
+      vim.keymap.set('n', '<leader>cf', ':cfirst<CR>', { desc = 'Go to the first item in quickfix list' })
+      vim.keymap.set('n', '<leader>cl', ':clast<CR>', { desc = 'Go to the last item in quickfix list' })
+      vim.keymap.set('n', '<C-l>', ':cnext<CR>', { desc = 'Go to next quickfix item' })
+      vim.keymap.set('n', '<C-h>', ':cprev<CR>', { desc = 'Go to prev quickfix item' })
+
       vim.keymap.set('n', '<leader>co', function()
         local trouble = require 'trouble'
         if vim.bo.filetype == 'trouble' then
@@ -137,10 +141,6 @@ return {
           trouble.open 'quickfix'
         end
       end, { desc = 'Open quickfix list' })
-      vim.keymap.set('n', '<leader>cf', ':cfirst<CR>', { desc = 'Go to the first item in quickfix list' })
-      vim.keymap.set('n', '<leader>cl', ':clast<CR>', { desc = 'Go to the last item in quickfix list' })
-      vim.keymap.set('n', '<C-l>', ':cnext<CR>', { desc = 'Go to next quickfix item' })
-      vim.keymap.set('n', '<C-h>', ':cprev<CR>', { desc = 'Go to prev quickfix item' })
 
       vim.keymap.set('n', '<leader>cr', function()
         vim.lsp.buf.references(nil, {
@@ -166,6 +166,8 @@ return {
         vim.cmd(command .. ' ' .. arg)
         require('trouble').refresh()
       end, { bang = true, nargs = '?', desc = 'Calls Cfilter and refreshes trouble window' })
+
+      vim.keymap.set('n', '<leader>sq', ':Telescope quickfixhistory<CR>', { desc = '[S]earch [Q]uickfix history' })
 
       -- [[ Diagnostics ]]
       vim.keymap.set('n', '?', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
