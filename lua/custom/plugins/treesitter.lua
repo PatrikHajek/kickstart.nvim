@@ -229,6 +229,16 @@ return {
       require('mini.ai').setup {
         n_lines = 500,
         search_method = 'cover',
+        custom_textobjects = {
+          -- Used by treesitter.
+          ['s'] = false,
+          ['b'] = false,
+          ['m'] = false,
+          ['a'] = false,
+          ['o'] = false,
+          ['c'] = false,
+          ['='] = false,
+        },
       }
 
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
