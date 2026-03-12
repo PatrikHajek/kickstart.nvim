@@ -143,6 +143,13 @@ return {
         require('nvim-treesitter-textobjects.move').goto_previous_start('@conditional.outer', 'textobjects')
       end, { desc = 'Previous condition start' })
 
+      vim.keymap.set({ 'n', 'x', 'o' }, ']n', function()
+        require('nvim-treesitter-textobjects.move').goto_next_start('@comment.outer', 'textobjects')
+      end, { desc = 'Next comment' })
+      vim.keymap.set({ 'n', 'x', 'o' }, '[n', function()
+        require('nvim-treesitter-textobjects.move').goto_previous_start('@comment.outer', 'textobjects')
+      end, { desc = 'Previous comment' })
+
       -- [[ Select ]]
       vim.keymap.set({ 'x', 'o' }, 'as', function()
         vim.cmd 'normal! m`'
