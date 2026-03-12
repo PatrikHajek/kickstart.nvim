@@ -505,7 +505,6 @@ local function goto_prev_reference()
 end
 vim.keymap.set('n', ']r', goto_next_reference, { desc = 'Go to next reference' })
 vim.keymap.set('n', '[r', goto_prev_reference, { desc = 'Go to previous reference' })
-vim.keymap.set('n', '<leader>lr', ':Trouble lsp_references<CR>', { desc = '[L]ist [R]eferences in Trouble window' })
 
 -- [[ Imported commands ]]
 require 'custom.commands.unsaved-buffers'

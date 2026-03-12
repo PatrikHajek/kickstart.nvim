@@ -142,7 +142,7 @@ return {
         end
       end, { desc = 'Open quickfix list' })
 
-      vim.keymap.set('n', '<leader>cr', function()
+      vim.keymap.set('n', '<leader>lr', function()
         vim.lsp.buf.references(nil, {
           on_list = function(o)
             --- This is done per documentation: `:help vim.lsp.listOpts`.
@@ -151,7 +151,8 @@ return {
             vim.cmd 'Trouble quickfix'
           end,
         })
-      end, { desc = 'Fill quickfix list with references' })
+      end, { desc = '[L]ist [R]eferences' })
+
       vim.keymap.set('n', '<leader>chu', function()
         require('gitsigns').setqflist 'all'
       end, { desc = 'Fill quickfix list with unstaged hunks' })
