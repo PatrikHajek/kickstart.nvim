@@ -168,7 +168,8 @@ return {
         require('trouble').refresh()
       end, { bang = true, nargs = '?', desc = 'Calls Cfilter and refreshes trouble window' })
 
-      vim.keymap.set('n', '<leader>sq', ':Telescope quickfixhistory<CR>', { desc = '[S]earch [Q]uickfix history' })
+      vim.keymap.set('n', '<leader>cs', ':Telescope quickfix<CR>', { desc = 'Search quickfix' })
+      vim.keymap.set('n', '<leader>ch', ':Telescope quickfixhistory<CR>', { desc = 'Search quickfix history' })
 
       -- [[ Diagnostics ]]
       vim.keymap.set('n', '?', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
