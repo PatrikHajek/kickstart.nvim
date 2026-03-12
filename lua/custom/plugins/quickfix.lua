@@ -153,9 +153,9 @@ return {
         })
       end, { desc = '[L]ist [R]eferences' })
 
-      vim.keymap.set('n', '<leader>chu', function()
+      vim.keymap.set('n', '<leader>lh', function()
         require('gitsigns').setqflist 'all'
-      end, { desc = 'Fill quickfix list with unstaged hunks' })
+      end, { desc = '[L]ist [H]unks' })
 
       vim.keymap.set('n', '<leader>vg', ':vimgrep //gj ', { desc = '[V]im[G]rep using search register' })
       vim.keymap.set('n', '<leader>vr', ':cdo s//', { desc = '[V]im [R]eplace' })
