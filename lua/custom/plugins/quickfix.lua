@@ -127,6 +127,47 @@ return {
       },
     },
     init = function()
+      -- [[ Quickfix ]]
+      vim.keymap.set('n', '<leader>sq', ':Telescope quickfixhistory<CR>', { desc = '[S]earch [Q]uickfix history' })
+      vim.keymap.set('n', '<leader>co', function()
+        local trouble = require 'trouble'
+        if vim.bo.filetype == 'trouble' then
+          trouble.close()
+        else
+          trouble.open 'quickfix'
+        end
+      end, { desc = 'Open quickfix list' })
+      vim.keymap.set('n', '<leader>cf', ':cfirst<CR>', { desc = 'Go to the first item in quickfix list' })
+      vim.keymap.set('n', '<leader>cl', ':clast<CR>', { desc = 'Go to the last item in quickfix list' })
+      vim.keymap.set('n', '<C-l>', ':cnext<CR>', { desc = 'Go to next quickfix item' })
+      vim.keymap.set('n', '<C-h>', ':cprev<CR>', { desc = 'Go to prev quickfix item' })
+
+      vim.keymap.set('n', '<leader>cr', function()
+        vim.lsp.buf.references(nil, {
+          on_list = function(o)
+            --- This is done per documentation: `:help vim.lsp.listOpts`.
+            --- @diagnostic disable-next-line: param-type-mismatch
+            vim.fn.setqflist({}, 'r', o)
+            vim.cmd 'Trouble quickfix'
+          end,
+        })
+      end, { desc = 'Fill quickfix list with references' })
+      vim.keymap.set('n', '<leader>chu', function()
+        require('gitsigns').setqflist 'all'
+      end, { desc = 'Fill quickfix list with unstaged hunks' })
+
+      vim.keymap.set('n', '<leader>vg', ':vimgrep //gj ', { desc = '[V]im[G]rep using search register' })
+      vim.keymap.set('n', '<leader>vr', ':cdo s//', { desc = '[V]im [R]eplace' })
+
+      vim.cmd 'packadd cfilter'
+      vim.api.nvim_create_user_command('Crefine', function(args)
+        local command = args.bang and 'Cfilter!' or 'Cfilter'
+        local arg = #args.fargs == 1 and args.fargs[1] or vim.fn.getreg '/'
+        vim.cmd(command .. ' ' .. arg)
+        require('trouble').refresh()
+      end, { bang = true, nargs = '?', desc = 'Calls Cfilter and refreshes trouble window' })
+
+      -- [[ Diagnostics ]]
       vim.keymap.set('n', '?', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 
       local diagnostic_next, diagnostic_prev = require('repeatable_move').make_repeatable_move_pair(function()
