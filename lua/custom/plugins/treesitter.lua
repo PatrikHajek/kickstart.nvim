@@ -142,6 +142,13 @@ return {
       vim.keymap.set({ 'n', 'x', 'o' }, '[c', function()
         require('nvim-treesitter-textobjects.move').goto_previous_start('@conditional.outer', 'textobjects')
       end, { desc = 'Previous condition start' })
+      vim.keymap.set({ 'n', 'x', 'o' }, ']C', function()
+        require('nvim-treesitter-textobjects.move').goto_next_end('@conditional.outer', 'textobjects')
+      end, { desc = 'Next condition end' })
+      vim.keymap.set({ 'n', 'x', 'o' }, '[C', function()
+        require('nvim-treesitter-textobjects.move').goto_previous_end('@conditional.outer', 'textobjects')
+      end, { desc = 'Previous condition end' })
+
 
       vim.keymap.set({ 'n', 'x', 'o' }, ']n', function()
         require('nvim-treesitter-textobjects.move').goto_next_start('@comment.outer', 'textobjects')
