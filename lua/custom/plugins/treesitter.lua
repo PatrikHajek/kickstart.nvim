@@ -63,11 +63,9 @@ return {
 
       -- [[ Move ]]
       local QUERY_FILES = {
-        'highlights',
         'indents',
       }
       local CAPTURES = {
-        'variable',
         'indent.begin',
       }
 
