@@ -272,7 +272,7 @@ return {
           })
           :find()
       end
-      vim.keymap.set('n', '<leader>mc', pick_compiler, { desc = 'Run [M]ake using picked [C]ompiler' })
+      vim.keymap.set('n', '<leader>cm', pick_compiler, { desc = 'Qui[C]kfix: Run [M]ake' })
     end,
   },
 }
