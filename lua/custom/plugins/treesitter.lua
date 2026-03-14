@@ -105,6 +105,7 @@ return {
         while parent do
           local parent_row, parent_col = parent:range()
 
+          -- "block" nodes start on the first line in the block and are masking the real parent.
           if parent:type() ~= 'block' and node_row ~= parent_row then
             for _, query_file in ipairs(QUERY_FILES) do
               if get_capture(parent, query_file, CAPTURES) ~= nil then
