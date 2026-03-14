@@ -91,14 +91,18 @@ return {
       local jump_to_parent_context = ts_repeat_move.make_repeatable_move(function()
         local ts_utils = require 'nvim-treesitter.ts_utils'
         local node = ts_utils.get_node_at_cursor()
-        if not node then
+        local root_parser = vim.treesitter.get_parser(0)
+        if not node or not root_parser then
           return
         end
+
+        local start_row, start_col, end_row, end_col = node:range()
+        local lang = root_parser:language_for_range({ start_row, start_col, end_row, end_col }):lang()
 
         --- @type { [string]: vim.treesitter.Query[] }
         local queries = {}
         for _, query_file in ipairs(QUERY_FILES) do
-          local query = vim.treesitter.query.get(vim.bo.filetype, query_file)
+          local query = vim.treesitter.query.get(lang, query_file)
           if query then
             queries[query_file] = query
           end
