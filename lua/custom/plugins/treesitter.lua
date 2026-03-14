@@ -62,6 +62,37 @@ return {
       vim.keymap.set({ 'n', 'x', 'o' }, 'T', ts_repeat_move.builtin_T_expr, { expr = true })
 
       -- [[ Move ]]
+      local QUERY_FILES = {
+        'highlights',
+        'indents',
+      }
+      local CAPTURES = {
+        'variable',
+        'indent.begin',
+      }
+
+      --- @param node TSNode
+      --- @param query_file string
+      --- @param captures string[]
+      --- @return string | nil capture The first capture from captures that is queried or nil.
+      local function get_capture(node, query_file, captures)
+        local query = vim.treesitter.query.get(vim.bo.filetype, query_file)
+        if not query then
+          return
+        end
+
+        local n_row, end_row = node:range()
+        for id, matched_node in query:iter_captures(node, 0, n_row, end_row) do
+          local capture = query.captures[id]
+          local m_row = matched_node:range()
+          if vim.list_contains(captures, capture) and n_row == m_row then
+            return capture
+          end
+        end
+
+        return nil
+      end
+
       local jump_to_parent_context = ts_repeat_move.make_repeatable_move(function()
         local ts_utils = require 'nvim-treesitter.ts_utils'
         local node = ts_utils.get_node_at_cursor()
@@ -69,28 +100,19 @@ return {
           return
         end
 
-        local context_types = {
-          'function_declaration',
-          'function_definition',
-          'method_declaration',
-          'class_declaration',
-          'if_statement',
-          'for_statement',
-          'while_statement',
-          'arrow_function',
-          'function',
-
-          -- Markdown
-          'section',
-        }
-
+        local node_row = node:range()
         local parent = node:parent()
         while parent do
-          if vim.tbl_contains(context_types, parent:type()) then
-            vim.cmd 'normal! m`'
-            local start_row, start_col = parent:range()
-            vim.api.nvim_win_set_cursor(0, { start_row + 1, start_col })
-            return
+          local parent_row, parent_col = parent:range()
+
+          if parent:type() ~= 'block' and node_row ~= parent_row then
+            for _, query_file in ipairs(QUERY_FILES) do
+              if get_capture(parent, query_file, CAPTURES) ~= nil then
+                vim.cmd 'normal! m`'
+                vim.api.nvim_win_set_cursor(0, { parent_row + 1, parent_col })
+                return
+              end
+            end
           end
           parent = parent:parent()
         end
