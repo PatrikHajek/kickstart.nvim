@@ -72,15 +72,10 @@ return {
       }
 
       --- @param node TSNode
-      --- @param query_file string
+      --- @param query vim.treesitter.Query
       --- @param captures string[]
       --- @return string | nil capture The first capture from captures that is queried or nil.
-      local function get_capture(node, query_file, captures)
-        local query = vim.treesitter.query.get(vim.bo.filetype, query_file)
-        if not query then
-          return
-        end
-
+      local function get_capture(node, query, captures)
         local n_row, end_row = node:range()
         for id, matched_node in query:iter_captures(node, 0, n_row, end_row) do
           local capture = query.captures[id]
@@ -100,6 +95,15 @@ return {
           return
         end
 
+        --- @type { [string]: vim.treesitter.Query[] }
+        local queries = {}
+        for _, query_file in ipairs(QUERY_FILES) do
+          local query = vim.treesitter.query.get(vim.bo.filetype, query_file)
+          if query then
+            queries[query_file] = query
+          end
+        end
+
         local node_row = node:range()
         local parent = node:parent()
         while parent do
@@ -107,8 +111,8 @@ return {
 
           -- "block" nodes start on the first line in the block and are masking the real parent.
           if parent:type() ~= 'block' and node_row ~= parent_row then
-            for _, query_file in ipairs(QUERY_FILES) do
-              if get_capture(parent, query_file, CAPTURES) ~= nil then
+            for _, query in pairs(queries) do
+              if get_capture(parent, query, CAPTURES) ~= nil then
                 vim.cmd 'normal! m`'
                 vim.api.nvim_win_set_cursor(0, { parent_row + 1, parent_col })
                 return
