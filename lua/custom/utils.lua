@@ -1,6 +1,6 @@
 local M = {}
 
-M.CHARS_ESCAPE_MAGIC = [[^$.~*+?=@%\|{}[]()<>]]
+M.CHARS_ESCAPE_MAGIC = [[^$.~*+?=@%&\|{}[]()<>]]
 
 local function log(...)
   local args = { ... }
