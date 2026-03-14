@@ -128,10 +128,10 @@ return {
     },
     init = function()
       -- [[ Quickfix ]]
-      vim.keymap.set('n', '<leader>cf', ':cfirst<CR>', { desc = 'Go to the first item in quickfix list' })
-      vim.keymap.set('n', '<leader>cl', ':clast<CR>', { desc = 'Go to the last item in quickfix list' })
-      vim.keymap.set('n', '<C-l>', ':cnext<CR>', { desc = 'Go to next quickfix item' })
-      vim.keymap.set('n', '<C-h>', ':cprev<CR>', { desc = 'Go to prev quickfix item' })
+      vim.keymap.set('n', '<leader>cf', ':cfirst<CR>', { desc = 'Qui[C]kfix: Go to [F]irst item' })
+      vim.keymap.set('n', '<leader>cl', ':clast<CR>', { desc = 'Qui[C]kfix: Go to [L]ast item' })
+      vim.keymap.set('n', '<C-l>', ':cnext<CR>', { desc = 'Qui[C]kfix: Go to next item' })
+      vim.keymap.set('n', '<C-h>', ':cprev<CR>', { desc = 'Qui[C]kfix: Go to prev item' })
 
       vim.keymap.set('n', '<leader>co', function()
         local trouble = require 'trouble'
@@ -140,7 +140,7 @@ return {
         else
           trouble.open 'quickfix'
         end
-      end, { desc = 'Open quickfix list' })
+      end, { desc = 'Qui[C]kfix: [O]pen' })
 
       vim.keymap.set('n', '<leader>lr', function()
         vim.lsp.buf.references(nil, {
@@ -157,7 +157,7 @@ return {
         require('gitsigns').setqflist 'all'
       end, { desc = '[L]ist [H]unks' })
 
-      vim.keymap.set('n', '<leader>vg', ':vimgrep //gj ', { desc = '[V]im[G]rep using search register' })
+      vim.keymap.set('n', '<leader>vg', ':vimgrep //gj ', { desc = '[V]im[G]rep' })
       vim.keymap.set('n', '<leader>vr', ':cdo s//', { desc = '[V]im [R]eplace' })
 
       vim.cmd 'packadd cfilter'
@@ -168,8 +168,8 @@ return {
         require('trouble').refresh()
       end, { bang = true, nargs = '?', desc = 'Calls Cfilter and refreshes trouble window' })
 
-      vim.keymap.set('n', '<leader>cs', ':Telescope quickfix<CR>', { desc = 'Search quickfix list' })
-      vim.keymap.set('n', '<leader>ch', ':Telescope quickfixhistory<CR>', { desc = 'Search quickfix history' })
+      vim.keymap.set('n', '<leader>cs', ':Telescope quickfix<CR>', { desc = 'Qui[C]kfix: [S]earch items' })
+      vim.keymap.set('n', '<leader>ch', ':Telescope quickfixhistory<CR>', { desc = 'Qui[C]kfix: Search [H]istory' })
 
       -- [[ Diagnostics ]]
       vim.keymap.set('n', '?', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
