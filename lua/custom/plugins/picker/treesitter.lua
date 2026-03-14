@@ -136,6 +136,8 @@ M.treesitter = function()
   if not parser then
     return
   end
+  -- Force a full parse of the whole buffer.
+  parser:parse(true)
 
   --- @type picker_treesitter_Entry[]
   local results = {}
