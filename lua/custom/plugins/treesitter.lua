@@ -99,7 +99,7 @@ return {
         local start_row, start_col, end_row, end_col = node:range()
         local lang = root_parser:language_for_range({ start_row, start_col, end_row, end_col }):lang()
 
-        --- @type { [string]: vim.treesitter.Query[] }
+        --- @type { [string]: vim.treesitter.Query }
         local queries = {}
         for _, query_file in ipairs(QUERY_FILES) do
           local query = vim.treesitter.query.get(lang, query_file)
