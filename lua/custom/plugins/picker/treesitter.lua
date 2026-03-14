@@ -51,7 +51,6 @@ local captures = {
   { kind = 'conditional.outer', name = 'condition', hl = '@keyword.conditional' },
   { kind = 'keyword.conditional.ternary', name = 'cond ternany' },
   { kind = 'label', name = 'label' },
-  { kind = 'type', name = 'type' },
   { kind = 'keyword.exception', name = 'exception' },
   { kind = 'constant', name = 'constant' },
   { kind = 'local.definition.var', name = 'variable', hl = '@variable' },
