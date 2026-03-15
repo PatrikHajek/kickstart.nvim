@@ -29,7 +29,54 @@ return {
       vim.keymap.set({ 'n', 'x', 'o' }, 't', ts_repeat_move.builtin_t_expr, { expr = true })
       vim.keymap.set({ 'n', 'x', 'o' }, 'T', ts_repeat_move.builtin_T_expr, { expr = true })
 
-      -- [[ Move ]]
+      -- [[ Textobjects ]]
+
+      --- @param key_start string | false
+      --- @param key_end string | false
+      --- @param key_around string | false
+      --- @param key_inner string | false
+      --- @param textobject string
+      --- @param opts { name: string? }?
+      local function map(key_start, key_end, key_around, key_inner, textobject, opts)
+        local move = require 'nvim-treesitter-textobjects.move'
+        local select = require 'nvim-treesitter-textobjects.select'
+
+        opts = opts or {}
+        opts.name = opts.name or textobject
+
+        if key_start then
+          vim.keymap.set({ 'n', 'x', 'o' }, ']' .. key_start, function()
+            move.goto_next_start('@' .. textobject .. '.outer', 'textobjects')
+          end, { desc = 'Next ' .. opts.name .. ' start' })
+          vim.keymap.set({ 'n', 'x', 'o' }, '[' .. key_start, function()
+            move.goto_previous_start('@' .. textobject .. '.outer', 'textobjects')
+          end, { desc = 'Previous ' .. opts.name .. ' start' })
+        end
+
+        if key_end then
+          vim.keymap.set({ 'n', 'x', 'o' }, ']' .. key_end, function()
+            move.goto_next_end('@' .. textobject .. '.outer', 'textobjects')
+          end, { desc = 'Next ' .. opts.name .. ' end' })
+          vim.keymap.set({ 'n', 'x', 'o' }, '[' .. key_end, function()
+            move.goto_previous_end('@' .. textobject .. '.outer', 'textobjects')
+          end, { desc = 'Previous ' .. opts.name .. ' end' })
+        end
+
+        if key_around then
+          vim.keymap.set({ 'x', 'o' }, 'a' .. key_around, function()
+            vim.cmd 'normal! m`'
+            select.select_textobject('@' .. textobject .. '.outer', 'textobjects')
+          end, { desc = opts.name })
+        end
+
+        if key_inner then
+          vim.keymap.set({ 'x', 'o' }, 'i' .. key_inner, function()
+            vim.cmd 'normal! m`'
+            select.select_textobject('@' .. textobject .. '.inner', 'textobjects')
+          end, { desc = opts.name })
+        end
+      end
+
       local QUERY_FILES = {
         'indents',
       }
@@ -42,117 +89,26 @@ return {
         move.goto_enclosing { forward = true }
       end, { desc = 'Jump to parent context' })
 
-      vim.keymap.set({ 'n', 'x', 'o' }, ']s', function()
-        require('nvim-treesitter-textobjects.move').goto_next_start('@statement.outer', 'textobjects')
-      end, { desc = 'Next statement' })
-      vim.keymap.set({ 'n', 'x', 'o' }, '[s', function()
-        require('nvim-treesitter-textobjects.move').goto_previous_start('@statement.outer', 'textobjects')
-      end, { desc = 'Previous statement' })
-
+      map('s', false, 's', false, 'statement')
       vim.keymap.set('n', ']z', ']s', { desc = 'Next misspelled word' })
       vim.keymap.set('n', '[z', '[s', { desc = 'Previous misspelled word' })
 
-      vim.keymap.set({ 'n', 'x', 'o' }, ']m', function()
-        require('nvim-treesitter-textobjects.move').goto_next_start('@function.outer', 'textobjects')
-      end, { desc = 'Next function start' })
-      vim.keymap.set({ 'n', 'x', 'o' }, '[m', function()
-        require('nvim-treesitter-textobjects.move').goto_previous_start('@function.outer', 'textobjects')
-      end, { desc = 'Previous function start' })
-      vim.keymap.set({ 'n', 'x', 'o' }, ']M', function()
-        require('nvim-treesitter-textobjects.move').goto_next_end('@function.outer', 'textobjects')
-      end, { desc = 'Next function end' })
-      vim.keymap.set({ 'n', 'x', 'o' }, '[M', function()
-        require('nvim-treesitter-textobjects.move').goto_previous_end('@function.outer', 'textobjects')
-      end, { desc = 'Previous function end' })
+      map('m', 'M', 'm', 'm', 'function')
 
-      vim.keymap.set({ 'n', 'x', 'o' }, ']o', function()
-        require('nvim-treesitter-textobjects.move').goto_next_start('@loop.outer', 'textobjects')
-      end, { desc = 'Next loop start' })
-      vim.keymap.set({ 'n', 'x', 'o' }, '[o', function()
-        require('nvim-treesitter-textobjects.move').goto_previous_start('@loop.outer', 'textobjects')
-      end, { desc = 'Previous loop start' })
-      vim.keymap.set({ 'n', 'x', 'o' }, ']O', function()
-        require('nvim-treesitter-textobjects.move').goto_next_end('@loop.outer', 'textobjects')
-      end, { desc = 'Next loop end' })
-      vim.keymap.set({ 'n', 'x', 'o' }, '[O', function()
-        require('nvim-treesitter-textobjects.move').goto_previous_end('@loop.outer', 'textobjects')
-      end, { desc = 'Previous loop end' })
+      map(false, false, 'a', 'a', 'parameter')
 
-      vim.keymap.set({ 'n', 'x', 'o' }, ']c', function()
-        require('nvim-treesitter-textobjects.move').goto_next_start('@conditional.outer', 'textobjects')
-      end, { desc = 'Next condition start' })
-      vim.keymap.set({ 'n', 'x', 'o' }, '[c', function()
-        require('nvim-treesitter-textobjects.move').goto_previous_start('@conditional.outer', 'textobjects')
-      end, { desc = 'Previous condition start' })
-      vim.keymap.set({ 'n', 'x', 'o' }, ']C', function()
-        require('nvim-treesitter-textobjects.move').goto_next_end('@conditional.outer', 'textobjects')
-      end, { desc = 'Next condition end' })
-      vim.keymap.set({ 'n', 'x', 'o' }, '[C', function()
-        require('nvim-treesitter-textobjects.move').goto_previous_end('@conditional.outer', 'textobjects')
-      end, { desc = 'Previous condition end' })
+      map('o', 'O', 'o', 'o', 'loop')
 
-      vim.keymap.set({ 'n', 'x', 'o' }, ']n', function()
-        require('nvim-treesitter-textobjects.move').goto_next_start('@comment.outer', 'textobjects')
-      end, { desc = 'Next comment' })
-      vim.keymap.set({ 'n', 'x', 'o' }, '[n', function()
-        require('nvim-treesitter-textobjects.move').goto_previous_start('@comment.outer', 'textobjects')
-      end, { desc = 'Previous comment' })
+      map('c', 'C', 'c', 'c', 'conditional')
 
-      -- [[ Select ]]
-      vim.keymap.set({ 'x', 'o' }, 'as', function()
-        vim.cmd 'normal! m`'
-        require('nvim-treesitter-textobjects.select').select_textobject('@statement.outer', 'textobjects')
-      end, { desc = 'statement' })
+      map('n', false, false, false, 'comment')
 
       vim.keymap.set({ 'x', 'o' }, 'ab', function()
         vim.cmd 'normal! m`'
         require('nvim-treesitter-textobjects.select').select_textobject('@local.scope', 'locals')
       end, { desc = 'code block (scope)' })
 
-      vim.keymap.set({ 'x', 'o' }, 'am', function()
-        vim.cmd 'normal! m`'
-        require('nvim-treesitter-textobjects.select').select_textobject('@function.outer', 'textobjects')
-      end, { desc = 'function' })
-      vim.keymap.set({ 'x', 'o' }, 'im', function()
-        vim.cmd 'normal! m`'
-        require('nvim-treesitter-textobjects.select').select_textobject('@function.inner', 'textobjects')
-      end, { desc = 'function' })
-
-      vim.keymap.set({ 'x', 'o' }, 'aa', function()
-        vim.cmd 'normal! m`'
-        require('nvim-treesitter-textobjects.select').select_textobject('@parameter.outer', 'textobjects')
-      end, { desc = 'parameter' })
-      vim.keymap.set({ 'x', 'o' }, 'ia', function()
-        vim.cmd 'normal! m`'
-        require('nvim-treesitter-textobjects.select').select_textobject('@parameter.inner', 'textobjects')
-      end, { desc = 'parameter' })
-
-      vim.keymap.set({ 'x', 'o' }, 'ao', function()
-        vim.cmd 'normal! m`'
-        require('nvim-treesitter-textobjects.select').select_textobject('@loop.outer', 'textobjects')
-      end, { desc = 'loop' })
-      vim.keymap.set({ 'x', 'o' }, 'io', function()
-        vim.cmd 'normal! m`'
-        require('nvim-treesitter-textobjects.select').select_textobject('@loop.inner', 'textobjects')
-      end, { desc = 'loop' })
-
-      vim.keymap.set({ 'x', 'o' }, 'ac', function()
-        vim.cmd 'normal! m`'
-        require('nvim-treesitter-textobjects.select').select_textobject('@conditional.outer', 'textobjects')
-      end, { desc = 'conditional' })
-      vim.keymap.set({ 'x', 'o' }, 'ic', function()
-        vim.cmd 'normal! m`'
-        require('nvim-treesitter-textobjects.select').select_textobject('@conditional.inner', 'textobjects')
-      end, { desc = 'conditional' })
-
-      vim.keymap.set({ 'x', 'o' }, 'a=', function()
-        vim.cmd 'normal! m`'
-        require('nvim-treesitter-textobjects.select').select_textobject('@assignment.outer', 'textobjects')
-      end, { desc = 'assignment' })
-      vim.keymap.set({ 'x', 'o' }, 'i=', function()
-        vim.cmd 'normal! m`'
-        require('nvim-treesitter-textobjects.select').select_textobject('@assignment.inner', 'textobjects')
-      end, { desc = 'assignment' })
+      map(false, false, '=', '=', 'assignment')
       vim.keymap.set({ 'x', 'o' }, 'in=', function()
         vim.cmd 'normal! m`'
         require('nvim-treesitter-textobjects.select').select_textobject('@assignment.rhs', 'textobjects')
