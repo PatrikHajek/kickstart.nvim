@@ -30,6 +30,11 @@ return {
       vim.keymap.set({ 'n', 'x', 'o' }, 'T', ts_repeat_move.builtin_T_expr, { expr = true })
 
       -- [[ Textobjects ]]
+      require('which-key').add {
+        { ']', group = 'Go to next textobject' },
+        { '[', group = 'Go to previous textobject' },
+        { '^', group = 'Go to enclosing textobject' },
+      }
 
       --- @param key_start string | false
       --- @param key_end string | false
