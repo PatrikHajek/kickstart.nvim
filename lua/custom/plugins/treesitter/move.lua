@@ -19,6 +19,13 @@ local function get_capture(node, query, captures)
   return nil
 end
 
+--- @param node TSNode
+local function goto_node(node)
+  local row, col = node:range()
+  vim.cmd 'normal! m`'
+  vim.api.nvim_win_set_cursor(0, { row + 1, col })
+end
+
 --- @class treesitter_goto_enclosing_opts
 --- @field query_files string[]
 --- @field captures string[]
@@ -57,21 +64,19 @@ M.goto_enclosing = ts_repeat_move.make_repeatable_move(function(_, opts)
   local node_row = node:range()
   local parent = node:parent()
   while parent do
-    local parent_row, parent_col = parent:range()
+    local parent_row = parent:range()
 
     -- "block" nodes start on the first line in the block and are masking the real parent.
     if parent:type() ~= 'block' and node_row ~= parent_row then
       if opts then
         for _, query in pairs(queries) do
           if get_capture(parent, query, opts.captures) ~= nil then
-            vim.cmd 'normal! m`'
-            vim.api.nvim_win_set_cursor(0, { parent_row + 1, parent_col })
+            goto_node(parent)
             return
           end
         end
       else
-        vim.cmd 'normal! m`'
-        vim.api.nvim_win_set_cursor(0, { parent_row + 1, parent_col })
+        goto_node(parent)
         return
       end
     end
