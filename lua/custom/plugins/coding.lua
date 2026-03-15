@@ -53,8 +53,12 @@ return {
         local ts_select = require 'nvim-treesitter-textobjects.select'
         local move = require 'custom.plugins.treesitter.move'
 
-        key_enclosing_start = key_enclosing_start ~= nil and key_enclosing_start or key_start
-        key_enclosing_end = key_enclosing_end ~= nil and key_enclosing_end or key_end
+        if key_enclosing_start == nil then
+          key_enclosing_start = key_start
+        end
+        if key_enclosing_end == nil then
+          key_enclosing_end = key_end
+        end
 
         opts = opts or {}
         opts.name = opts.name or textobject
