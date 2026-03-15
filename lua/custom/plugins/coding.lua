@@ -36,13 +36,13 @@ return {
         { '^', group = 'Go to enclosing textobject' },
       }
 
+      --- @param textobject string
       --- @param key_start string | false
       --- @param key_end string | false
       --- @param key_around string | false
       --- @param key_inner string | false
-      --- @param textobject string
       --- @param opts { name: string? }?
-      local function map(key_start, key_end, key_around, key_inner, textobject, opts)
+      local function map(textobject, key_start, key_end, key_around, key_inner, opts)
         local ts_move = require 'nvim-treesitter-textobjects.move'
         local ts_select = require 'nvim-treesitter-textobjects.select'
 
@@ -94,26 +94,26 @@ return {
         move.goto_enclosing { forward = true }
       end, { desc = 'Jump to parent context' })
 
-      map('s', false, 's', false, 'statement')
+      map('statement', 's', false, 's', false)
       vim.keymap.set('n', ']z', ']s', { desc = 'Next misspelled word' })
       vim.keymap.set('n', '[z', '[s', { desc = 'Previous misspelled word' })
 
-      map('m', 'M', 'm', 'm', 'function')
+      map('function', 'm', 'M', 'm', 'm')
 
-      map(false, false, 'a', 'a', 'parameter')
+      map('parameter', false, false, 'a', 'a')
 
-      map('o', 'O', 'o', 'o', 'loop')
+      map('loop', 'o', 'O', 'o', 'o')
 
-      map('c', 'C', 'c', 'c', 'conditional')
+      map('conditional', 'c', 'C', 'c', 'c')
 
-      map('n', false, false, false, 'comment')
+      map('comment', 'n', false, false, false)
 
       vim.keymap.set({ 'x', 'o' }, 'ab', function()
         vim.cmd 'normal! m`'
         require('nvim-treesitter-textobjects.select').select_textobject('@local.scope', 'locals')
       end, { desc = 'code block (scope)' })
 
-      map(false, false, '=', '=', 'assignment')
+      map('assignment', false, false, '=', '=')
       vim.keymap.set({ 'x', 'o' }, 'in=', function()
         vim.cmd 'normal! m`'
         require('nvim-treesitter-textobjects.select').select_textobject('@assignment.rhs', 'textobjects')
