@@ -117,10 +117,7 @@ return {
 
       map('comment', 'n', false, false, false, false, false)
 
-      vim.keymap.set({ 'x', 'o' }, 'ab', function()
-        vim.cmd 'normal! m`'
-        require('nvim-treesitter-textobjects.select').select_textobject('@local.scope', 'locals')
-      end, { desc = 'code block (scope)' })
+      map('block', false, false, 'b', false)
 
       map('assignment', false, false, '=', '=', '=')
       vim.keymap.set({ 'x', 'o' }, 'in=', function()
