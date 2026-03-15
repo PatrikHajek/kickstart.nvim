@@ -78,12 +78,38 @@ return {
             vim.cmd 'normal! m`'
             ts_select.select_textobject('@' .. textobject .. '.outer', 'textobjects')
           end, { desc = opts.name })
+
+          vim.keymap.set({ 'x', 'o' }, 'an' .. key_around, function()
+            vim.cmd 'normal! m`'
+            ts_move.goto_next_start('@' .. textobject .. '.outer', 'textobjects')
+            ts_select.select_textobject('@' .. textobject .. '.outer', 'textobjects')
+          end, { desc = opts.name })
+
+          vim.keymap.set({ 'x', 'o' }, 'al' .. key_around, function()
+            vim.cmd 'normal! m`'
+            ts_move.goto_previous_start('@' .. textobject .. '.outer', 'textobjects')
+            ts_move.goto_previous_start('@' .. textobject .. '.outer', 'textobjects')
+            ts_select.select_textobject('@' .. textobject .. '.outer', 'textobjects')
+          end, { desc = opts.name })
         end
 
         if key_inner then
           vim.keymap.set({ 'x', 'o' }, 'i' .. key_inner, function()
             vim.cmd 'normal! m`'
             ts_select.select_textobject('@' .. textobject .. '.inner', 'textobjects')
+          end, { desc = opts.name })
+
+          vim.keymap.set({ 'x', 'o' }, 'in' .. key_around, function()
+            vim.cmd 'normal! m`'
+            ts_move.goto_next_start('@' .. textobject .. '.outer', 'textobjects')
+            ts_select.select_textobject('@' .. textobject .. '.outer', 'textobjects')
+          end, { desc = opts.name })
+
+          vim.keymap.set({ 'x', 'o' }, 'il' .. key_around, function()
+            vim.cmd 'normal! m`'
+            ts_move.goto_previous_start('@' .. textobject .. '.outer', 'textobjects')
+            ts_move.goto_previous_start('@' .. textobject .. '.outer', 'textobjects')
+            ts_select.select_textobject('@' .. textobject .. '.outer', 'textobjects')
           end, { desc = opts.name })
         end
 
