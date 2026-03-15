@@ -100,13 +100,6 @@ return {
         end
       end
 
-      local QUERY_FILES = {
-        'indents',
-      }
-      local CAPTURES = {
-        'indent.begin',
-      }
-
       local move = require 'custom.plugins.treesitter.move'
       vim.keymap.set({ 'n', 'x', 'o' }, '<leader>tk', function()
         move.goto_enclosing { forward = true }
