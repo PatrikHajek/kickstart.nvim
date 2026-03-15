@@ -137,7 +137,10 @@ return {
       local move = require 'custom.plugins.treesitter.move'
       vim.keymap.set({ 'n', 'x', 'o' }, '^^', function()
         move.goto_enclosing_start { forward = true }
-      end, { desc = 'Enclosing parent' })
+      end, { desc = 'Enclosing parent start' })
+      vim.keymap.set({ 'n', 'x', 'o' }, '^_', function()
+        move.goto_enclosing_end { forward = true }
+      end, { desc = 'Enclosing parent end' })
 
       map('block', 'b', 'B', 'b', 'b')
 
