@@ -207,32 +207,40 @@ return {
       --- @param start_name string?
       --- @param end_name string?
       local function map(textobject, key_start, key_end, start_name, end_name)
-        vim.keymap.set({ 'n', 'x', 'o' }, ']' .. key_start, function()
+        local repeat_move = require 'repeatable_move'
+        local ts_repeat = require 'nvim-treesitter-textobjects.repeatable_move'
+
+        local next_start, prev_start = repeat_move.make_repeatable_move_pair(function()
           vim.cmd 'normal! m`'
           require('mini.ai').move_cursor('left', 'a', textobject, { search_method = 'next' })
-        end, { desc = 'Next ' .. (start_name or key_start) })
-        vim.keymap.set({ 'n', 'x', 'o' }, '[' .. key_start, function()
+        end, function()
           vim.cmd 'normal! m`'
           require('mini.ai').move_cursor('left', 'a', textobject, { search_method = 'prev' })
-        end, { desc = 'Previous ' .. (start_name or key_start) })
+        end)
+        vim.keymap.set({ 'n', 'x', 'o' }, ']' .. key_start, next_start, { desc = 'Next ' .. (start_name or key_start) })
+        vim.keymap.set({ 'n', 'x', 'o' }, '[' .. key_start, prev_start, { desc = 'Previous ' .. (start_name or key_start) })
 
-        vim.keymap.set({ 'n', 'x', 'o' }, ']' .. key_end, function()
+        local next_end, prev_end = repeat_move.make_repeatable_move_pair(function()
           vim.cmd 'normal! m`'
           require('mini.ai').move_cursor('right', 'a', textobject, { search_method = 'next' })
-        end, { desc = 'Next ' .. (end_name or key_end) })
-        vim.keymap.set({ 'n', 'x', 'o' }, '[' .. key_end, function()
+        end, function()
           vim.cmd 'normal! m`'
           require('mini.ai').move_cursor('right', 'a', textobject, { search_method = 'prev' })
-        end, { desc = 'Previous ' .. (end_name or key_end) })
+        end)
+        vim.keymap.set({ 'n', 'x', 'o' }, ']' .. key_end, next_end, { desc = 'Next ' .. (end_name or key_end) })
+        vim.keymap.set({ 'n', 'x', 'o' }, '[' .. key_end, prev_end, { desc = 'Previous ' .. (end_name or key_end) })
 
-        vim.keymap.set({ 'n', 'x', 'o' }, '^' .. key_start, function()
+        local goto_enclosing_start = ts_repeat.make_repeatable_move(function()
           vim.cmd 'normal! m`'
           require('mini.ai').move_cursor('left', 'a', textobject, { search_method = 'cover' })
-        end, { desc = 'Enclosing ' .. (start_name or key_start) })
-        vim.keymap.set({ 'n', 'x', 'o' }, '^' .. key_end, function()
+        end)
+        vim.keymap.set({ 'n', 'x', 'o' }, '^' .. key_start, goto_enclosing_start, { desc = 'Enclosing ' .. (start_name or key_start) })
+
+        local goto_enclosing_end = ts_repeat.make_repeatable_move(function()
           vim.cmd 'normal! m`'
           require('mini.ai').move_cursor('right', 'a', textobject, { search_method = 'cover' })
-        end, { desc = 'Enclosing ' .. (end_name or key_end) })
+        end)
+        vim.keymap.set({ 'n', 'x', 'o' }, '^' .. key_end, goto_enclosing_end, { desc = 'Enclosing ' .. (end_name or key_end) })
       end
 
       vim.api.nvim_create_autocmd('FileType', {
