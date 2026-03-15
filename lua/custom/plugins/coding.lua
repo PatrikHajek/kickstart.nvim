@@ -188,6 +188,15 @@ return {
         },
       }
 
+      vim.keymap.set({ 'n', 'x', 'o' }, ']]', function()
+        vim.cmd 'normal! m`'
+        require('mini.ai').move_cursor('right', 'a', ']', { search_method = 'cover' })
+      end, { desc = 'Next [' })
+      vim.keymap.set({ 'n', 'x', 'o' }, '[[', function()
+        vim.cmd 'normal! m`'
+        require('mini.ai').move_cursor('left', 'a', '[', { search_method = 'cover' })
+      end, { desc = 'Previous [' })
+
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
       -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
