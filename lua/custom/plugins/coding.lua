@@ -100,8 +100,6 @@ return {
 
       map('function', 'm', 'M', 'm', 'm')
 
-      map('parameter', false, false, 'a', 'a')
-
       map('loop', 'o', 'O', 'o', 'o')
 
       map('conditional', 'c', 'C', 'c', 'c')
@@ -150,7 +148,6 @@ return {
           ['s'] = false,
           ['b'] = false,
           ['m'] = false,
-          ['a'] = false,
           ['o'] = false,
           ['c'] = false,
           ['='] = false,
