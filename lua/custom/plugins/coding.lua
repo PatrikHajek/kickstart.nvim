@@ -101,9 +101,9 @@ return {
       end
 
       local move = require 'custom.plugins.treesitter.move'
-      vim.keymap.set({ 'n', 'x', 'o' }, '<leader>tk', function()
-        move.goto_enclosing { forward = true }
-      end, { desc = 'Jump to parent context' })
+      vim.keymap.set({ 'n', 'x', 'o' }, '^^', function()
+        move.goto_enclosing_start { forward = true }
+      end, { desc = 'Enclosing parent' })
 
       map('statement', 's', false, 's', false)
       vim.keymap.set('n', ']z', ']s', { desc = 'Next misspelled word' })
