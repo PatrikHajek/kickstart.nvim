@@ -222,6 +222,13 @@ return {
         end, { desc = 'Enclosing ' .. (end_name or key_end) })
       end
 
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'markdown',
+        callback = function()
+          vim.keymap.del('n', ']]', { buffer = true })
+          vim.keymap.del('n', '[[', { buffer = true })
+        end,
+      })
       map('(', '(', ')')
       map('[', '[', ']')
       map('{', '{', '}')
