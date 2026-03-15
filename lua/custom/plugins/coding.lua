@@ -105,6 +105,8 @@ return {
         move.goto_enclosing_start { forward = true }
       end, { desc = 'Enclosing parent' })
 
+      map('block', false, false, 'b', false)
+
       map('statement', 's', false, 's', false)
       vim.keymap.set('n', ']z', ']s', { desc = 'Next misspelled word' })
       vim.keymap.set('n', '[z', '[s', { desc = 'Previous misspelled word' })
@@ -116,8 +118,6 @@ return {
       map('conditional', 'c', 'C', 'c', 'c')
 
       map('comment', 'n', false, false, false, false, false)
-
-      map('block', false, false, 'b', false)
 
       map('assignment', false, false, '=', '=', '=')
       vim.keymap.set({ 'x', 'o' }, 'in=', function()
