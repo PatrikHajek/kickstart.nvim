@@ -188,14 +188,42 @@ return {
         },
       }
 
-      vim.keymap.set({ 'n', 'x', 'o' }, ']]', function()
-        vim.cmd 'normal! m`'
-        require('mini.ai').move_cursor('right', 'a', ']', { search_method = 'cover' })
-      end, { desc = 'Next [' })
-      vim.keymap.set({ 'n', 'x', 'o' }, '[[', function()
-        vim.cmd 'normal! m`'
-        require('mini.ai').move_cursor('left', 'a', '[', { search_method = 'cover' })
-      end, { desc = 'Previous [' })
+      --- @param textobject string
+      --- @param key_start string
+      --- @param key_end string
+      local function map(textobject, key_start, key_end)
+        vim.keymap.set({ 'n', 'x', 'o' }, ']' .. key_start, function()
+          vim.cmd 'normal! m`'
+          require('mini.ai').move_cursor('left', 'a', textobject, { search_method = 'next' })
+        end, { desc = 'Next ' .. key_start })
+        vim.keymap.set({ 'n', 'x', 'o' }, '[' .. key_start, function()
+          vim.cmd 'normal! m`'
+          require('mini.ai').move_cursor('left', 'a', textobject, { search_method = 'prev' })
+        end, { desc = 'Previous ' .. key_start })
+
+        vim.keymap.set({ 'n', 'x', 'o' }, ']' .. key_end, function()
+          vim.cmd 'normal! m`'
+          require('mini.ai').move_cursor('right', 'a', textobject, { search_method = 'next' })
+        end, { desc = 'Next ' .. key_end })
+        vim.keymap.set({ 'n', 'x', 'o' }, '[' .. key_end, function()
+          vim.cmd 'normal! m`'
+          require('mini.ai').move_cursor('right', 'a', textobject, { search_method = 'prev' })
+        end, { desc = 'Previous ' .. key_end })
+
+        vim.keymap.set({ 'n', 'x', 'o' }, '^' .. key_start, function()
+          vim.cmd 'normal! m`'
+          require('mini.ai').move_cursor('left', 'a', textobject, { search_method = 'cover' })
+        end, { desc = 'Enclosing ' .. key_start })
+        vim.keymap.set({ 'n', 'x', 'o' }, '^' .. key_end, function()
+          vim.cmd 'normal! m`'
+          require('mini.ai').move_cursor('right', 'a', textobject, { search_method = 'cover' })
+        end, { desc = 'Enclosing ' .. key_end })
+      end
+
+      map('(', '(', ')')
+      map('[', '[', ']')
+      map('{', '{', '}')
+      map('<', '<', '>')
 
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
