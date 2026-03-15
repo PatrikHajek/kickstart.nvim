@@ -137,7 +137,7 @@ return {
 
       map('block', 'b', 'B', 'b', 'b')
 
-      map('statement', 's', false, 's', false)
+      map('statement', 's', 'S', 's', false)
       vim.keymap.set('n', ']z', ']s', { desc = 'Next misspelled word' })
       vim.keymap.set('n', '[z', '[s', { desc = 'Previous misspelled word' })
 
