@@ -131,7 +131,7 @@ return {
         move.goto_enclosing_start { forward = true }
       end, { desc = 'Enclosing parent' })
 
-      map('block', false, false, 'b', false)
+      map('block', 'b', 'B', 'b', 'b')
 
       map('statement', 's', false, 's', false)
       vim.keymap.set('n', ']z', ']s', { desc = 'Next misspelled word' })
