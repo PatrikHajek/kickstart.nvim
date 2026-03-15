@@ -86,7 +86,20 @@ return {
         return nil
       end
 
-      local goto_enclosing = ts_repeat_move.make_repeatable_move(function()
+      --- @class treesitter_goto_enclosing_opts
+      --- @field query_files string[]
+      --- @field captures string[]
+
+      --- Goes to the start of the innermost enclosing textobject specified in `captures`.
+      ---
+      --- If `opts` is omitted, the innermost parent regardless of it's capture is targeted.
+      ---
+      --- Ignores parents on the same line in all cases.
+      ---
+      --- @param _ TSTextObjects.MoveOpts
+      --- @param opts treesitter_goto_enclosing_opts?
+      --- @type fun(opts: TSTextObjects.MoveOpts, opts: treesitter_goto_enclosing_opts?)
+      local goto_enclosing = ts_repeat_move.make_repeatable_move(function(_, opts)
         local ts_utils = require 'nvim-treesitter.ts_utils'
         local node = ts_utils.get_node_at_cursor()
         local root_parser = vim.treesitter.get_parser(0)
@@ -99,10 +112,12 @@ return {
 
         --- @type { [string]: vim.treesitter.Query }
         local queries = {}
-        for _, query_file in ipairs(QUERY_FILES) do
-          local query = vim.treesitter.query.get(lang, query_file)
-          if query then
-            queries[query_file] = query
+        if opts then
+          for _, query_file in ipairs(opts.query_files) do
+            local query = vim.treesitter.query.get(lang, query_file)
+            if query then
+              queries[query_file] = query
+            end
           end
         end
 
@@ -113,12 +128,18 @@ return {
 
           -- "block" nodes start on the first line in the block and are masking the real parent.
           if parent:type() ~= 'block' and node_row ~= parent_row then
-            for _, query in pairs(queries) do
-              if get_capture(parent, query, CAPTURES) ~= nil then
-                vim.cmd 'normal! m`'
-                vim.api.nvim_win_set_cursor(0, { parent_row + 1, parent_col })
-                return
+            if opts then
+              for _, query in pairs(queries) do
+                if get_capture(parent, query, opts.captures) ~= nil then
+                  vim.cmd 'normal! m`'
+                  vim.api.nvim_win_set_cursor(0, { parent_row + 1, parent_col })
+                  return
+                end
               end
+            else
+              vim.cmd 'normal! m`'
+              vim.api.nvim_win_set_cursor(0, { parent_row + 1, parent_col })
+              return
             end
           end
           parent = parent:parent()
