@@ -41,10 +41,16 @@ return {
       --- @param key_end string | false
       --- @param key_around string | false
       --- @param key_inner string | false
+      --- @param key_enclosing_start (string | false)?
+      --- @param key_enclosing_end (string | false)?
       --- @param opts { name: string? }?
-      local function map(textobject, key_start, key_end, key_around, key_inner, opts)
+      local function map(textobject, key_start, key_end, key_around, key_inner, key_enclosing_start, key_enclosing_end, opts)
         local ts_move = require 'nvim-treesitter-textobjects.move'
         local ts_select = require 'nvim-treesitter-textobjects.select'
+        local move = require 'custom.plugins.treesitter.move'
+
+        key_enclosing_start = key_enclosing_start ~= nil and key_enclosing_start or key_start
+        key_enclosing_end = key_enclosing_end ~= nil and key_enclosing_end or key_end
 
         opts = opts or {}
         opts.name = opts.name or textobject
@@ -80,6 +86,18 @@ return {
             ts_select.select_textobject('@' .. textobject .. '.inner', 'textobjects')
           end, { desc = opts.name })
         end
+
+        if key_enclosing_start then
+          vim.keymap.set({ 'n', 'x', 'o' }, '^' .. key_enclosing_start, function()
+            move.goto_enclosing_start({ forward = true }, { query_files = { 'textobjects' }, captures = { textobject .. '.outer' } })
+          end, { desc = 'Enclosing ' .. opts.name .. ' start' })
+        end
+
+        if key_enclosing_end then
+          vim.keymap.set({ 'n', 'x', 'o' }, '^' .. key_enclosing_end, function()
+            move.goto_enclosing_end({ forward = true }, { query_files = { 'textobjects' }, captures = { textobject .. '.outer' } })
+          end, { desc = 'Enclosing ' .. opts.name .. ' end' })
+        end
       end
 
       local QUERY_FILES = {
@@ -104,14 +122,14 @@ return {
 
       map('conditional', 'c', 'C', 'c', 'c')
 
-      map('comment', 'n', false, false, false)
+      map('comment', 'n', false, false, false, false, false)
 
       vim.keymap.set({ 'x', 'o' }, 'ab', function()
         vim.cmd 'normal! m`'
         require('nvim-treesitter-textobjects.select').select_textobject('@local.scope', 'locals')
       end, { desc = 'code block (scope)' })
 
-      map('assignment', false, false, '=', '=')
+      map('assignment', false, false, '=', '=', '=')
       vim.keymap.set({ 'x', 'o' }, 'in=', function()
         vim.cmd 'normal! m`'
         require('nvim-treesitter-textobjects.select').select_textobject('@assignment.rhs', 'textobjects')

@@ -20,27 +20,19 @@ local function get_capture(node, query, captures)
   return nil
 end
 
---- @param node TSNode
-local function goto_node(node)
-  local row, col = node:range()
-  vim.cmd 'normal! m`'
-  vim.api.nvim_win_set_cursor(0, { row + 1, col })
-end
-
---- @class treesitter_goto_enclosing_opts
+--- @class treesitter_get_enclosing_opts
 --- @field query_files string[]
 --- @field captures string[]
 
---- Goes to the start of the innermost enclosing textobject specified in `captures`.
+--- Gets the innermost enclosing textobject specified in `captures`.
 ---
---- If `opts` is omitted, the innermost parent regardless of it's capture is targeted.
+--- If `opts` is omitted, the innermost parent is targeted.
 ---
 --- Ignores parents on the same line in all cases.
 ---
---- @param _ TSTextObjects.MoveOpts
---- @param opts treesitter_goto_enclosing_opts?
---- @type fun(opts: TSTextObjects.MoveOpts, opts: treesitter_goto_enclosing_opts?)
-M.goto_enclosing = ts_repeat_move.make_repeatable_move(function(_, opts)
+--- @param opts treesitter_get_enclosing_opts?
+--- @return TSNode | nil
+local function get_enclosing(opts)
   local ts_utils = require 'nvim-treesitter.ts_utils'
   local node = ts_utils.get_node_at_cursor()
   local root_parser = vim.treesitter.get_parser(0)
@@ -72,18 +64,40 @@ M.goto_enclosing = ts_repeat_move.make_repeatable_move(function(_, opts)
       if opts then
         for _, query in pairs(queries) do
           if get_capture(parent, query, opts.captures) ~= nil then
-            goto_node(parent)
-            return
+            return parent
           end
         end
       else
-        goto_node(parent)
-        return
+        return parent
       end
     end
     parent = parent:parent()
   end
   print 'No parent context found'
+end
+
+--- @param _ TSTextObjects.MoveOpts
+--- @param opts treesitter_get_enclosing_opts?
+--- @type fun(opts: TSTextObjects.MoveOpts, opts: treesitter_get_enclosing_opts?)
+M.goto_enclosing_start = ts_repeat_move.make_repeatable_move(function(_, opts)
+  local node = get_enclosing(opts)
+  if node then
+    local row, col = node:range()
+    vim.cmd 'normal! m`'
+    vim.api.nvim_win_set_cursor(0, { row + 1, col })
+  end
+end)
+
+--- @param _ TSTextObjects.MoveOpts
+--- @param opts treesitter_get_enclosing_opts?
+--- @type fun(opts: TSTextObjects.MoveOpts, opts: treesitter_get_enclosing_opts?)
+M.goto_enclosing_end = ts_repeat_move.make_repeatable_move(function(_, opts)
+  local node = get_enclosing(opts)
+  if node then
+    local _, _, row, col = node:range()
+    vim.cmd 'normal! m`'
+    vim.api.nvim_win_set_cursor(0, { row + 1, col })
+  end
 end)
 
 return M
