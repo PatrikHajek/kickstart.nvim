@@ -95,7 +95,7 @@ M.goto_enclosing_end = ts_repeat_move.make_repeatable_move(function(_, opts)
   if node then
     local _, _, row, col = node:range()
     vim.cmd 'normal! m`'
-    vim.api.nvim_win_set_cursor(0, { row + 1, col })
+    vim.api.nvim_win_set_cursor(0, { row + 1, col - 1 })
   end
 end)
 
