@@ -1,3 +1,7 @@
+-- To make these keymaps less disorienting when zoomed in.
+vim.keymap.set({ 'n', 'x' }, '<C-d>', '5j')
+vim.keymap.set({ 'n', 'x' }, '<C-u>', '5k')
+
 return {
   {
     'nvim-treesitter/nvim-treesitter-textobjects',
