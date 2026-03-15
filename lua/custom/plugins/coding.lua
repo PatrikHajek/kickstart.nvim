@@ -43,41 +43,41 @@ return {
       --- @param textobject string
       --- @param opts { name: string? }?
       local function map(key_start, key_end, key_around, key_inner, textobject, opts)
-        local move = require 'nvim-treesitter-textobjects.move'
-        local select = require 'nvim-treesitter-textobjects.select'
+        local ts_move = require 'nvim-treesitter-textobjects.move'
+        local ts_select = require 'nvim-treesitter-textobjects.select'
 
         opts = opts or {}
         opts.name = opts.name or textobject
 
         if key_start then
           vim.keymap.set({ 'n', 'x', 'o' }, ']' .. key_start, function()
-            move.goto_next_start('@' .. textobject .. '.outer', 'textobjects')
+            ts_move.goto_next_start('@' .. textobject .. '.outer', 'textobjects')
           end, { desc = 'Next ' .. opts.name .. ' start' })
           vim.keymap.set({ 'n', 'x', 'o' }, '[' .. key_start, function()
-            move.goto_previous_start('@' .. textobject .. '.outer', 'textobjects')
+            ts_move.goto_previous_start('@' .. textobject .. '.outer', 'textobjects')
           end, { desc = 'Previous ' .. opts.name .. ' start' })
         end
 
         if key_end then
           vim.keymap.set({ 'n', 'x', 'o' }, ']' .. key_end, function()
-            move.goto_next_end('@' .. textobject .. '.outer', 'textobjects')
+            ts_move.goto_next_end('@' .. textobject .. '.outer', 'textobjects')
           end, { desc = 'Next ' .. opts.name .. ' end' })
           vim.keymap.set({ 'n', 'x', 'o' }, '[' .. key_end, function()
-            move.goto_previous_end('@' .. textobject .. '.outer', 'textobjects')
+            ts_move.goto_previous_end('@' .. textobject .. '.outer', 'textobjects')
           end, { desc = 'Previous ' .. opts.name .. ' end' })
         end
 
         if key_around then
           vim.keymap.set({ 'x', 'o' }, 'a' .. key_around, function()
             vim.cmd 'normal! m`'
-            select.select_textobject('@' .. textobject .. '.outer', 'textobjects')
+            ts_select.select_textobject('@' .. textobject .. '.outer', 'textobjects')
           end, { desc = opts.name })
         end
 
         if key_inner then
           vim.keymap.set({ 'x', 'o' }, 'i' .. key_inner, function()
             vim.cmd 'normal! m`'
-            select.select_textobject('@' .. textobject .. '.inner', 'textobjects')
+            ts_select.select_textobject('@' .. textobject .. '.inner', 'textobjects')
           end, { desc = opts.name })
         end
       end
