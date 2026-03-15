@@ -86,7 +86,7 @@ return {
         return nil
       end
 
-      local jump_to_parent_context = ts_repeat_move.make_repeatable_move(function()
+      local goto_enclosing = ts_repeat_move.make_repeatable_move(function()
         local ts_utils = require 'nvim-treesitter.ts_utils'
         local node = ts_utils.get_node_at_cursor()
         local root_parser = vim.treesitter.get_parser(0)
@@ -126,7 +126,7 @@ return {
         print 'No parent context found'
       end)
       vim.keymap.set({ 'n', 'x', 'o' }, '<leader>tk', function()
-        jump_to_parent_context { forward = true }
+        goto_enclosing { forward = true }
       end, { desc = 'Jump to parent context' })
 
       vim.keymap.set({ 'n', 'x', 'o' }, ']s', function()
