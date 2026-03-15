@@ -73,7 +73,6 @@ local function get_enclosing(opts)
     end
     parent = parent:parent()
   end
-  print 'No parent context found'
 end
 
 --- @param _ TSTextObjects.MoveOpts
