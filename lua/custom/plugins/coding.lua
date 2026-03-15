@@ -191,39 +191,53 @@ return {
       --- @param textobject string
       --- @param key_start string
       --- @param key_end string
-      local function map(textobject, key_start, key_end)
+      --- @param start_name string?
+      --- @param end_name string?
+      local function map(textobject, key_start, key_end, start_name, end_name)
         vim.keymap.set({ 'n', 'x', 'o' }, ']' .. key_start, function()
           vim.cmd 'normal! m`'
           require('mini.ai').move_cursor('left', 'a', textobject, { search_method = 'next' })
-        end, { desc = 'Next ' .. key_start })
+        end, { desc = 'Next ' .. (start_name or key_start) })
         vim.keymap.set({ 'n', 'x', 'o' }, '[' .. key_start, function()
           vim.cmd 'normal! m`'
           require('mini.ai').move_cursor('left', 'a', textobject, { search_method = 'prev' })
-        end, { desc = 'Previous ' .. key_start })
+        end, { desc = 'Previous ' .. (start_name or key_start) })
 
         vim.keymap.set({ 'n', 'x', 'o' }, ']' .. key_end, function()
           vim.cmd 'normal! m`'
           require('mini.ai').move_cursor('right', 'a', textobject, { search_method = 'next' })
-        end, { desc = 'Next ' .. key_end })
+        end, { desc = 'Next ' .. (end_name or key_end) })
         vim.keymap.set({ 'n', 'x', 'o' }, '[' .. key_end, function()
           vim.cmd 'normal! m`'
           require('mini.ai').move_cursor('right', 'a', textobject, { search_method = 'prev' })
-        end, { desc = 'Previous ' .. key_end })
+        end, { desc = 'Previous ' .. (end_name or key_end) })
 
         vim.keymap.set({ 'n', 'x', 'o' }, '^' .. key_start, function()
           vim.cmd 'normal! m`'
           require('mini.ai').move_cursor('left', 'a', textobject, { search_method = 'cover' })
-        end, { desc = 'Enclosing ' .. key_start })
+        end, { desc = 'Enclosing ' .. (start_name or key_start) })
         vim.keymap.set({ 'n', 'x', 'o' }, '^' .. key_end, function()
           vim.cmd 'normal! m`'
           require('mini.ai').move_cursor('right', 'a', textobject, { search_method = 'cover' })
-        end, { desc = 'Enclosing ' .. key_end })
+        end, { desc = 'Enclosing ' .. (end_name or key_end) })
       end
 
       map('(', '(', ')')
       map('[', '[', ']')
       map('{', '{', '}')
       map('<', '<', '>')
+
+      require('which-key').add {
+        { "]'", group = "Next '" },
+        { "['", group = "Previous '" },
+        { ']"', group = 'Next "' },
+        { '["', group = 'Previous "' },
+        { ']`', group = 'Next `' },
+        { '[`', group = 'Previous `' },
+      }
+      map("'", "'s", "'e", "' start", "' end")
+      map('"', '"s', '"e', '" start', '" end')
+      map('`', '`s', '`e', '` start', '` end')
 
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
