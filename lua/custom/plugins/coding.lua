@@ -143,6 +143,8 @@ return {
 
       map('function', 'm', 'M', 'm', 'm')
 
+      map('call', false, false, false, false, 'f', 'F')
+
       map('loop', 'o', 'O', 'o', 'o')
 
       map('conditional', 'c', 'C', 'c', 'c')
