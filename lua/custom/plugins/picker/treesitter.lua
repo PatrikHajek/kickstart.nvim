@@ -54,6 +54,8 @@ local captures = {
   { kind = 'keyword.exception', name = 'exception' },
   { kind = 'constant', name = 'constant' },
   { kind = 'local.definition.var', name = 'variable', hl = '@variable' },
+  -- Lua differentiates between a member (member access) and a property (property assignment).
+  { kind = 'property', name = 'member', hl = '@variable.member', char = 10 },
   { kind = 'variable.parameter', name = 'parameter', chars = 8 },
   { kind = 'local.definition.parameter', name = 'parameter', hl = '@variable.parameter', chars = 8 },
   { kind = 'variable.member', name = 'member', chars = 10 },
