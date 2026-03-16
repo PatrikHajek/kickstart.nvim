@@ -38,6 +38,9 @@ return {
         { ']', group = 'Go to next textobject' },
         { '[', group = 'Go to previous textobject' },
         { '^', group = 'Go to enclosing textobject' },
+        { ']g', group = 'Less used' },
+        { '[g', group = 'Less used' },
+        { '^g', group = 'Less used' },
       }
 
       --- @param textobject string
@@ -151,6 +154,8 @@ return {
       map('function', 'm', 'M', 'm', 'm')
 
       map('call', false, false, false, false, 'f', 'F')
+
+      map('return', 'gr', 'gR', 'gr', 'gr')
 
       map('loop', 'o', 'O', 'o', 'o')
 
