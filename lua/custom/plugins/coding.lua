@@ -155,6 +155,8 @@ return {
 
       map('call', false, false, false, false, 'f', 'F')
 
+      map('parameter', 'a', 'A', false, false)
+
       map('return', 'gr', 'gR', 'gr', 'gr')
 
       map('loop', 'o', 'O', 'o', 'o')
@@ -315,8 +317,8 @@ return {
       end, function()
         vim.cmd 'AerialPrev'
       end)
-      vim.keymap.set({ 'n', 'x', 'o' }, ']a', aerial_next, { desc = 'Next Aerial symbol' })
-      vim.keymap.set({ 'n', 'x', 'o' }, '[a', aerial_prev, { desc = 'Previous Aerial symbol' })
+      vim.keymap.set({ 'n', 'x', 'o' }, ']ga', aerial_next, { desc = 'Next Aerial symbol' })
+      vim.keymap.set({ 'n', 'x', 'o' }, '[ga', aerial_prev, { desc = 'Previous Aerial symbol' })
 
       vim.keymap.set('n', '<leader>an', ':AerialNavToggle<CR>', { desc = 'Open [A]erial [N]av' })
     end,
