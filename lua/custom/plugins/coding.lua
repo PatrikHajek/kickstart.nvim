@@ -2,6 +2,17 @@
 vim.keymap.set({ 'n', 'x' }, '<C-d>', '5j')
 vim.keymap.set({ 'n', 'x' }, '<C-u>', '5k')
 
+vim.keymap.set({ 'n', 'x' }, '}', '}j_')
+vim.keymap.set({ 'n', 'x' }, '{', function()
+  local row = vim.api.nvim_win_get_cursor(0)[1]
+  local line = vim.api.nvim_buf_get_lines(0, row - 2, row - 1, false)[1]
+  if line:match '^%s*$' then
+    vim.cmd 'normal! {{j_'
+  else
+    vim.cmd 'normal! {j_'
+  end
+end)
+
 return {
   {
     'nvim-treesitter/nvim-treesitter-textobjects',
