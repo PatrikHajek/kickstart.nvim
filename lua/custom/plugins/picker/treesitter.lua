@@ -45,6 +45,7 @@ local captures = {
   { kind = 'local.definition.import', name = 'import', hl = '@keyword.import', chars = 100 },
   { kind = 'module', name = 'module' },
   { kind = 'class.outer', name = 'class', hl = '@type', chars = 4 },
+  { kind = 'keyword', name = 'class', hl = '@type', full = true, filters = { 'include', { prisma = true } } },
   { kind = 'function', name = 'function' },
   { kind = 'function.method', name = 'method' },
   { kind = 'function.call', name = 'call fn', full = true },
