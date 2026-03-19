@@ -2,6 +2,12 @@ local M = {}
 
 -- [[ Types ]]
 
+--- @class picker_treesitter_Opts
+--- @field query_files string[]
+--- The order matters. Values with lower index are prioritized if there is a conflict.
+--- Multiple matches with the same text are compared and the value with the lower index wins.
+--- @field captures picker_treesitter_Capture[]
+
 --- @class picker_treesitter_Capture
 --- Treesitter capture.
 --- @field kind string
@@ -29,59 +35,7 @@ local M = {}
 --- @field lnum integer
 --- @field col integer
 --- @field priority integer
-
--- [[ Config ]]
-
-local query_files = {
-  'highlights',
-  'locals',
-  'textobjects',
-}
-
---- The order matters. Values with lower index are prioritized if there is a conflict.
---- Multiple matches with the same text are compared and the value with the lower index wins.
---- @type picker_treesitter_Capture[]
-local captures = {
-  { kind = 'local.definition.import', name = 'import', hl = '@keyword.import', chars = 100 },
-  { kind = 'module', name = 'module' },
-  { kind = 'class.outer', name = 'class', hl = '@type', chars = 4 },
-  { kind = 'keyword', name = 'class', hl = '@type', full = true, filters = { 'include', { prisma = true } } },
-  { kind = 'function', name = 'function' },
-  { kind = 'function.method', name = 'method' },
-  { kind = 'function.call', name = 'call fn', full = true },
-  { kind = 'function.method.call', name = 'call mtd', full = true },
-  { kind = 'keyword.coroutine', name = 'coroutine' },
-  { kind = 'loop.outer', name = 'loop', hl = '@keyword.repeat' },
-  { kind = 'conditional.outer', name = 'condition', hl = '@keyword.conditional' },
-  { kind = 'keyword.conditional.ternary', name = 'cond ternany' },
-  { kind = 'label', name = 'label' },
-  { kind = 'keyword.exception', name = 'exception' },
-  { kind = 'constant', name = 'constant' },
-  { kind = 'local.definition.var', name = 'variable', hl = '@variable' },
-  { kind = 'variable', name = 'variable', hl = '@variable', filters = { 'include', { prisma = true } } },
-  { kind = 'property', name = 'member', hl = '@variable.member', char = 10 },
-  { kind = 'variable.parameter', name = 'parameter', chars = 8 },
-  { kind = 'local.definition.parameter', name = 'parameter', hl = '@variable.parameter', chars = 8 },
-  { kind = 'variable.member', name = 'member', chars = 10 },
-  { kind = 'tag', name = 'tag' },
-  { kind = 'tag.attribute', name = 'attribute' },
-  { kind = 'string.regexp', name = 'regexp', char = 100 },
-  { kind = 'punctuation.special', name = 'punc' }, -- template strings?
-  { kind = 'comment', name = 'comment', chars = 200 },
-  { kind = 'comment.documentation', name = 'documentation', chars = 190 },
-}
-
---- @type string[]
-local capture_kinds = {}
-for _, capture in ipairs(captures) do
-  table.insert(capture_kinds, capture.kind)
-end
-
---- @type { [string]: picker_treesitter_Capture }
-local captures_by_kind = {}
-for _, capture in ipairs(captures) do
-  captures_by_kind[capture.kind] = capture
-end
+--- @field capture picker_treesitter_Capture
 
 -- [[ Implementation ]]
 
@@ -89,24 +43,22 @@ end
 local function make_entry(opts)
   --- @param entry picker_treesitter_Entry
   return function(entry)
-    local capture = captures_by_kind[entry.kind]
-
-    local icon = capture.name:sub(1, 1):upper()
+    local icon = entry.capture.name:sub(1, 1):upper()
 
     local text = entry.text
-    if capture.chars then
-      text = text .. ('_'):rep(capture.chars)
+    if entry.capture.chars then
+      text = text .. ('_'):rep(entry.capture.chars)
     end
 
     local cord = entry.lnum .. ':' .. entry.col
 
     local hl = '@' .. entry.kind
-    if capture.hl then
-      hl = capture.hl
+    if entry.capture.hl then
+      hl = entry.capture.hl
     end
 
     return {
-      ordinal = ('%s %s'):format(capture.name, text, capture.name),
+      ordinal = ('%s %s'):format(entry.capture.name, text, entry.capture.name),
       lnum = entry.lnum,
       col = entry.col,
       filename = vim.api.nvim_buf_get_name(opts.bufnr),
@@ -114,7 +66,7 @@ local function make_entry(opts)
       icon = icon,
       text = entry.text,
       cord = cord,
-      kind = capture.name,
+      kind = entry.capture.name,
       hl = hl,
       display = function(ent)
         return opts.displayer {
@@ -134,7 +86,18 @@ local telescope_extensions = require('telescope').extensions
 local telescope_config = require('telescope.config').values
 local telescope_entry_display = require 'telescope.pickers.entry_display'
 
-M.treesitter = function()
+--- @param opts picker_treesitter_Opts
+M.treesitter = function(opts)
+  --- @type { [string]: picker_treesitter_Capture[] }
+  local captures_by_kind = {}
+  for _, capture in ipairs(opts.captures) do
+    if captures_by_kind[capture.kind] then
+      table.insert(captures_by_kind[capture.kind], capture)
+    else
+      captures_by_kind[capture.kind] = { capture }
+    end
+  end
+
   local bufnr = vim.api.nvim_get_current_buf()
   local ft = vim.bo[bufnr].filetype
   local parser = vim.treesitter.get_parser(bufnr, ft)
@@ -150,51 +113,54 @@ M.treesitter = function()
     local tree_lang = lang_tree:lang()
     local root = tstree:root()
 
-    for _, query_file in ipairs(query_files) do
+    for _, query_file in ipairs(opts.query_files) do
       local query = vim.treesitter.query.get(tree_lang, query_file)
       if query then
         for id, node, _ in query:iter_captures(root, bufnr, 0, -1) do
           local name = query.captures[id]
 
-          local filters = captures_by_kind[name] or {}
-          filters = filters.filters or {}
-          local filter_type = filters[1]
-          local filter_list = filters[2]
-          local is_kept = #filters == 0 or filter_type == 'include' and filter_list[tree_lang] or filter_type == 'exclude' and not filter_list[tree_lang]
-          if vim.list_contains(capture_kinds, name) and is_kept then
-            local identifier_node = node
-            local text = ''
-            local row = 0
-            local col = 0
+          if captures_by_kind[name] ~= nil then
+            for i, capture in ipairs(captures_by_kind[name]) do
+              local filters = capture.filters or {}
+              local filter_type = filters[1]
+              local filter_list = filters[2]
+              local is_kept = #filters == 0 or filter_type == 'include' and filter_list[tree_lang] or filter_type == 'exclude' and not filter_list[tree_lang]
 
-            if captures_by_kind[name].full then
-              row, col = identifier_node:start()
-              text = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
+              if is_kept then
+                local identifier_node = node
+                local text = ''
+                local row = 0
+                local col = 0
 
-              local prefix = text:sub(1, col):match '[^%s]+$' or ''
-              text = prefix .. text:sub(col + 1)
-            else
-              for child in node:iter_children() do
-                if child:type():find 'identifier' then
-                  identifier_node = child
-                  break
+                if capture.full then
+                  row, col = identifier_node:start()
+                  text = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
+
+                  local prefix = text:sub(1, col):match '[^%s]+$' or ''
+                  text = prefix .. text:sub(col + 1)
+                else
+                  for child in node:iter_children() do
+                    if child:type():find 'identifier' then
+                      identifier_node = child
+                      break
+                    end
+                  end
+
+                  row, col = identifier_node:start()
+                  text = vim.treesitter.get_node_text(identifier_node, bufnr)
                 end
+
+                text = text:match '([^\n]*)'
+                table.insert(results, {
+                  text = text,
+                  kind = name,
+                  lnum = row + 1,
+                  col = col + 1,
+                  priority = i,
+                  capture = capture,
+                })
               end
-
-              row, col = identifier_node:start()
-              text = vim.treesitter.get_node_text(identifier_node, bufnr)
             end
-
-            text = text:match '([^\n]*)'
-            table.insert(results, {
-              text = text,
-              kind = name,
-              lnum = row + 1,
-              col = col + 1,
-              priority = vim.fn.indexof(capture_kinds, function(_, c)
-                return name == c
-              end),
-            })
           end
         end
       end
@@ -251,17 +217,17 @@ M.treesitter = function()
     },
   }
 
-  local opts = {}
+  local telescope_opts = {}
 
   telescope_pickers
-    .new(opts, {
+    .new(telescope_opts, {
       prompt_title = 'Treesitter',
       finder = telescope_finders.new_table {
         results = results,
         entry_maker = make_entry { bufnr = bufnr, displayer = displayer },
       },
       sorter = telescope_extensions.fzf.native_fzf_sorter(),
-      previewer = telescope_config.qflist_previewer(opts),
+      previewer = telescope_config.qflist_previewer(telescope_opts),
     })
     :find()
 end

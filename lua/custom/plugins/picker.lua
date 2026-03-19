@@ -154,7 +154,44 @@ return {
       end, { desc = '[S]earch [/] in Open Files' })
 
       local pickers = require 'custom.plugins.picker.treesitter'
-      vim.keymap.set('n', '<leader>st', pickers.treesitter, { desc = '[S]earch [T]reesitter' })
+      local query_files = {
+        'highlights',
+        'locals',
+        'textobjects',
+      }
+      --- @type picker_treesitter_Capture[]
+      local captures = {
+        { kind = 'local.definition.import', name = 'import', hl = '@keyword.import', chars = 100 },
+        { kind = 'module', name = 'module' },
+        { kind = 'class.outer', name = 'class', hl = '@type', chars = 4 },
+        { kind = 'keyword', name = 'class', hl = '@type', full = true, filters = { 'include', { prisma = true } } },
+        { kind = 'function', name = 'function' },
+        { kind = 'function.method', name = 'method' },
+        { kind = 'function.call', name = 'call fn', full = true },
+        { kind = 'function.method.call', name = 'call mtd', full = true },
+        { kind = 'keyword.coroutine', name = 'coroutine' },
+        { kind = 'loop.outer', name = 'loop', hl = '@keyword.repeat' },
+        { kind = 'conditional.outer', name = 'condition', hl = '@keyword.conditional' },
+        { kind = 'keyword.conditional.ternary', name = 'cond ternany' },
+        { kind = 'label', name = 'label' },
+        { kind = 'keyword.exception', name = 'exception' },
+        { kind = 'constant', name = 'constant' },
+        { kind = 'local.definition.var', name = 'variable', hl = '@variable' },
+        { kind = 'variable', name = 'variable', hl = '@variable', filters = { 'include', { prisma = true } } },
+        { kind = 'property', name = 'member', hl = '@variable.member', char = 10 },
+        { kind = 'variable.parameter', name = 'parameter', chars = 8 },
+        { kind = 'local.definition.parameter', name = 'parameter', hl = '@variable.parameter', chars = 8 },
+        { kind = 'variable.member', name = 'member', chars = 10 },
+        { kind = 'tag', name = 'tag' },
+        { kind = 'tag.attribute', name = 'attribute' },
+        { kind = 'string.regexp', name = 'regexp', char = 100 },
+        { kind = 'punctuation.special', name = 'punc' }, -- template strings?
+        { kind = 'comment', name = 'comment', chars = 200 },
+        { kind = 'comment.documentation', name = 'documentation', chars = 190 },
+      }
+      vim.keymap.set('n', '<leader>st', function()
+        pickers.treesitter { query_files = query_files, captures = captures }
+      end, { desc = '[S]earch [T]reesitter' })
 
       vim.keymap.set('n', '<leader>saf', function()
         require('telescope.builtin').find_files {
