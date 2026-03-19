@@ -19,6 +19,9 @@ local M = {}
 ---
 --- Defaults to false.
 --- @field full? boolean
+--- Either `include` this capture in only the specified languages or `exclude` this capture from
+--- only the specified languages.
+--- @field filters ["include" | "exclude", table<string, true>]?
 
 --- @class picker_treesitter_Entry
 --- @field text string
@@ -54,7 +57,7 @@ local captures = {
   { kind = 'keyword.exception', name = 'exception' },
   { kind = 'constant', name = 'constant' },
   { kind = 'local.definition.var', name = 'variable', hl = '@variable' },
-  -- Lua differentiates between a member (member access) and a property (property assignment).
+  { kind = 'variable', name = 'variable', hl = '@variable', filters = { 'include', { prisma = true } } },
   { kind = 'property', name = 'member', hl = '@variable.member', char = 10 },
   { kind = 'variable.parameter', name = 'parameter', chars = 8 },
   { kind = 'local.definition.parameter', name = 'parameter', hl = '@variable.parameter', chars = 8 },
@@ -152,7 +155,12 @@ M.treesitter = function()
         for id, node, _ in query:iter_captures(root, bufnr, 0, -1) do
           local name = query.captures[id]
 
-          if vim.list_contains(capture_kinds, name) then
+          local filters = captures_by_kind[name] or {}
+          filters = filters.filters or {}
+          local filter_type = filters[1]
+          local filter_list = filters[2]
+          local is_kept = #filters == 0 or filter_type == 'include' and filter_list[tree_lang] or filter_type == 'exclude' and not filter_list[tree_lang]
+          if vim.list_contains(capture_kinds, name) and is_kept then
             local identifier_node = node
             local text = ''
             local row = 0
