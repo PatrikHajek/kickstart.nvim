@@ -159,7 +159,7 @@ return {
         'locals',
         'textobjects',
       }
-      --- @type picker_treesitter_Capture[]
+      --- @type picker.treesitter.Capture[]
       local captures = {
         { kind = 'local.definition.import', name = 'import', hl = '@keyword.import', chars = 100 },
         { kind = 'module', name = 'module' },

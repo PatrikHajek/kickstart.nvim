@@ -2,13 +2,13 @@ local M = {}
 
 -- [[ Types ]]
 
---- @class picker_treesitter_Opts
+--- @class picker.treesitter.Opts
 --- @field query_files string[]
 --- The order matters. Values with lower index are prioritized if there is a conflict.
 --- Multiple matches with the same text are compared and the value with the lower index wins.
---- @field captures picker_treesitter_Capture[]
+--- @field captures picker.treesitter.Capture[]
 
---- @class picker_treesitter_Capture
+--- @class picker.treesitter.Capture
 --- Treesitter capture.
 --- @field kind string
 --- Name to replace `kind` in the results.
@@ -29,19 +29,19 @@ local M = {}
 --- only the specified languages.
 --- @field filters ["include" | "exclude", table<string, true>]?
 
---- @class picker_treesitter_Entry
+--- @class picker.treesitter.Entry
 --- @field text string
 --- @field kind string
 --- @field lnum integer
 --- @field col integer
 --- @field priority integer
---- @field capture picker_treesitter_Capture
+--- @field capture picker.treesitter.Capture
 
 -- [[ Implementation ]]
 
 --- @param opts { bufnr: integer, displayer: fun(items: (string | [string, string])[]) }
 local function make_entry(opts)
-  --- @param entry picker_treesitter_Entry
+  --- @param entry picker.treesitter.Entry
   return function(entry)
     local icon = entry.capture.name:sub(1, 1):upper()
 
@@ -87,9 +87,9 @@ local telescope_extensions = require('telescope').extensions
 local telescope_config = require('telescope.config').values
 local telescope_entry_display = require 'telescope.pickers.entry_display'
 
---- @param opts picker_treesitter_Opts
+--- @param opts picker.treesitter.Opts
 M.treesitter = function(opts)
-  --- @type { [string]: picker_treesitter_Capture[] }
+  --- @type { [string]: picker.treesitter.Capture[] }
   local captures_by_kind = {}
   for _, capture in ipairs(opts.captures) do
     if captures_by_kind[capture.kind] then
@@ -108,7 +108,7 @@ M.treesitter = function(opts)
   -- Force a full parse of the whole buffer.
   parser:parse(true)
 
-  --- @type picker_treesitter_Entry[]
+  --- @type picker.treesitter.Entry[]
   local results = {}
   parser:for_each_tree(function(tstree, lang_tree)
     local tree_lang = lang_tree:lang()
@@ -170,7 +170,7 @@ M.treesitter = function(opts)
     end
   end)
 
-  --- @type { [string]: picker_treesitter_Entry }
+  --- @type { [string]: picker.treesitter.Entry }
   local winners = {}
   for _, result in ipairs(results) do
     local key = result.lnum .. ':' .. result.col
@@ -178,7 +178,7 @@ M.treesitter = function(opts)
       winners[key] = result
     end
   end
-  --- @type picker_treesitter_Entry[]
+  --- @type picker.treesitter.Entry[]
   results = vim.tbl_values(winners)
 
   table.sort(results, function(a, b)
