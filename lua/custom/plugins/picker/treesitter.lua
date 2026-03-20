@@ -80,6 +80,7 @@ local function make_entry(opts)
   end
 end
 
+local utils = require 'custom.utils'
 local telescope_pickers = require 'telescope.pickers'
 local telescope_finders = require 'telescope.finders'
 local telescope_extensions = require('telescope').extensions
@@ -156,7 +157,7 @@ M.treesitter = function(opts)
                   kind = name,
                   lnum = row + 1,
                   col = col + 1,
-                  priority = require('custom.utils').tbl_index_of(opts.captures, function(item)
+                  priority = utils.tbl_index_of(opts.captures, function(item)
                     return capture == item
                   end),
                   capture = capture,
