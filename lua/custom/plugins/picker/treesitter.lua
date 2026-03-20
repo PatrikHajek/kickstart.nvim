@@ -120,7 +120,7 @@ M.treesitter = function(opts)
           local name = query.captures[id]
 
           if captures_by_kind[name] ~= nil then
-            for i, capture in ipairs(captures_by_kind[name]) do
+            for _, capture in ipairs(captures_by_kind[name]) do
               local filters = capture.filters or {}
               local filter_type = filters[1]
               local filter_list = filters[2]
@@ -156,7 +156,9 @@ M.treesitter = function(opts)
                   kind = name,
                   lnum = row + 1,
                   col = col + 1,
-                  priority = i,
+                  priority = require('custom.utils').tbl_index_of(opts.captures, function(item)
+                    return capture == item
+                  end),
                   capture = capture,
                 })
               end

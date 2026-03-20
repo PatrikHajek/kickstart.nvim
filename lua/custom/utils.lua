@@ -78,4 +78,17 @@ M.preserve_cursor_column = function(func)
   end, 2)
 end
 
+--- @generic T
+--- @param list T[]
+--- @param fn fun(item: T): boolean
+--- @return integer index index of the item if it's found else -1.
+M.tbl_index_of = function(list, fn)
+  for i, item in ipairs(list) do
+    if fn(item) then
+      return i
+    end
+  end
+  return -1
+end
+
 return M
