@@ -144,13 +144,7 @@ M.treesitter = function(opts)
                 local col = 0
 
                 capture.text = capture.text or 'preceding'
-                if capture.text == 'preceding' then
-                  row, col = identifier_node:start()
-                  text = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
-
-                  local prefix = text:sub(1, col):match '[^%s]+$' or ''
-                  text = prefix .. text:sub(col + 1)
-                elseif capture.text == 'identifier' then
+                if capture.text == 'identifier' then
                   for child in node:iter_children() do
                     if child:type():find 'identifier' then
                       identifier_node = child
@@ -160,6 +154,12 @@ M.treesitter = function(opts)
 
                   row, col = identifier_node:start()
                   text = vim.treesitter.get_node_text(identifier_node, bufnr)
+                elseif capture.text == 'preceding' then
+                  row, col = identifier_node:start()
+                  text = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
+
+                  local prefix = text:sub(1, col):match '[^%s]+$' or ''
+                  text = prefix .. text:sub(col + 1)
                 elseif capture.text == 'full' then
                   row, col = identifier_node:start()
                   text = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
