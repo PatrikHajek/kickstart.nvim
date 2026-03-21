@@ -162,7 +162,7 @@ return {
       --- @type picker.treesitter.Capture[]
       local captures = {
         { kind = 'local.definition.import', name = 'import', hl = '@keyword.import', chars = 100 },
-        { kind = 'module', name = 'module' },
+        { kind = 'module', name = 'module', filters = { 'exclude', { luadoc = true } } },
         { kind = 'class.outer', name = 'class', hl = '@type', chars = 4 },
         { kind = 'keyword', name = 'class', hl = '@type', full = true, filters = { 'include', { prisma = true } } },
         { kind = 'function', name = 'function' },
