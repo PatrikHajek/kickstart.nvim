@@ -159,16 +159,42 @@ return {
         'locals',
         'textobjects',
       }
+
+      local function lua_filter_type(text)
+        local annotations = { 'class', 'alias' }
+        for _, annotation in ipairs(annotations) do
+          local match_col, match_text = text:match('.*@' .. annotation .. ' ()(%S+)')
+          if match_col ~= nil then
+            return { text = match_text, col = match_col - 1 }
+          end
+        end
+        return false
+      end
+
+      local function prisma_filter_model(text)
+        local match_col, match_text = text:match '%w+ ()(%w+)'
+        if match_col then
+          return { text = match_text, col = match_col - 1 }
+        else
+          return false
+        end
+      end
+
       --- @type picker.treesitter.Capture[]
       local captures = {
         { kind = 'local.definition.import', name = 'import', hl = '@keyword.import', chars = 100 },
         { kind = 'module', name = 'module', filters = { 'exclude', { luadoc = true } } },
         { kind = 'class.outer', name = 'class', hl = '@type', chars = 4 },
-        { kind = 'keyword', name = 'class', hl = '@type', full = true, filters = { 'include', { prisma = true } } },
+        { kind = 'comment', name = 'class', hl = '@type', text = 'full', filters = { 'include', {
+          lua = lua_filter_type,
+        } } },
+        { kind = 'keyword', name = 'class', hl = '@type', text = 'full', filters = { 'include', {
+          prisma = prisma_filter_model,
+        } } },
         { kind = 'function', name = 'function' },
         { kind = 'function.method', name = 'method' },
-        { kind = 'function.call', name = 'call fn', full = true },
-        { kind = 'function.method.call', name = 'call mtd', full = true },
+        { kind = 'function.call', name = 'call fn', text = 'preceding' },
+        { kind = 'function.method.call', name = 'call mtd', text = 'preceding' },
         { kind = 'keyword.coroutine', name = 'coroutine' },
         { kind = 'loop.outer', name = 'loop', hl = '@keyword.repeat' },
         { kind = 'conditional.outer', name = 'condition', hl = '@keyword.conditional' },

@@ -21,13 +21,19 @@ local M = {}
 ---
 --- Default value for all captures is 0.
 --- @field chars? integer
---- Whether to get the full line of just the identifier.
+--- Specifies what text is going to show in the picker results and filter functions.
 ---
---- Defaults to false.
---- @field full? boolean
+--- - `identifier` - show just the identifier
+--- - `preceding` - show all preceding non-whitespace characters
+--- - `full` - show the whole line without initial whitespace
+---
+--- Defaults to `identifier`.
+--- @field text? "identifier" | "preceding" | "full"
 --- Either `include` this capture in only the specified languages or `exclude` this capture from
 --- only the specified languages.
---- @field filters ["include" | "exclude", table<string, true>]?
+--- @field filters ["include" | "exclude", table<string, true | filter_function>]?
+
+--- @alias filter_function fun(text: string, col: integer): { text: string, col: integer } | false
 
 --- @class picker.treesitter.Entry
 --- @field text string
@@ -127,7 +133,9 @@ M.treesitter = function(opts)
               local filters = capture.filters or {}
               local filter_type = filters[1]
               local filter_list = filters[2]
-              local is_kept = #filters == 0 or filter_type == 'include' and filter_list[tree_lang] or filter_type == 'exclude' and not filter_list[tree_lang]
+              local is_kept = #filters == 0
+                or filter_type == 'include' and filter_list[tree_lang] ~= nil
+                or filter_type == 'exclude' and filter_list[tree_lang] ~= true
 
               if is_kept then
                 local identifier_node = node
@@ -135,13 +143,14 @@ M.treesitter = function(opts)
                 local row = 0
                 local col = 0
 
-                if capture.full then
+                capture.text = capture.text or 'preceding'
+                if capture.text == 'preceding' then
                   row, col = identifier_node:start()
                   text = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
 
                   local prefix = text:sub(1, col):match '[^%s]+$' or ''
                   text = prefix .. text:sub(col + 1)
-                else
+                elseif capture.text == 'identifier' then
                   for child in node:iter_children() do
                     if child:type():find 'identifier' then
                       identifier_node = child
@@ -151,9 +160,25 @@ M.treesitter = function(opts)
 
                   row, col = identifier_node:start()
                   text = vim.treesitter.get_node_text(identifier_node, bufnr)
+                elseif capture.text == 'full' then
+                  row, col = identifier_node:start()
+                  text = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
+                  text = vim.trim(text)
                 end
 
                 text = text:match '([^\n]*)'
+
+                if filter_list and type(filter_list[tree_lang]) == 'function' then
+                  local filter = filter_list[tree_lang]
+                  local out = filter(text, col)
+                  if out then
+                    text = out.text
+                    col = out.col
+                  else
+                    goto next_capture
+                  end
+                end
+
                 --- @type picker.treesitter.Entry
                 local result = {
                   text = text,
@@ -167,6 +192,8 @@ M.treesitter = function(opts)
                 }
                 table.insert(results, result)
               end
+
+              ::next_capture::
             end
           elseif show_everything then
             local row, col = node:start()
