@@ -47,7 +47,7 @@ local function make_entry(opts)
 
     local text = entry.text
     if entry.capture.chars then
-      text = text .. ('_'):rep(entry.capture.chars)
+      text = text .. ('\1'):rep(entry.capture.chars)
     end
 
     local cord = entry.lnum .. ':' .. entry.col
