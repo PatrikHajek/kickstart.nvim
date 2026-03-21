@@ -164,6 +164,10 @@ M.treesitter = function(opts)
                   row, col = identifier_node:start()
                   text = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
                   text = vim.trim(text)
+                else
+                  if capture.text ~= nil then
+                    error('Unknown value: ' .. tostring(capture.text))
+                  end
                 end
 
                 text = text:match '([^\n]*)'
