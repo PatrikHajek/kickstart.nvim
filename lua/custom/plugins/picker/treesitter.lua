@@ -158,7 +158,7 @@ M.treesitter = function(opts)
                   row, col = identifier_node:start()
                   text = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
 
-                  local prefix = text:sub(1, col):match '[^%s]+$' or ''
+                  local prefix = text:sub(1, col):match '%S+$' or ''
                   text = prefix .. text:sub(col + 1)
                 elseif capture.text == 'full' then
                   row, col = identifier_node:start()
