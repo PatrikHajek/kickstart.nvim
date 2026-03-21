@@ -89,6 +89,8 @@ local telescope_entry_display = require 'telescope.pickers.entry_display'
 
 --- @param opts picker.treesitter.Opts
 M.treesitter = function(opts)
+  local show_everything = #opts.captures == 0
+
   --- @type { [string]: picker.treesitter.Capture[] }
   local captures_by_kind = {}
   for _, capture in ipairs(opts.captures) do
@@ -164,22 +166,38 @@ M.treesitter = function(opts)
                 })
               end
             end
+          elseif show_everything then
+            local row, col = node:start()
+            local text = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
+            text = text:match '([^\n]*)'
+            --- @type picker.treesitter.Entry
+            local result = {
+              text = text,
+              kind = name,
+              lnum = row + 1,
+              col = col + 1,
+              priority = -1,
+              capture = { kind = name, name = name },
+            }
+            table.insert(results, result)
           end
         end
       end
     end
   end)
 
-  --- @type { [string]: picker.treesitter.Entry }
-  local winners = {}
-  for _, result in ipairs(results) do
-    local key = result.lnum .. ':' .. result.col
-    if not winners[key] or result.priority < winners[key].priority then
-      winners[key] = result
+  if not show_everything then
+    --- @type { [string]: picker.treesitter.Entry }
+    local winners = {}
+    for _, result in ipairs(results) do
+      local key = result.lnum .. ':' .. result.col
+      if not winners[key] or result.priority < winners[key].priority then
+        winners[key] = result
+      end
     end
+    --- @type picker.treesitter.Entry[]
+    results = vim.tbl_values(winners)
   end
-  --- @type picker.treesitter.Entry[]
-  results = vim.tbl_values(winners)
 
   table.sort(results, function(a, b)
     if a.lnum == b.lnum then

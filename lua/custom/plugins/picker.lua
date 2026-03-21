@@ -192,6 +192,9 @@ return {
       vim.keymap.set('n', '<leader>st', function()
         pickers.treesitter { query_files = query_files, captures = captures }
       end, { desc = '[S]earch [T]reesitter' })
+      vim.keymap.set('n', '<leader>sat', function()
+        pickers.treesitter { query_files = query_files, captures = {} }
+      end, { desc = '[S]earch [A]ll of [T]reesitter' })
 
       vim.keymap.set('n', '<leader>saf', function()
         require('telescope.builtin').find_files {
