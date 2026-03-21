@@ -154,7 +154,8 @@ M.treesitter = function(opts)
                 end
 
                 text = text:match '([^\n]*)'
-                table.insert(results, {
+                --- @type picker.treesitter.Entry
+                local result = {
                   text = text,
                   kind = name,
                   lnum = row + 1,
@@ -163,7 +164,8 @@ M.treesitter = function(opts)
                     return capture == item
                   end),
                   capture = capture,
-                })
+                }
+                table.insert(results, result)
               end
             end
           elseif show_everything then
