@@ -189,11 +189,11 @@ return {
       local captures = {
         { kind = 'local.definition.import', name = 'import', hl = '@keyword.import', chars = 100 },
         { kind = 'module', name = 'module', filters = { 'exclude', { luadoc = true } } },
-        { kind = 'class.outer', name = 'class', hl = '@type', chars = 4 },
-        { kind = 'comment', name = 'class', hl = '@type', text = 'full', filters = { 'include', {
+        { kind = 'class.outer', name = 'type', hl = '@type', chars = 4 },
+        { kind = 'comment', name = 'type', hl = '@type', text = 'full', filters = { 'include', {
           lua = lua_filter_type,
         } } },
-        { kind = 'keyword', name = 'class', hl = '@type', text = 'full', filters = { 'include', {
+        { kind = 'keyword', name = 'type', hl = '@type', text = 'full', filters = { 'include', {
           prisma = prisma_filter_model,
         } } },
         { kind = 'function', name = 'function' },
