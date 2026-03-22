@@ -33,7 +33,7 @@ local M = {}
 --- only the specified languages.
 --- @field filters ["include" | "exclude", table<string, true | filter_function>]?
 
---- @alias filter_function fun(text: string, col: integer): { text: string, col: integer } | false
+--- @alias filter_function fun(text: string, col: integer, line: string): { text: string, col: integer } | false
 
 --- @class picker.treesitter.Entry
 --- @field text string
@@ -138,13 +138,13 @@ M.treesitter = function(opts)
                 or filter_type == 'exclude' and filter_list[tree_lang] ~= true
 
               if is_kept then
-                local identifier_node = node
+                local row, col = node:range()
+                local line = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
                 local text = ''
-                local row = 0
-                local col = 0
 
                 capture.text = capture.text or 'identifier'
                 if capture.text == 'identifier' then
+                  local identifier_node = node
                   for child in node:iter_children() do
                     if child:type():find 'identifier' then
                       identifier_node = child
@@ -155,15 +155,11 @@ M.treesitter = function(opts)
                   row, col = identifier_node:start()
                   text = vim.treesitter.get_node_text(identifier_node, bufnr)
                 elseif capture.text == 'preceding' then
-                  row, col = identifier_node:start()
-                  text = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
-
+                  text = line
                   local prefix = text:sub(1, col):match '%S+$' or ''
                   text = prefix .. text:sub(col + 1)
                 elseif capture.text == 'full' then
-                  row, col = identifier_node:start()
-                  text = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
-                  text = vim.trim(text)
+                  text = vim.trim(line)
                 else
                   if capture.text ~= nil then
                     error('Unknown value: ' .. tostring(capture.text))
@@ -174,7 +170,7 @@ M.treesitter = function(opts)
 
                 if filter_list and type(filter_list[tree_lang]) == 'function' then
                   local filter = filter_list[tree_lang]
-                  local out = filter(text, col)
+                  local out = filter(text, col, line)
                   if out then
                     text = out.text
                     col = out.col
