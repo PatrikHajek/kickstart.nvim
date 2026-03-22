@@ -160,16 +160,22 @@ return {
         'textobjects',
       }
 
-      local function lua_filter_type(text)
-        local annotations = { 'class', 'alias' }
-        for _, annotation in ipairs(annotations) do
-          local match_col, match_text = text:match('.*@' .. annotation .. ' ()(%S+)')
-          if match_col ~= nil then
-            return { text = match_text, col = match_col - 1 }
+      --- @param annotations string[]
+      --- @return function
+      local function lua_filter_doc(annotations)
+        return function(text)
+          for _, annotation in ipairs(annotations) do
+            local match_col, match_text = text:match('.*@' .. annotation .. ' ()(%S+)')
+            if match_col ~= nil then
+              return { text = match_text, col = match_col - 1 }
+            end
           end
+          return false
         end
-        return false
       end
+
+      local lua_filter_type = lua_filter_doc { 'class', 'alias' }
+      local lua_filter_member = lua_filter_doc { 'field' }
 
       local function prisma_filter_model(text)
         local match_col, match_text = text:match '%w+ ()(%w+)'
@@ -208,6 +214,9 @@ return {
         { kind = 'variable.parameter', name = 'parameter', chars = 8 },
         { kind = 'local.definition.parameter', name = 'parameter', hl = '@variable.parameter', chars = 8 },
         { kind = 'variable.member', name = 'member', chars = 10 },
+        { kind = 'comment', name = 'class', hl = '@type', text = 'full', filters = { 'include', {
+          lua = lua_filter_member,
+        } } },
         { kind = 'tag', name = 'tag' },
         { kind = 'tag.attribute', name = 'attribute' },
         { kind = 'string.regexp', name = 'regexp', chars = 100 },
