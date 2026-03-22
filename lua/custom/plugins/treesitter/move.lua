@@ -55,21 +55,21 @@ local function get_enclosing(opts, predicate)
     end
   end
 
-  local parent = node
-  while parent do
+  local curr = node
+  while curr do
     -- "block" nodes start on the first line in the block and are masking the real parent.
-    if parent:type() ~= 'block' and predicate(parent, node) then
+    if curr:type() ~= 'block' and predicate(curr, node) then
       if opts then
         for _, query in pairs(queries) do
-          if get_capture(parent, query, opts.captures) ~= nil then
-            return parent
+          if get_capture(curr, query, opts.captures) ~= nil then
+            return curr
           end
         end
       else
-        return parent
+        return curr
       end
     end
-    parent = parent:parent()
+    curr = curr:parent()
   end
 end
 
