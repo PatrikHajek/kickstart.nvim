@@ -201,7 +201,7 @@ return {
         { kind = 'function.call', name = 'call fn', text = 'preceding' },
         { kind = 'function.method.call', name = 'call mtd', text = 'preceding' },
         { kind = 'keyword.coroutine', name = 'coroutine' },
-        { kind = 'loop.outer', name = 'loop', hl = '@keyword.repeat' },
+        { kind = 'loop.outer', name = 'loop', hl = '@keyword.repeat', text = 'full' },
         { kind = 'conditional.outer', name = 'condition', hl = '@keyword.conditional' },
         { kind = 'keyword.conditional.ternary', name = 'cond ternany' },
         { kind = 'label', name = 'label' },
