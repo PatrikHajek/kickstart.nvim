@@ -7,9 +7,9 @@ local ts_repeat_move = require 'nvim-treesitter-textobjects.repeatable_move'
 --- @param captures string[]
 --- @return string | nil capture The first capture from captures that is queried or nil.
 local function get_capture(node, query, captures)
-  local n_row, _, end_row = node:range()
+  local n_row = node:range()
 
-  for id, matched_node in query:iter_captures(node, 0, n_row, end_row) do
+  for id, matched_node in query:iter_captures(node, 0) do
     local capture = query.captures[id]
     local m_row = matched_node:range()
     if vim.list_contains(captures, capture) and n_row == m_row then
