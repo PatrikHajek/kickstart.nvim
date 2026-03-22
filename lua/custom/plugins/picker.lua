@@ -175,7 +175,6 @@ return {
       end
 
       local lua_filter_type = lua_filter_doc { 'class', 'alias' }
-      local lua_filter_member = lua_filter_doc { 'field' }
 
       local function prisma_filter_model(text)
         local match_col, match_text = text:match '%w+ ()(%w+)'
@@ -214,9 +213,6 @@ return {
         { kind = 'variable.parameter', name = 'parameter', chars = 8 },
         { kind = 'local.definition.parameter', name = 'parameter', hl = '@variable.parameter', chars = 8 },
         { kind = 'variable.member', name = 'member', chars = 10 },
-        { kind = 'comment', name = 'class', hl = '@type', text = 'full', filters = { 'include', {
-          lua = lua_filter_member,
-        } } },
         { kind = 'tag', name = 'tag' },
         { kind = 'tag.attribute', name = 'attribute' },
         { kind = 'string.regexp', name = 'regexp', chars = 100 },
