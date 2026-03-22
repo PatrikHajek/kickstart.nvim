@@ -141,8 +141,7 @@ local function get_sibling(opts, dir, predicate)
   local parent = node:parent()
   while parent do
     while curr do
-      -- "block" nodes start on the first line in the block and are masking the real parent.
-      if curr:type() ~= 'block' and curr:parent() == parent and predicate(curr, node) then
+      if curr:parent() == parent and predicate(curr, node) then
         if opts then
           for _, query in pairs(queries) do
             if get_capture(curr, query, opts.captures) ~= nil then
