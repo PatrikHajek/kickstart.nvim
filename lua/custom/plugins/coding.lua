@@ -156,6 +156,19 @@ return {
         move.goto_enclosing_end { forward = true }
       end, { desc = 'Enclosing parent end' })
 
+      local opts = {
+        query_files = { 'locals', 'textobjects' },
+        captures = { 'local.definition.var', 'statement.outer', 'block.outer', 'call.outer' },
+      }
+      vim.keymap.set({ 'n', 'x', 'o' }, ')', function()
+        vim.cmd 'normal! m`'
+        require('custom.plugins.treesitter.move').goto_sibling_next_start({ forward = true }, opts)
+      end, { desc = 'Go to next block in the same depth' })
+      vim.keymap.set({ 'n', 'x', 'o' }, '(', function()
+        vim.cmd 'normal! m`'
+        require('custom.plugins.treesitter.move').goto_sibling_prev_start({ forward = true }, opts)
+      end, { desc = 'Go to previous block in the same depth' })
+
       map('block', 'b', 'B', 'b', 'b')
 
       map('statement', 's', 'S', 's', false)

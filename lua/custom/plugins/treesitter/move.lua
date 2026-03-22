@@ -107,4 +107,99 @@ M.goto_enclosing_end = ts_repeat_move.make_repeatable_move(function(_, opts)
   end
 end)
 
+--- Finds the sibling where `predicate` is true. If no direct sibling exists, goes up to the parent
+--- and uses it's sibling. Repeats this until it finds a sibling or reaches the root, in which case
+--- it returns nil.
+---
+--- Ignores siblings that don't match the `captures`. If `opts` is omitted, any siblings passes.
+---
+--- @param opts treesitter_get_enclosing_opts?
+--- @param dir "next" | "prev"
+--- @param predicate fun(curr: TSNode, init: TSNode): boolean
+--- @return TSNode | nil
+local function get_sibling(opts, dir, predicate)
+  local ts_utils = require 'nvim-treesitter.ts_utils'
+  local node = ts_utils.get_node_at_cursor()
+  local root_parser = vim.treesitter.get_parser(0)
+  if not node or not root_parser then
+    return
+  end
+
+  local start_row, start_col, end_row, end_col = node:range()
+  local lang = root_parser:language_for_range({ start_row, start_col, end_row, end_col }):lang()
+
+  --- @type { [string]: vim.treesitter.Query }
+  local queries = {}
+  if opts then
+    for _, query_file in ipairs(opts.query_files) do
+      local query = vim.treesitter.query.get(lang, query_file)
+      if query then
+        queries[query_file] = query
+      end
+    end
+  end
+
+  --- @type TSNode?
+  local curr = node
+  local parent = node:parent()
+  while parent do
+    while curr do
+      -- "block" nodes start on the first line in the block and are masking the real parent.
+      if curr:type() ~= 'block' and curr:parent() == parent and predicate(curr, node) then
+        if opts then
+          for _, query in pairs(queries) do
+            if get_capture(curr, query, opts.captures) ~= nil then
+              return curr
+            end
+          end
+        else
+          return curr
+        end
+      end
+
+      if dir == 'next' then
+        curr = curr:next_sibling()
+      elseif dir == 'prev' then
+        curr = curr:prev_sibling()
+      else
+        error('Unknown option: ' .. tostring(dir))
+      end
+    end
+    curr = parent
+    parent = parent:parent()
+  end
+end
+
+--- @param _ TSTextObjects.MoveOpts
+--- @param opts treesitter_get_enclosing_opts?
+--- @type fun(opts: TSTextObjects.MoveOpts, opts: treesitter_get_enclosing_opts?)
+M.goto_sibling_next_start = ts_repeat_move.make_repeatable_move(function(_, opts)
+  local node = get_sibling(opts, 'next', function(curr)
+    local cursor = vim.api.nvim_win_get_cursor(0)[1]
+    local c_row = curr:range()
+    return cursor < c_row + 1
+  end)
+  if node then
+    local row, col = node:range()
+    vim.cmd 'normal! m`'
+    vim.api.nvim_win_set_cursor(0, { row + 1, col })
+  end
+end)
+
+--- @param _ TSTextObjects.MoveOpts
+--- @param opts treesitter_get_enclosing_opts?
+--- @type fun(opts: TSTextObjects.MoveOpts, opts: treesitter_get_enclosing_opts?)
+M.goto_sibling_prev_start = ts_repeat_move.make_repeatable_move(function(_, opts)
+  local node = get_sibling(opts, 'prev', function(curr)
+    local cursor = vim.api.nvim_win_get_cursor(0)[1]
+    local c_row = curr:range()
+    return cursor > c_row + 1
+  end)
+  if node then
+    local row, col = node:range()
+    vim.cmd 'normal! m`'
+    vim.api.nvim_win_set_cursor(0, { row + 1, col })
+  end
+end)
+
 return M
