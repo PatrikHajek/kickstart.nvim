@@ -31,8 +31,9 @@ end
 --- Ignores parents on the same line in all cases.
 ---
 --- @param opts treesitter_get_enclosing_opts?
+--- @param predicate fun(curr: TSNode, init: TSNode): boolean
 --- @return TSNode | nil
-local function get_enclosing(opts)
+local function get_enclosing(opts, predicate)
   local ts_utils = require 'nvim-treesitter.ts_utils'
   local node = ts_utils.get_node_at_cursor()
   local root_parser = vim.treesitter.get_parser(0)
@@ -54,13 +55,10 @@ local function get_enclosing(opts)
     end
   end
 
-  local node_row = node:range()
-  local parent = node:parent()
+  local parent = node
   while parent do
-    local parent_row = parent:range()
-
     -- "block" nodes start on the first line in the block and are masking the real parent.
-    if parent:type() ~= 'block' and node_row ~= parent_row then
+    if parent:type() ~= 'block' and predicate(parent, node) then
       if opts then
         for _, query in pairs(queries) do
           if get_capture(parent, query, opts.captures) ~= nil then
@@ -79,7 +77,11 @@ end
 --- @param opts treesitter_get_enclosing_opts?
 --- @type fun(opts: TSTextObjects.MoveOpts, opts: treesitter_get_enclosing_opts?)
 M.goto_enclosing_start = ts_repeat_move.make_repeatable_move(function(_, opts)
-  local node = get_enclosing(opts)
+  local node = get_enclosing(opts, function(curr)
+    local cursor = vim.api.nvim_win_get_cursor(0)[1]
+    local c_row = curr:range()
+    return cursor ~= c_row + 1
+  end)
   if node then
     local row, col = node:range()
     vim.cmd 'normal! m`'
@@ -91,7 +93,11 @@ end)
 --- @param opts treesitter_get_enclosing_opts?
 --- @type fun(opts: TSTextObjects.MoveOpts, opts: treesitter_get_enclosing_opts?)
 M.goto_enclosing_end = ts_repeat_move.make_repeatable_move(function(_, opts)
-  local node = get_enclosing(opts)
+  local node = get_enclosing(opts, function(curr)
+    local cursor = vim.api.nvim_win_get_cursor(0)[1]
+    local _, _, c_row = curr:range()
+    return cursor ~= c_row + 1
+  end)
   if node then
     local _, _, row, col = node:range()
     vim.cmd 'normal! m`'
