@@ -24,11 +24,11 @@ end
 --- @field query_files string[]
 --- @field captures string[]
 
---- Gets the innermost enclosing textobject specified in `captures`.
+--- Climbs up the tree of parents of the node under the cursor including itself. Returns the node
+--- where `predicate` is true.
 ---
---- If `opts` is omitted, the innermost parent is targeted.
----
---- Ignores parents on the same line in all cases.
+--- Ignores parents that don't match the `captures`. If `opts` is omitted, the innermost parent is
+--- targeted.
 ---
 --- @param opts treesitter_get_enclosing_opts?
 --- @param predicate fun(curr: TSNode, init: TSNode): boolean
