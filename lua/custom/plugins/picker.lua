@@ -176,6 +176,14 @@ return {
 
       local lua_filter_type = lua_filter_doc { 'class', 'alias' }
 
+      local function lua_filter_elseif(text, col)
+        if text:match '^elseif' then
+          return { text = text, col = col }
+        else
+          return false
+        end
+      end
+
       local function prisma_filter_model(text)
         local match_col, match_text = text:match '%w+ ()(%w+)'
         if match_col then
@@ -203,6 +211,7 @@ return {
         { kind = 'keyword.coroutine', name = 'coroutine' },
         { kind = 'loop.outer', name = 'loop', hl = '@keyword.repeat', text = 'full' },
         { kind = 'conditional.outer', name = 'condition', hl = '@keyword.conditional' },
+        { kind = 'block.outer', name = 'condition', hl = '@keyword.conditional', text = 'full', filters = { 'include', { lua = lua_filter_elseif } } },
         { kind = 'keyword.conditional.ternary', name = 'cond ternany' },
         { kind = 'label', name = 'label' },
         { kind = 'keyword.exception', name = 'exception' },
