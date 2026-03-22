@@ -20,6 +20,29 @@ local function get_capture(node, query, captures)
   return nil
 end
 
+--- @param query_files string[]
+--- @param node TSNode
+--- @return { [string]: vim.treesitter.Query }
+local function prepare_queries(query_files, node)
+  local root_parser = vim.treesitter.get_parser(0)
+  if not root_parser then
+    return {}
+  end
+
+  local start_row, start_col, end_row, end_col = node:range()
+  local lang = root_parser:language_for_range({ start_row, start_col, end_row, end_col }):lang()
+
+  local queries = {}
+  for _, query_file in ipairs(query_files) do
+    local query = vim.treesitter.query.get(lang, query_file)
+    if query then
+      queries[query_file] = query
+    end
+  end
+
+  return queries
+end
+
 --- @class treesitter_get_enclosing_opts
 --- @field query_files string[]
 --- @field captures string[]
@@ -36,24 +59,11 @@ end
 local function get_enclosing(opts, predicate)
   local ts_utils = require 'nvim-treesitter.ts_utils'
   local node = ts_utils.get_node_at_cursor()
-  local root_parser = vim.treesitter.get_parser(0)
-  if not node or not root_parser then
+  if not node then
     return
   end
 
-  local start_row, start_col, end_row, end_col = node:range()
-  local lang = root_parser:language_for_range({ start_row, start_col, end_row, end_col }):lang()
-
-  --- @type { [string]: vim.treesitter.Query }
-  local queries = {}
-  if opts then
-    for _, query_file in ipairs(opts.query_files) do
-      local query = vim.treesitter.query.get(lang, query_file)
-      if query then
-        queries[query_file] = query
-      end
-    end
-  end
+  local queries = opts and prepare_queries(opts.query_files, node) or {}
 
   --- @type TSNode?
   local curr = node
@@ -120,24 +130,11 @@ end)
 local function get_sibling(opts, dir, predicate)
   local ts_utils = require 'nvim-treesitter.ts_utils'
   local node = ts_utils.get_node_at_cursor()
-  local root_parser = vim.treesitter.get_parser(0)
-  if not node or not root_parser then
+  if not node then
     return
   end
 
-  local start_row, start_col, end_row, end_col = node:range()
-  local lang = root_parser:language_for_range({ start_row, start_col, end_row, end_col }):lang()
-
-  --- @type { [string]: vim.treesitter.Query }
-  local queries = {}
-  if opts then
-    for _, query_file in ipairs(opts.query_files) do
-      local query = vim.treesitter.query.get(lang, query_file)
-      if query then
-        queries[query_file] = query
-      end
-    end
-  end
+  local queries = opts and prepare_queries(opts.query_files, node) or {}
 
   --- @type TSNode?
   local curr = node
