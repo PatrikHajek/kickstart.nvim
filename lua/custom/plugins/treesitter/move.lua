@@ -55,6 +55,7 @@ local function get_enclosing(opts, predicate)
     end
   end
 
+  --- @type TSNode?
   local curr = node
   while curr do
     -- "block" nodes start on the first line in the block and are masking the real parent.
