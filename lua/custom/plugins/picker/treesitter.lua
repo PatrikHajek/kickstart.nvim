@@ -143,7 +143,7 @@ M.treesitter = function(opts)
                 local row = 0
                 local col = 0
 
-                capture.text = capture.text or 'preceding'
+                capture.text = capture.text or 'identifier'
                 if capture.text == 'identifier' then
                   for child in node:iter_children() do
                     if child:type():find 'identifier' then
