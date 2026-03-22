@@ -2,23 +2,33 @@
 vim.keymap.set({ 'n', 'x' }, '<C-d>', '5j')
 vim.keymap.set({ 'n', 'x' }, '<C-u>', '5k')
 
-vim.keymap.set({ 'n', 'x' }, ']p', '}j_', { desc = 'Next paragraph' })
-vim.keymap.set({ 'n', 'x' }, '[p', function()
-  local row = math.max(2, vim.api.nvim_win_get_cursor(0)[1])
-  local line = vim.api.nvim_buf_get_lines(0, row - 2, row - 1, false)[1]
-  if line:match '^%s*$' then
-    vim.cmd 'normal! {{'
-  else
-    vim.cmd 'normal! {'
-  end
-
-  row = vim.api.nvim_win_get_cursor(0)[1]
-  if row ~= 1 then
-    vim.cmd 'normal! j_'
-  end
-end, { desc = 'Previous paragraph' })
-
 return {
+  {
+    'kiyoon/repeatable-move.nvim',
+    init = function()
+      local repeat_move = require 'repeatable_move'
+
+      local paragraph_next, paragraph_prev = repeat_move.make_repeatable_move_pair(function()
+        vim.cmd 'normal! }j_'
+      end, function()
+        local row = math.max(2, vim.api.nvim_win_get_cursor(0)[1])
+        local line = vim.api.nvim_buf_get_lines(0, row - 2, row - 1, false)[1]
+        if line:match '^%s*$' then
+          vim.cmd 'normal! {{'
+        else
+          vim.cmd 'normal! {'
+        end
+
+        row = vim.api.nvim_win_get_cursor(0)[1]
+        if row ~= 1 then
+          vim.cmd 'normal! j_'
+        end
+      end)
+      vim.keymap.set({ 'n', 'x' }, ']p', paragraph_next, { desc = 'Next paragraph' })
+      vim.keymap.set({ 'n', 'x' }, '[p', paragraph_prev, { desc = 'Previous paragraph' })
+    end,
+  },
+
   {
     'nvim-treesitter/nvim-treesitter-textobjects',
     dependencies = {
