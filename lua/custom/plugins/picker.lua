@@ -198,12 +198,8 @@ return {
         { kind = 'local.definition.import', name = 'import', hl = '@keyword.import', chars = 100 },
         { kind = 'module', name = 'module', filters = { 'exclude', { luadoc = true } } },
         { kind = 'class.outer', name = 'type', hl = '@type', chars = 4 },
-        { kind = 'comment', name = 'type', hl = '@type', text = 'full', filters = { 'include', {
-          lua = lua_filter_type,
-        } } },
-        { kind = 'keyword', name = 'type', hl = '@type', text = 'full', filters = { 'include', {
-          prisma = prisma_filter_model,
-        } } },
+        { kind = 'comment', name = 'type', hl = '@type', text = 'full', filters = { 'include', { lua = lua_filter_type } } },
+        { kind = 'keyword', name = 'type', hl = '@type', text = 'full', filters = { 'include', { prisma = prisma_filter_model } } },
         { kind = 'function', name = 'function' },
         { kind = 'function.method', name = 'method' },
         { kind = 'function.call', name = 'call fn', text = 'preceding' },
