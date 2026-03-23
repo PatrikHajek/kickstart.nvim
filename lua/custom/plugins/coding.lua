@@ -204,8 +204,6 @@ return {
 
       map('conditional', 'c', 'C', 'c', 'c')
 
-      map('comment', 'n', false, false, false, false, false)
-
       map('assignment', false, false, '=', '=', '=')
       vim.keymap.set({ 'x', 'o' }, 'in=', function()
         vim.cmd 'normal! m`'
@@ -215,6 +213,8 @@ return {
         vim.cmd 'normal! m`'
         require('nvim-treesitter-textobjects.select').select_textobject('@assignment.lhs', 'textobjects')
       end, { desc = 'lhs of assignment' })
+
+      map('comment', 'n', false, false, false, false, false)
 
       -- [[ Swap ]]
       vim.keymap.set('n', '<leader>ta', function()
