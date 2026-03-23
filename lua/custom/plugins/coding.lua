@@ -190,6 +190,8 @@ return {
       vim.keymap.set('n', ']z', ']s', { desc = 'Next misspelled word' })
       vim.keymap.set('n', '[z', '[s', { desc = 'Previous misspelled word' })
 
+      map('class', 'gc', 'gC', 'gc', 'gc')
+
       map('function', 'm', 'M', 'm', 'm')
 
       map('call', false, false, false, false, 'f', 'F')
