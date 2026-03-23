@@ -173,7 +173,7 @@ return {
 
       local opts = {
         query_files = { 'locals', 'textobjects' },
-        captures = { 'local.definition.var', 'statement.outer', 'block.outer', 'call.outer' },
+        captures = { 'local.definition.var', 'statement.outer', 'block.outer', 'call.outer', 'class.outer' },
       }
       vim.keymap.set({ 'n', 'x', 'o' }, ')', function()
         vim.cmd 'normal! m`'
