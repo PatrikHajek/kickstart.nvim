@@ -184,6 +184,17 @@ return {
         end
       end
 
+      local function js_filter_import(text)
+        local match_col, match_text = text:match '^import ()(%w+)'
+        if match_col then
+          return { text = match_text, col = match_col - 1 }
+        else
+          return false
+        end
+      end
+
+      local js_filters = { javascript = js_filter_import, typescript = js_filter_import, vue = js_filter_import }
+
       local function prisma_filter_model(text)
         local match_col, match_text = text:match '%w+ ()(%w+)'
         if match_col then
@@ -196,6 +207,7 @@ return {
       --- @type picker.treesitter.Capture[]
       local captures = {
         { kind = 'local.definition.import', name = 'import', hl = '@keyword.import', chars = 100 },
+        { kind = 'keyword.import', name = 'import', chars = 100, text = 'full', filters = { 'include', js_filters } },
         { kind = 'module', name = 'module', filters = { 'exclude', { luadoc = true } } },
         { kind = 'class.outer', name = 'type', hl = '@type', chars = 4 },
         { kind = 'comment', name = 'type', hl = '@type', text = 'full', filters = { 'include', { lua = lua_filter_type } } },
