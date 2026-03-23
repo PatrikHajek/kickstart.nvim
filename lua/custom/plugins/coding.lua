@@ -362,4 +362,27 @@ return {
       vim.keymap.set('n', '<leader>an', ':AerialNavToggle<CR>', { desc = 'Open [A]erial [N]av' })
     end,
   },
+
+  {
+    'folke/todo-comments.nvim',
+    event = 'VimEnter',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'kiyoon/repeatable-move.nvim',
+    },
+    opts = { signs = false },
+    init = function()
+      vim.keymap.set('n', '<leader>tt', ':TodoTelescope<CR>', { desc = 'Search [T]odos using [T]elescope' })
+      vim.keymap.set('n', '<leader>lt', ':Trouble todo<CR>', { desc = '[L]ist [T]odos' })
+
+      local repeat_move = require 'repeatable_move'
+      local todo_next, todo_prev = repeat_move.make_repeatable_move_pair(function()
+        require('todo-comments').jump_next()
+      end, function()
+        require('todo-comments').jump_prev()
+      end)
+      vim.keymap.set('n', ']gt', todo_next, { desc = 'Next todo comment' })
+      vim.keymap.set('n', '[gt', todo_prev, { desc = 'Previous todo comment' })
+    end,
+  },
 }
