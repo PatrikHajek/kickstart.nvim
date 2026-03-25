@@ -8,6 +8,18 @@ return {
     init = function()
       local repeat_move = require 'repeatable_move'
 
+      -- [[ LSP ]]
+      vim.api.nvim_create_autocmd('LspAttach', {
+        callback = function(event)
+          local bufnr = event.buf
+
+          local lsp_move = require 'custom.plugins.lsp.move'
+          local reference_next, reference_prev = repeat_move.make_repeatable_move_pair(lsp_move.goto_reference_next, lsp_move.goto_reference_prev)
+          vim.keymap.set({ 'n', 'x' }, ']r', reference_next, { desc = 'Next reference', buffer = bufnr })
+          vim.keymap.set({ 'n', 'x' }, '[r', reference_prev, { desc = 'Previous reference', buffer = bufnr })
+        end,
+      })
+
       local paragraph_next, paragraph_prev = repeat_move.make_repeatable_move_pair(function()
         vim.cmd 'normal! }j_'
       end, function()
