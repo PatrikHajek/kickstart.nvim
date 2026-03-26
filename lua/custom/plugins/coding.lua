@@ -179,7 +179,7 @@ return {
       vim.keymap.set({ 'n', 'x', 'o' }, '^^', function()
         move.goto_enclosing_start { forward = true }
       end, { desc = 'Enclosing parent start' })
-      vim.keymap.set({ 'n', 'x', 'o' }, '^_', function()
+      vim.keymap.set({ 'n', 'x', 'o' }, '^%', function()
         move.goto_enclosing_end { forward = true }
       end, { desc = 'Enclosing parent end' })
 
