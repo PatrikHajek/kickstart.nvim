@@ -153,9 +153,9 @@ local function get_sibling(opts, dir, predicate)
       end
 
       if dir == 'next' then
-        curr = curr:next_sibling()
+        curr = curr:next_named_sibling()
       elseif dir == 'prev' then
-        curr = curr:prev_sibling()
+        curr = curr:prev_named_sibling()
       else
         error('Unknown option: ' .. tostring(dir))
       end
