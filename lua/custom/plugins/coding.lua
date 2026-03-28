@@ -400,6 +400,7 @@ return {
       map('mdEmphasis', 'e', 'e', 'markdown emphasis')
       map('htmlAttribute', 'x', 'x', 'HTML attribute')
       map('chainMember', 'gm', 'gm')
+      map('filepath', 'gf', 'gf')
     end,
   },
 
