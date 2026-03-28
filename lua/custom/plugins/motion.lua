@@ -1,11 +1,5 @@
 -- [text-case.nvim](https://github.com/johmsalas/text-case.nvim)
 
--- WARN: might conflict with mini.ai if set up incorrectly
-
--- TODO: make `-` the same as `_`
--- kebab-case should be selected the same way snake_case is -> `viw` selecting
--- the whole word and `vis` selecting subwords
-
 return {
   {
     'chrisgrieser/nvim-spider',
