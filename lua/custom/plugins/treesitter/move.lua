@@ -1,7 +1,6 @@
 local M = {}
 
 local ts_repeat_move = require 'nvim-treesitter-textobjects.repeatable_move'
-local ts_utils = require 'nvim-treesitter.ts_utils'
 
 --- @param node TSNode
 --- @param query vim.treesitter.Query
@@ -58,7 +57,7 @@ end
 --- @param predicate fun(curr: TSNode, init: TSNode): boolean
 --- @return TSNode | nil
 local function get_enclosing(opts, predicate)
-  local node = ts_utils.get_node_at_cursor()
+  local node = vim.treesitter.get_node()
   if not node then
     return
   end
@@ -128,7 +127,7 @@ end)
 --- @param predicate fun(curr: TSNode, init: TSNode): boolean
 --- @return TSNode | nil
 local function get_sibling(opts, dir, predicate)
-  local node = ts_utils.get_node_at_cursor()
+  local node = vim.treesitter.get_node()
   if not node then
     return
   end
@@ -169,7 +168,7 @@ end
 --- @param opts treesitter_get_enclosing_opts?
 --- @type fun(opts: TSTextObjects.MoveOpts, opts: treesitter_get_enclosing_opts?)
 M.goto_sibling_next_start = ts_repeat_move.make_repeatable_move(function(_, opts)
-  local node_cursor = ts_utils.get_node_at_cursor()
+  local node_cursor = vim.treesitter.get_node()
   if not node_cursor or not node_cursor:parent() then
     vim.cmd 'normal! }{j_'
     return
@@ -191,7 +190,7 @@ end)
 --- @param opts treesitter_get_enclosing_opts?
 --- @type fun(opts: TSTextObjects.MoveOpts, opts: treesitter_get_enclosing_opts?)
 M.goto_sibling_prev_start = ts_repeat_move.make_repeatable_move(function(_, opts)
-  local node_cursor = ts_utils.get_node_at_cursor()
+  local node_cursor = vim.treesitter.get_node()
   if not node_cursor or not node_cursor:parent() then
     vim.cmd 'normal! {}k_'
     return
