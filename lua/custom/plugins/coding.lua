@@ -2,6 +2,22 @@
 vim.keymap.set({ 'n', 'x' }, '<C-d>', '5j')
 vim.keymap.set({ 'n', 'x' }, '<C-u>', '5k')
 
+vim.keymap.set('n', '<leader>vv', function()
+  local is_fugitive = require('custom.utils').is_fugitive()
+  local line = vim.api.nvim_get_current_line()
+  --- @type string | nil
+  local line_trimmed = line:match '^%s*[#/-]+%s*(.+)'
+  if line_trimmed and not is_fugitive then
+    --- @type string
+    local char = line_trimmed:sub(1, 1)
+    vim.api.nvim_command('normal g_v0f' .. char)
+  else
+    vim.api.nvim_command 'normal g_v_'
+  end
+end, { desc = 'Select line without newline, comment or diff character' })
+vim.keymap.set('n', '<leader>vh', 'm0_v`0', { remap = true, desc = 'Select from the start of line up to current position' })
+vim.keymap.set('n', '<leader>vl', 'm0g_v`0', { remap = true, desc = 'Select from current position up to the end of line' })
+
 return {
   {
     'kiyoon/repeatable-move.nvim',
