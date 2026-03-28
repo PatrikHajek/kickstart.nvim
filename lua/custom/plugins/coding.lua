@@ -354,8 +354,6 @@ return {
     end,
   },
 
-  -- [text-case.nvim](https://github.com/johmsalas/text-case.nvim)
-
   {
     'chrisgrieser/nvim-spider',
     lazy = true,
