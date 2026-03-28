@@ -233,7 +233,6 @@ return {
         { kind = 'tag', name = 'tag' },
         { kind = 'tag.attribute', name = 'attribute' },
         { kind = 'string.regexp', name = 'regexp', chars = 100 },
-        { kind = 'punctuation.special', name = 'punc' }, -- template strings?
         { kind = 'comment', name = 'comment', chars = 200 },
         { kind = 'comment.documentation', name = 'documentation', chars = 190 },
       }
