@@ -185,7 +185,17 @@ return {
 
       local opts = {
         query_files = { 'locals', 'textobjects', 'highlights' },
-        captures = { 'block.outer', 'statement.outer', 'class.outer', 'function.outer', 'call.outer', 'local.definition.var', 'keyword', 'keyword.type' },
+        captures = {
+          'block.outer',
+          'statement.outer',
+          'class.outer',
+          'function.outer',
+          'call.outer',
+          'local.definition.var',
+          -- Prisma.
+          'keyword',
+          'keyword.type',
+        },
       }
       vim.keymap.set({ 'n', 'x', 'o' }, ')', function()
         vim.cmd 'normal! m`'
