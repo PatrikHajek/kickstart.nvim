@@ -379,18 +379,23 @@ return {
   {
     'chrisgrieser/nvim-various-textobjs',
     config = function()
-      -- subword
-      -- vim.keymap.set({ 'o', 'x' }, 'as', '<cmd>lua require("various-textobjs").subword("outer")<CR>', { desc = '[S]ubword' })
-      vim.keymap.set({ 'o', 'x' }, 'is', '<cmd>lua require("various-textobjs").subword("inner")<CR>', { desc = '[S]ubword' })
-      -- url
-      vim.keymap.set({ 'o', 'x' }, 'au', '<cmd>lua require("various-textobjs").url("outer")<CR>', { desc = '[U]RL' })
-      vim.keymap.set({ 'o', 'x' }, 'iu', '<cmd>lua require("various-textobjs").url("inner")<CR>', { desc = '[U]RL' })
-      -- mdEmphasis
-      vim.keymap.set({ 'o', 'x' }, 'ae', '<cmd>lua require("various-textobjs").mdEmphasis("outer")<CR>', { desc = 'Markdown [E]mphasis' })
-      vim.keymap.set({ 'o', 'x' }, 'ie', '<cmd>lua require("various-textobjs").mdEmphasis("inner")<CR>', { desc = 'Markdown [E]mphasis' })
-      -- htmlAttribute
-      vim.keymap.set({ 'o', 'x' }, 'ax', '<cmd>lua require("various-textobjs").htmlAttribute("outer")<CR>', { desc = 'HTML attribute' })
-      vim.keymap.set({ 'o', 'x' }, 'ix', '<cmd>lua require("various-textobjs").htmlAttribute("inner")<CR>', { desc = 'HTML attribute' })
+      --- @param textobject string
+      --- @param key_around string | false
+      ---@param key_inner string | false
+      local function map(textobject, key_around, key_inner)
+        if key_around then
+          vim.keymap.set({ 'o', 'x' }, 'a' .. key_around, '<cmd>lua require("various-textobjs").' .. textobject .. '("outer")<CR>', { desc = textobject })
+        end
+
+        if key_inner then
+          vim.keymap.set({ 'o', 'x' }, 'i' .. key_inner, '<cmd>lua require("various-textobjs").' .. textobject .. '("inner")<CR>', { desc = textobject })
+        end
+      end
+
+      map('subword', false, 's')
+      map('url', 'u', 'u')
+      map('mdEmphasis', 'e', 'e')
+      map('htmlAttribute', 'x', 'x')
     end,
   },
 
