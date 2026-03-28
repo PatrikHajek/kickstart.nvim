@@ -184,8 +184,8 @@ return {
       end, { desc = 'Enclosing parent end' })
 
       local opts = {
-        query_files = { 'locals', 'textobjects' },
-        captures = { 'block.outer', 'statement.outer', 'class.outer', 'function.outer', 'call.outer', 'local.definition.var' },
+        query_files = { 'locals', 'textobjects', 'highlights' },
+        captures = { 'block.outer', 'statement.outer', 'class.outer', 'function.outer', 'call.outer', 'local.definition.var', 'keyword', 'keyword.type' },
       }
       vim.keymap.set({ 'n', 'x', 'o' }, ')', function()
         vim.cmd 'normal! m`'
