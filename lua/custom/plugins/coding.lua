@@ -397,8 +397,6 @@ return {
 
       map('subword', false, 's')
       map('url', 'u', 'u')
-      map('mdEmphasis', 'e', 'e', 'markdown emphasis')
-      map('htmlAttribute', 'x', 'x', 'HTML attribute')
       map('chainMember', 'gm', 'gm')
       map('filepath', 'gf', 'gf')
     end,
