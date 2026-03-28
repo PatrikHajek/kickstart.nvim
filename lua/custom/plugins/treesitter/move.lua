@@ -67,8 +67,7 @@ local function get_enclosing(opts, predicate)
   --- @type TSNode?
   local curr = node
   while curr do
-    -- "block" nodes start on the first line in the block and are masking the real parent.
-    if curr:type() ~= 'block' and predicate(curr, node) then
+    if predicate(curr, node) then
       if opts then
         for _, query in pairs(queries) do
           if get_capture(curr, query, opts.captures) ~= nil then
@@ -90,7 +89,8 @@ M.goto_enclosing_start = ts_repeat_move.make_repeatable_move(function(_, opts)
   local node = get_enclosing(opts, function(curr)
     local cursor = vim.api.nvim_win_get_cursor(0)[1]
     local c_row = curr:range()
-    return cursor ~= c_row + 1
+    -- "block" nodes start on the first line in the block and are masking the real parent.
+    return curr:type() ~= 'block' and cursor ~= c_row + 1
   end)
   if node then
     local row, col = node:range()
