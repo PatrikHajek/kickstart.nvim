@@ -382,20 +382,23 @@ return {
       --- @param textobject string
       --- @param key_around string | false
       ---@param key_inner string | false
-      local function map(textobject, key_around, key_inner)
+      ---@param desc string?
+      local function map(textobject, key_around, key_inner, desc)
+        desc = desc and desc or textobject
+
         if key_around then
-          vim.keymap.set({ 'o', 'x' }, 'a' .. key_around, '<cmd>lua require("various-textobjs").' .. textobject .. '("outer")<CR>', { desc = textobject })
+          vim.keymap.set({ 'o', 'x' }, 'a' .. key_around, '<cmd>lua require("various-textobjs").' .. textobject .. '("outer")<CR>', { desc = desc })
         end
 
         if key_inner then
-          vim.keymap.set({ 'o', 'x' }, 'i' .. key_inner, '<cmd>lua require("various-textobjs").' .. textobject .. '("inner")<CR>', { desc = textobject })
+          vim.keymap.set({ 'o', 'x' }, 'i' .. key_inner, '<cmd>lua require("various-textobjs").' .. textobject .. '("inner")<CR>', { desc = desc })
         end
       end
 
       map('subword', false, 's')
       map('url', 'u', 'u')
-      map('mdEmphasis', 'e', 'e')
-      map('htmlAttribute', 'x', 'x')
+      map('mdEmphasis', 'e', 'e', 'markdown emphasis')
+      map('htmlAttribute', 'x', 'x', 'HTML attribute')
     end,
   },
 
