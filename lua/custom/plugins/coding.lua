@@ -381,8 +381,8 @@ return {
     config = function()
       --- @param textobject string
       --- @param key_around string | false
-      ---@param key_inner string | false
-      ---@param desc string?
+      --- @param key_inner string | false
+      --- @param desc string?
       local function map(textobject, key_around, key_inner, desc)
         desc = desc and desc or textobject
 
