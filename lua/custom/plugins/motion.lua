@@ -1,6 +1,7 @@
--- [text-case.nvim](https://github.com/johmsalas/text-case.nvim)
 
 return {
+  -- [text-case.nvim](https://github.com/johmsalas/text-case.nvim)
+
   {
     'chrisgrieser/nvim-spider',
     lazy = true,
@@ -22,6 +23,7 @@ return {
       },
     },
   },
+
   {
     'chrisgrieser/nvim-various-textobjs',
     config = function()
