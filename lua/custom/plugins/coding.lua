@@ -397,7 +397,7 @@ return {
 
       map('subword', false, 's')
       map('url', 'u', 'u')
-      map('chainMember', 'gm', 'gm')
+      map('chainMember', 'gm', 'gm', 'chain member')
       map('filepath', 'gf', 'gf')
     end,
   },
